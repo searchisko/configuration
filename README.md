@@ -1,19 +1,13 @@
 # Searchisko configuration
 
-The goal is to move [Searchisko configuration](https://github.com/searchisko/searchisko/tree/master/configuration)
-files to separate repository.
-Progress of this task can be tracked in: <https://github.com/searchisko/searchisko/issues/71>
+[Searchisko](https://github.com/searchisko/searchisko) needs to be properly configured before it can be
+used. This project contains configuration of Searchisko running behind <http://dcp.jboss.org/>. 
 
----
-
-# jboss.org Searchisko instance configuration
-
-This folder contains definitions of distinct artifacts which must be 
-initialized in Searchisko itself and backend Elasticsearch cluster for jboss.org 
+## Installing configuration 
 
 Initialization steps:
 
-1. Get JBoss Developer artifacts from https://github.com/jboss-developer/www.jboss.org/tree/master/_dcp and copy them into data structure of configurations
+1. Get JBoss Developer artifacts from <https://github.com/jboss-developer/www.jboss.org/tree/master/_dcp> and copy them into data structure of configurations
 2. Create Elasticsearch index templates - `index_templates/init_templates.sh`
 3. Create Elasticsearch indexes  - `indexes/init_indexes.sh`
 4. Create Elasticsearch mappings - `mappings/init_mappings.sh`
@@ -29,7 +23,7 @@ Note: each .sh script accepts commandline parameters which allows to configure
 location of Searchisko REST API or Elasticsearch search node http connector used by 
 given script. Steps 2 - 5 can be performed by top level `init_all_noriver.sh` script.
 
-## Example - localhost:8080
+### Example - localhost:8080
 
 1. Optional: Clean environment (Searchisko data and embedded DB)
 
@@ -44,7 +38,7 @@ given script. Steps 2 - 5 can be performed by top level `init_all_noriver.sh` sc
 		./init_all_noriver.sh
 
 
-## Example - OpenShift
+### Example - OpenShift
 
 1. Push repo to Openshift
 
@@ -84,3 +78,22 @@ given script. Steps 2 - 5 can be performed by top level `init_all_noriver.sh` sc
 		cd ~/app-root/repo/configuration/rivers/
 		./init_rivers.sh
 
+
+## Versions management
+
+As Searchisko is evolving and changing so does the configuration as well. It is important to pay attention
+to proper versions management.
+
+- **Development:** While new Searchisko version is in development phase, all related configuration updates
+  are pushed into the `master` branch.
+  
+- **Release:** As soon as new Searchisko version is released a new git branch of configuration is created from master.
+  The branch name must refer to Searchisko version. For example when Searchisko [`v2.0.1`](https://github.com/searchisko/searchisko/releases/tag/v2.0.1)
+  is released then there is created a new branch called `v2.0.1` as well.
+  
+- **Updates:** Whenever there is made a change in configuration that apply to already released versions of Searchisko
+  the update must be back-ported to all other relevant branches too.
+  
+TODO:
+
+Give example (git CLI sequence) of back-porting configuration changes to older version.

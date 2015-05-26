@@ -1,8 +1,6 @@
 {
-    "search_response_fields":[
+    "search_response_fields": [
         "_id",
-        "sys_authors.red_hat.employee",
-        "sys_authors.sys_contributor",
         "sys_type",
         "sys_title",
         "sys_url_view",
@@ -14,12 +12,6 @@
         "sys_created",
         "sys_last_activity_date",
         "sys_rating_avg",
-			  "sys_rating_num"
-    ],
-    "field_visible_for_roles" : {
-        "sys_authors.red_hat.employee" : ["provider"] 
-    },
-    "source_filtering_for_roles" : {
-        "*.red_hat.employee" : ["provider"]
-    }
+        "sys_rating_num"
+    ]
 }

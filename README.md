@@ -87,13 +87,9 @@ to proper versions management.
 - **Development:** While new Searchisko version is in development phase, all related configuration updates
   are pushed into the `master` branch.
   
-- **Release:** As soon as new Searchisko version is released a new git branch of configuration is created from master.
-  The branch name must refer to Searchisko version. For example when Searchisko [`v2.0.1`](https://github.com/searchisko/searchisko/releases/tag/v2.0.1)
-  is released then there is created a new branch called `v2.0.1` as well.
+- **Release:** As soon as new Searchisko version is released
+  a new [repository branch](https://github.com/searchisko/configuration/branches) is created from master.
+  The branch name must refer to Searchisko version.
   
 - **Updates:** Whenever there is made a change in configuration that apply to already released versions of Searchisko
   the update must be back-ported to all other relevant branches too.
-  
-TODO:
-
-Give example (git CLI sequence) of back-porting configuration changes to older version.

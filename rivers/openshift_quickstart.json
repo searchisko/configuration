@@ -49,8 +49,9 @@
                     "prep_sys_content_provider" : "openshift",
                     "prep_sys_created"          : "{quickstart.updated}",
                     "prep_tags"                 : "{quickstart.tags}",
-                    "prep_cartridges"           : "{quickstart.cartridges}"
-                } 
+                    "prep_cartridges"           : "{quickstart.cartridges}",
+                    "target_product"            : "openshift"
+                }
             },
             { 
                 "name"     : "Updated filler",

@@ -36,7 +36,8 @@
             "sys_created"               : { "remote_field" : "prep_sys_created" },
             "sys_updated"               : { "remote_field" : "prep_sys_updated" },
             "sys_activity_dates"        : { "remote_field" : "prep_sys_created" },
-            "target_product"            : { "remote_field" : "prep_target_product" }
+            "target_product"            : { "remote_field" : "prep_target_product" },
+            "sys_project"               : { "remote_field" : "prep_sys_project" }
         },
         "preprocessors" : [
             {
@@ -51,7 +52,8 @@
                     "prep_sys_created"          : "{quickstart.updated}",
                     "prep_tags"                 : "{quickstart.tags}",
                     "prep_cartridges"           : "{quickstart.cartridges}",
-                    "prep_target_product"       : "openshift"
+                    "prep_target_product"       : "openshift",
+                    "prep_sys_project"          : "openshift"
                 }
             },
             { 

@@ -15,8 +15,8 @@
         "remote_field_document_id"      : "quickstart.id",
         "field_document_id"             : "sys_id",
         "fields" : {
-            "sys_id"                    : { "remote_field" : "prep_sys_id"},
-            "sys_content_id"            : { "remote_field" : "quickstart.id"},
+            "sys_id"                    : { "remote_field" : "quickstart.id"},
+            "sys_content_id"            : { "remote_field" : "prep_id_remote"},
             "sys_type"                  : { "remote_field" : "prep_type" },
             "sys_content_type"          : { "remote_field" : "prep_content_type" },
             "sys_content_content-type"  : { "remote_field" : "prep_content_content-type" },
@@ -41,10 +41,17 @@
         },
         "preprocessors" : [
             {
+                "name"     : "Remote id copy",
+                "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+                "settings" : {
+                    "prep_id_remote" : "{quickstart.id}"
+                }
+            },
+            {
                 "name"     : "Values filler",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
                 "settings" : {
-                    "prep_sys_id"               : "openshift_quickstart-{quickstart.id}",
+                    "quickstart.id"             : "openshift_quickstart-{quickstart.id}",
                     "prep_type"                 : "quickstart",
                     "prep_content_type"         : "openshift_quickstart",
                     "prep_content_content-type" : "text/html",

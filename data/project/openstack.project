@@ -1,0 +1,13 @@
+{
+  "code": "openstack",
+  "name": "Red Hat Enterprise Linux OpenStack Platform",
+  "type_specific_code" : {
+    "jbossorg_blog": [""],
+    "jbossorg_jira": [""],
+    "jbossorg_sbs" : [""],
+    "jbossorg_mailing_list": "",
+    "jbossorg_project_info": "",
+    "jbossdeveloper_website_code": ["openstack","Red Hat Enterprise Linux OpenStack Platform"],
+    "product" : true
+  }
+}

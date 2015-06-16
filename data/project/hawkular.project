@@ -1,0 +1,12 @@
+{
+  "code": "hawkular",
+  "name": "Hawkular",
+  "type_specific_code" : {
+    "jbossorg_blog": ["hawkular"],
+    "jbossorg_jira": ["HAWKULAR"],
+    "jbossorg_sbs" : ["2351","2352"],
+    "jbossorg_mailing_list": ["hawkular"],
+    "jbossorg_project_info": "hawkular",
+    "product" : false
+  }
+}

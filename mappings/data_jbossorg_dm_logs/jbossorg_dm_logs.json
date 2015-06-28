@@ -1,0 +1,23 @@
+{
+    "_all" : { "enabled" : false },
+    "dynamic_templates" : [ {
+      "string_template" : {
+        "mapping" : {
+          "index" : "not_analyzed",
+          "omit_norms" : true,
+          "type" : "string"
+        },
+        "match_mapping_type" : "string",
+        "match" : "*"
+      }
+    } ],
+    "properties":{
+        "product"            : { "type" : "boolean" },
+        "tags"               : { "type" : "string", "analyzer" : "sys_tags", "store" : "yes" },
+        "bytes"              : { "type" : "long" },
+        "release_no"         : { "type" : "string" },
+        "path"               : { "type" : "string" },
+        "file"               : { "type" : "string" },
+        "file_ext"           : { "type" : "string" }
+    }
+}

@@ -1,0 +1,152 @@
+{
+    "type" : "remote",
+    "remote" : {
+        "urlGetDocuments"       : "https://www.jboss.org/download-manager/rest/history?from={updatedAfter}&count=100",
+        "spacesIndexed"             : "WHOLE_HISTORY",
+        "username"                  : "download-manager-statistics",
+        "timeout"                   : "60s",
+        "indexUpdatePeriod"         : "10m",
+        "indexFullUpdatePeriod"     : "0",
+        "updatedAfterInitialValue"  : "1262304000000"
+    },
+    "index" : {
+        "index"                     : "data_jbossorg_dm_logs",
+        "type"                      : "jbossorg_dm_logs",
+        "remote_field_document_id"  : "id",
+        "remote_field_updated"      : "date",
+        "field_document_id"         : "sys_id",
+        "fields" : {
+            "sys_id"                : {"remote_field" : "id"},
+            "sys_content_id"        : {"remote_field" : "prep_id_remote"},
+            "sys_type"              : {"remote_field" : "prep_type"},
+            "sys_updated"           : {"remote_field" : "prep_updated"},
+            "sys_content_provider"  : {"remote_field" : "prep_content_provider"},
+            "sys_content_type"      : {"remote_field" : "prep_content_type"},
+            "sys_created"           : {"remote_field" : "prep_sys_created"},
+            "sys_activity_dates"    : {"remote_field" : "prep_sys_created"},
+            "sys_last_activity_date": {"remote_field" : "prep_sys_created"},
+            "sys_title"             : {"remote_field" : "file_name"},
+            "sys_project"           : {"remote_field" : "product"},
+            "sys_project_name"      : {"remote_field" : "prep_project_name"},
+            "sys_contributors"      : {"remote_field" : "prep_contributors"},
+            "product"               : {"remote_field" : "prep_product"},
+            "bytes"                 : {"remote_field" : "file_size"},
+            "release_no"            : {"remote_field" : "product_version"},
+            "path"                  : {"remote_field" : "file_url"},
+            "file"                  : {"remote_field" : "file_name"},
+            "file_ext"              : {"remote_field" : "prep_file_ext"},
+            "sys_authors"           : {"remote_field" : "prep_sys_authors"}
+        },
+        "preprocessors" : [
+            {
+                "name"     : "Remote id copy",
+                "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+                "settings" : {
+                    "prep_id_remote" : "{id}"
+                }
+            },
+            {
+                "name"     : "Values filler",
+                "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+                "settings" : {
+                    "id"                     : "jbossorg_dm_logs-{id}",
+                    "prep_type"              : "download",
+                    "prep_content_provider"  : "jbossorg",
+                    "prep_content_type"      : "jbossorg_dm_logs",
+                    "prep_contributors"      : "{user_username}",
+                    "prep_sys_created"       : "{date}",
+                    "prep_sys_authors.sys_contributor" : "{user_username}"
+                 } 
+            },{ 
+                "name"     : "Updated filler",
+                "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+                "settings" : { "field" : "prep_updated" }
+            },{
+                "name"     : "Get hire and leave dates for sys_authors.red_hat.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+                "settings" : {
+                    "index_name"       : "sys_contributors",
+                    "index_type"       : "contributor",
+                    "source_field"     : "sys_contributor",
+                    "idx_search_field" : "jbossorg_username",
+                    "result_mapping"   : [
+                        {
+                            "idx_result_field" : "hire_date",
+                            "target_field"     : "red_hat.hire_date"
+                        },{
+                            "idx_result_field" : "leave_date",
+                            "target_field"     : "red_hat.leave_date"
+                        }
+                    ],
+                    "source_bases" : [ "prep_sys_authors" ]
+                }
+            },{
+                "name"     : "Preparing download date for range check for employee status.",
+                "class"    : "org.jboss.elasticsearch.tools.content.LongToTimestampValuePreprocessor",
+                "settings" : {
+                    "source_field" : "prep_sys_created",
+                    "target_field" : "prep_sys_created"
+                }
+            },{ 
+                "name"     : "Date range checker to verify employee status.",
+                "class"    : "org.jboss.elasticsearch.tools.content.IsDateInRangePreprocessor",
+                "settings" : {
+                    "left_date"  : "red_hat.hire_date",
+                    "left_date_format" : "yyyy-MM-dd",
+                    "right_date"  : "red_hat.leave_date",
+                    "right_date_format"  : "yyyy-MM-dd",
+                    "checked_date"  : "prep_sys_created",
+                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSXX",
+                    "result_field" : "red_hat.employee",
+                    "source_bases" : ["prep_sys_authors"]
+                }
+            },{ 
+                "name"     : "Removing hire and leave dates after preprocessing is done.",
+                "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
+                "settings" : {
+                    "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
+                    "source_bases" : [ "prep_sys_authors" ]
+                }
+            },{
+                "name"     : "Projects mapper",
+                "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+                "settings" : {
+                    "index_name"       : "sys_projects",
+                    "index_type"       : "project",
+                    "source_field"     : "product",
+                    "idx_search_field" : "code",
+                    "result_mapping"   : [
+                        {
+                            "idx_result_field" : "name",
+                            "target_field"     : "prep_project_name"
+                        },{
+                            "idx_result_field" : "type_specific_code.product",
+                            "target_field"     : "prep_product"
+                        }
+                    ]
+                }
+            },{ 
+                "name"     : "File extension extractor script.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+                "settings" : {
+                    "script_engine_name"  : "JavaScript",
+                    "script"  : "
+                        var file_name = data.get('file_name').toString();
+                        var file_ext = null;
+                        if(file_name!=null && file_name.length()>0 && file_name.lastIndexOf('.')!=-1 ) {
+                            if(file_name.search('.tar.gz')!=-1) {
+                                file_ext='tar.gz';
+                            } else {
+                                file_ext=file_name.slice(file_name.lastIndexOf('.')+1,file_name.length());
+                            }
+                        }
+                        data.put('prep_file_ext',file_ext);
+                    "
+                } 
+            }
+        ]
+    },
+    "activity_log" : {
+        "index":"stats_jbossorg_dm_logs_river"
+    }
+}

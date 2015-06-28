@@ -533,6 +533,81 @@
         "name" : "jbossorg_download_logs"
       }
     },
+    "jbossorg_dm_logs": {
+      "description": "DownloadManager downloads information.",
+      "sys_type": "download",
+      "sys_content_content-type" : "text/plain",
+      "sys_visible_for_roles" : "provider",
+      "persist" : false,
+      "input_preprocessors": [
+        {
+            "name"     : "Get hire and leave dates for sys_authors.red_hat.",
+            "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+            "settings" : {
+                "index_name"       : "sys_contributors",
+                "index_type"       : "contributor",
+                "source_field"     : "sys_contributor",
+                "idx_search_field" : "jbossorg_username",
+                "result_mapping"   : [
+                    {
+                        "idx_result_field" : "hire_date",
+                        "target_field"     : "red_hat.hire_date"
+                    },{
+                        "idx_result_field" : "leave_date",
+                        "target_field"     : "red_hat.leave_date"
+                    }
+                ],
+                "source_bases" : [ "sys_authors" ]
+            }
+        },{ 
+            "name"     : "Date range checker to verify employee status.",
+            "class"    : "org.jboss.elasticsearch.tools.content.IsDateInRangePreprocessor",
+            "settings" : {
+                "left_date"  : "red_hat.hire_date",
+                "left_date_format" : "yyyy-MM-dd",
+                "right_date"  : "red_hat.leave_date",
+                "right_date_format"  : "yyyy-MM-dd",
+                "checked_date"  : "sys_created",
+                "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSXX",
+                "result_field" : "red_hat.employee",
+                "source_bases" : ["sys_authors"]
+            }
+        },{ 
+            "name"     : "Removing hire and leave dates after preprocessing is done.",
+            "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
+            "settings" : {
+                "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
+                "source_bases" : [ "sys_authors" ]
+            }
+        },{
+            "name"     : "Projects mapper",
+            "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+            "settings" : {
+                "index_name"       : "sys_projects",
+                "index_type"       : "project",
+                "source_field"     : "sys_project",
+                "idx_search_field" : "code",
+                "result_mapping"   : [
+                    {
+                        "idx_result_field" : "name",
+                        "target_field"     : "sys_project_name"
+                    },{
+                        "idx_result_field" : "type_specific_code.product",
+                        "target_field"     : "product"
+                    }
+                ]
+            }
+        }
+      ],
+      "index": {
+        "name": "data_jbossorg_dm_logs",
+        "type": "jbossorg_dm_logs"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "jbossorg_dm_logs"
+      }
+    },
     "jbossorg_mailing_list": {
         "description" : "Mails from project mailing list, public archive under https://lists.jboss.org/mailman/listinfo/",
         "sys_type" : "mailing_list_message",

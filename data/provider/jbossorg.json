@@ -363,7 +363,7 @@
                     "right_date"  : "red_hat.leave_date",
                     "right_date_format"  : "yyyy-MM-dd",
                     "checked_date"  : "sys_created",
-                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
                     "source_bases" : ["sys_authors"]
                 }
@@ -476,7 +476,7 @@
                     "right_date"  : "red_hat.leave_date",
                     "right_date_format"  : "yyyy-MM-dd",
                     "checked_date"  : "sys_created",
-                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
                     "source_bases" : ["sys_authors"]
                 }

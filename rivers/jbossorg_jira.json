@@ -219,7 +219,7 @@
                     "right_date"  : "red_hat.leave_date",
                     "right_date_format"  : "yyyy-MM-dd",
                     "checked_date"  : "fields.created",
-                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
                     "source_bases" : ["prep_sys_authors"]
                 }

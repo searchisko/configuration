@@ -2,7 +2,7 @@
   "code": "vertx",
   "name": "Vert.X",
   "type_specific_code" : {
-    "jbossorg_blog": [],
+    "jbossorg_blog": ["vertx"],
     "jbossorg_jira": [],
     "jbossorg_sbs" : [],
     "jbossorg_mailing_list": "",

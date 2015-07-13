@@ -17,9 +17,9 @@
 			  "sys_rating_num"
     ],
     "field_visible_for_roles" : {
-        "sys_authors.red_hat.employee" : ["provider"] 
+        "sys_authors.red_hat.employee" : ["trusted"] 
     },
     "source_filtering_for_roles" : {
-        "*.red_hat.employee" : ["provider"]
+        "*.red_hat.employee" : ["trusted"]
     }
 }

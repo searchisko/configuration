@@ -55,4 +55,4 @@ for hit in data['hits']:
         content_type_obj = hit['data']['type'][content_type];
         persist = content_type_obj.get('persist', False)
         if persist:
-            print "curl -X POST -H \"Content-Type: application/json\" --user " + username + ":" + password + " " + task_api + " -d \'{\"sys_content_type\" : \"" + content_type + "\"}\'"
+            print "curl -k -X POST -H \"Content-Type: application/json\" --user " + username + ":" + password + " " + task_api + " -d \'{\"sys_content_type\" : \"" + content_type + "\"}\'"

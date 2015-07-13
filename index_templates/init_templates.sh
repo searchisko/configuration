@@ -28,7 +28,7 @@ do
     esurl=${esurlbase}/_template/${template}/
     echo
     echo "Creating index template based on ${filename} on ES via ${esurl}"
-    curl ${auth} -XPUT -d@${filename} ${esurl}
+    curl -k ${auth} -XPUT -d@${filename} ${esurl}
     echo
 done
 

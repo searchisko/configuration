@@ -28,7 +28,7 @@ do
     esurl=${esurlbase}/${index}/
     echo
     echo "Creating index based on ${filename} on ES via ${esurl}"
-    curl ${auth} -XPUT -d@${filename} ${esurl}
+    curl -k ${auth} -XPUT -d@${filename} ${esurl}
     echo
 done
 

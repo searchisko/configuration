@@ -30,7 +30,7 @@ echo "Go to init mapping ${code} into Elasticsearch: ${esurlbase}"
 esurl=${esurlbase}/${code}/_mapping
 echo
 echo "Creating mapping ${path} on ES via ${esurl}"
-curl ${auth} -XPUT -d@${path} ${esurl}
+curl -k ${auth} -XPUT -d@${path} ${esurl}
 echo
 
 echo "Finished"

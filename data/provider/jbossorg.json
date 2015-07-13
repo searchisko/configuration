@@ -537,7 +537,7 @@
       "description": "DownloadManager downloads information.",
       "sys_type": "download",
       "sys_content_content-type" : "text/plain",
-      "sys_visible_for_roles" : "provider",
+      "sys_visible_for_roles" : "trusted",
       "persist" : false,
       "input_preprocessors": [
         {

@@ -36,7 +36,7 @@ for filename in *.json;
 do
 	echo -ne "Pushing $filename"
 
-	output=$(curl -i -s -o $outputfile --user ${username}:${password} -w "%{http_code}" -H "Content-Type: application/json" -X POST -d@$filename ${sysapi})
+	output=$(curl -k -i -s -o $outputfile --user ${username}:${password} -w "%{http_code}" -H "Content-Type: application/json" -X POST -d@$filename ${sysapi})
 
 	if [ "$output" == "200" ]; then
 	  echo " [OK]"

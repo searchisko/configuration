@@ -33,7 +33,7 @@ do
 	    esurl=${esurlbase}/${index}/${code}/_mapping
         echo
 	    echo "Creating mapping ${filename} on ES via ${esurl}"
-        curl ${auth} -XPUT -d@${filename} ${esurl}
+        curl -k ${auth} -XPUT -d@${filename} ${esurl}
         echo
 	done
 	popd > /dev/null

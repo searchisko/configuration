@@ -35,7 +35,7 @@ sysapi=${sysurl}/v2/rest/query/
 echo "Pushing registered query $filename to sysytem API via ${sysapi}"
 echo -n "" > $outputfile
 
-output=$(curl -i -s -o $outputfile --user ${username}:${password} -w "%{http_code}" -H "Content-Type: application/json" -X POST -d@$filename ${sysapi})
+output=$(curl -k -i -s -o $outputfile --user ${username}:${password} -w "%{http_code}" -H "Content-Type: application/json" -X POST -d@$filename ${sysapi})
 
 if [ "$output" == "200" ]; then
   echo " [OK]"

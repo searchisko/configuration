@@ -31,7 +31,7 @@ echo "Go to init river ${river} into Elasticsearch: ${esurlbase}"
 esurl=${esurlbase}/_river/${river}/_meta
 echo
 echo "Creating river based on ${filename} on ES via ${esurl}"
-curl ${auth} -XPUT -d@${filename} ${esurl}
+curl -k ${auth} -XPUT -d@${filename} ${esurl}
 echo
 
 echo "Finished"

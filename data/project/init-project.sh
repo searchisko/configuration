@@ -37,7 +37,7 @@ code="${filename%.*}"
 echo "Pushing project ${code} to Searchisko API via ${sysprojectapi}"
 echo -n "" > $outputfile
 
-output=$(curl -i -s -o $outputfile --user ${username}:${password} -w "%{http_code}" -H "Content-Type: application/json" -X POST -d@$code.project ${sysprojectapi}$code)
+output=$(curl -k -i -s -o $outputfile --user ${username}:${password} -w "%{http_code}" -H "Content-Type: application/json" -X POST -d@$code.project ${sysprojectapi}$code)
 
 if [ "$output" == "200" ]; then
   echo " [OK]"

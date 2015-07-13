@@ -1,6 +1,6 @@
 This folder contains configuration of rivers running inside Elasticsearch to pull
 information from external sources into search indices,
-see <http://www.elasticsearch.org/guide/en/elasticsearch/rivers/1.4/index.html>
+see <https://www.elastic.co/guide/en/elasticsearch/rivers/1.4/index.html>
 
 How to delete river:
 

@@ -62,6 +62,16 @@ Get all projects from projects infinispan and wildfly that have **fuzzy match** 
 
 - <http://dcp_server:port/v2/rest/search/suggest_project_name_flt?query=fun&project=infinispan&project=wildfly>
 
+##### `sort`
+
+By default results are sorted by relevancy. The `sort` parameter can be used to sort results by named document field.
+
+**Example:**
+
+Sort results by `sys_title` field:
+
+- <http://dcp_server:port/v2/rest/search/suggest_project_name_ngram?query=hib&sort=sys_title>
+
 ## Query output format
 
 Matching projects are returned in `hits.hits[]`. Every returned project contains `fields` section (this is the data you
@@ -145,8 +155,11 @@ Unescaped mustache template:
             }
           }
         }
+        {{#sort}}
+        , "sort": { "_script": { "script": "_source.{{sort}} ? _source.{{sort}}.toLowerCase() : ''" }}
+        {{/sort}}
       }
-      
+
 ### suggest_project_name_ngram_more_fields
 
 The same as **suggest_project_name_ngram** except it returns more fields:
@@ -238,5 +251,8 @@ Unescaped mustache template:
             }
           }
         }
+        {{#sort}}
+        , "sort": { "_script": { "script": "_source.{{sort}} ? _source.{{sort}}.toLowerCase() : ''" }}
+        {{/sort}}
       }
       

@@ -20,6 +20,7 @@
         "remote_field_updated"      : "_time",
         "field_document_id"         : "sys_id",
         "fields" : {
+            "sys_id"                : {"remote_field" : "_cd"},
             "sys_content_id"        : {"remote_field" : "prep_id"},
             "sys_type"              : {"remote_field" : "prep_type"},
             "sys_updated"           : {"remote_field" : "prep_updated"},
@@ -51,10 +52,17 @@
         },
         "preprocessors" : [
             {
+                "name"     : "Remote id copy",
+                "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+                "settings" : {
+                    "prep_id" : "{_cd}"
+                }
+            },
+            {
                 "name"     : "Values filler",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
                 "settings" : {
-                    "prep_id"                : "jbossorg_download_logs-{_cd}",
+                    "_cd"                     : "jbossorg_download_logs-{_cd}",
                     "prep_type"              : "download",
                     "prep_content_provider"  : "jbossorg",
                     "prep_content_type"      : "jbossorg_download_logs",

@@ -10,7 +10,7 @@
         "indexFullUpdatePeriod"     : "0",
         "httpMethod"                : "POST",
         "updatedAfterFormat"        : "{unixEpoch}",
-        "updatedAfterInitialValue"  : "1429713000000",
+        "updatedAfterInitialValue"  : "1349093760000",
         "updatedBeforeTimeSpanFromUpdatedAfter" : "21600000"
     },
     "index" : {

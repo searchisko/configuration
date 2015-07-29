@@ -1,3 +1,10 @@
 {
-  "origins_with_credentials" : ["http://www.jboss.org", "https://www.jboss.org", "http://static.jboss.org", "https://static.jboss.org"]
+  "origins_with_credentials": [
+    "http://www.jboss.org",
+    "https://www.jboss.org",
+    "http://jbossorg.github.io",
+    "https://jbossorg.github.io",
+    "http://static.jboss.org",
+    "https://static.jboss.org"
+  ]
 }

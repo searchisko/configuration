@@ -18,15 +18,22 @@
                 "type" : "object",
                 "properties" : {
                     "comment_body": {"type" : "string", "store":"yes"},
-                    "comment_created" : {"type" : "date", "index" : "no"},
-				            "comment_author" : {
-				                "type" : "object",
-				                "properties" : {
-				                    "email_address" : {"type" : "string", "index" : "no"},
-				                    "display_name"  : {"type" : "string", "index" : "no"},
-				                    "sys_contributor" : {"type" : "string", "index" : "no"}
-				                }     
-				            }
+                    "comment_created" : {"type" : "date"},
+				    "comment_author" : {
+				        "type" : "object",
+				        "properties" : {
+				            "email_address" : {"type" : "string", "index" : "no"},
+				            "display_name"  : {"type" : "string", "index" : "no"},
+				            "sys_contributor" : {"type" : "string"},
+                            "red_hat" : {
+                                "type" : "nested",
+                                "include_in_root" : true,
+                                "properties" : {
+                                    "employee" : { "type" : "boolean", "store": "yes" }
+                                }
+                            }
+				        }
+                    }
                 }    
             }
         }

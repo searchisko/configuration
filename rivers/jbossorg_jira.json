@@ -45,7 +45,7 @@
             "tags"                  : {"jira_field" : "fields.labels"},
             "sys_tags"              : {"jira_field" : "fields.labels"},
             "reporter"              : {"jira_field" : "fields.reporter", "value_filter" : "user"},
-            "assignee"              : {"jira_field" : "fields.assignee", "value_filter" : "user"},
+            "assignee"              : {"jira_field" : "fields.assignee", "value_filter" : "sys_author"},
             "fix_versions"          : {"jira_field" : "fields.fixVersions", "value_filter" : "name"},
             "components"            : {"jira_field" : "fields.components", "value_filter" : "name"},
             "sys_authors"           : {"jira_field" : "prep_sys_authors", "value_filter" : "sys_author" }
@@ -208,7 +208,7 @@
                             "target_field"     : "red_hat.leave_date"
                         }
                     ],
-                    "source_bases" : [ "prep_sys_authors" ]
+                    "source_bases" : [ "prep_sys_authors","fields.assignee" ]
                 }
             },{ 
                 "name"     : "Date range checker to verify employee status.",
@@ -221,14 +221,14 @@
                     "checked_date"  : "fields.created",
                     "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
-                    "source_bases" : ["prep_sys_authors"]
+                    "source_bases" : ["prep_sys_authors","fields.assignee"]
                 }
             },{ 
                 "name"     : "Removing hire and leave dates after preprocessing is done.",
                 "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
                 "settings" : {
                     "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
-                    "source_bases" : [ "prep_sys_authors" ]
+                    "source_bases" : [ "prep_sys_authors","fields.assignee" ]
                 }
             }
         ]

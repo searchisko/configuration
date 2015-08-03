@@ -239,7 +239,7 @@
                       "target_field"     : "red_hat.leave_date"
                   }
               ],
-              "source_bases" : [ "sys_authors" ]
+              "source_bases" : [ "sys_authors","assignee" ]
           }
       },{ 
           "name"     : "Date range checker to verify employee status.",
@@ -252,14 +252,14 @@
               "checked_date"  : "sys_created",
               "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
               "result_field" : "red_hat.employee",
-              "source_bases" : ["sys_authors"]
+              "source_bases" : ["sys_authors","assignee"]
           }
       },{ 
           "name"     : "Removing hire and leave dates after preprocessing is done.",
           "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
           "settings" : {
               "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
-              "source_bases" : [ "sys_authors" ]
+              "source_bases" : [ "sys_authors","assignee" ]
           }
       }
       ],
@@ -352,7 +352,7 @@
                             "target_field"     : "red_hat.leave_date"
                         }
                     ],
-                    "source_bases" : [ "sys_authors" ]
+                    "source_bases" : [ "sys_authors","sys_comments.comment_author" ]
                 }
             },{ 
                 "name"     : "Date range checker to verify employee status.",
@@ -365,14 +365,14 @@
                     "checked_date"  : "sys_created",
                     "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
-                    "source_bases" : ["sys_authors"]
+                    "source_bases" : ["sys_authors","sys_comments.comment_author"]
                 }
             },{ 
                 "name"     : "Removing hire and leave dates after preprocessing is done.",
                 "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
                 "settings" : {
                     "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
-                    "source_bases" : [ "sys_authors" ]
+                    "source_bases" : [ "sys_authors","sys_comments.comment_author" ]
                 }
             }
       ],
@@ -465,7 +465,7 @@
                             "target_field"     : "red_hat.leave_date"
                         }
                     ],
-                    "source_bases" : [ "sys_authors" ]
+                    "source_bases" : [ "sys_authors","sys_comments.comment_author" ]
                 }
             },{ 
                 "name"     : "Date range checker to verify employee status.",
@@ -478,14 +478,14 @@
                     "checked_date"  : "sys_created",
                     "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
-                    "source_bases" : ["sys_authors"]
+                    "source_bases" : ["sys_authors","sys_comments.comment_author"]
                 }
             },{ 
                 "name"     : "Removing hire and leave dates after preprocessing is done.",
                 "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
                 "settings" : {
                     "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
-                    "source_bases" : [ "sys_authors" ]
+                    "source_bases" : [ "sys_authors","sys_comments.comment_author" ]
                 }
             }
       ],

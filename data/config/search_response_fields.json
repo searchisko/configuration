@@ -17,7 +17,11 @@
 			  "sys_rating_num"
     ],
     "field_visible_for_roles" : {
-        "sys_authors.red_hat.employee" : ["trusted"] 
+        "sys_authors.red_hat.employee" : ["trusted"],
+        "sys_comments.comment_author.red_hat.employee" : ["trusted"],
+        "sys_comments.comment_updater.red_hat.employee" : ["trusted"],
+        "assignee.red_hat.employee" : ["trusted"],
+        "reporter.red_hat.employee" : ["trusted"]
     },
     "source_filtering_for_roles" : {
         "*.red_hat.employee" : ["trusted"]

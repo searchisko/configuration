@@ -5,6 +5,8 @@
     "http://jbossorg.github.io",
     "https://jbossorg.github.io",
     "http://static.jboss.org",
-    "https://static.jboss.org"
+    "https://static.jboss.org",
+    "http://rawgit.com",
+    "https://rawgit.com"
   ]
 }

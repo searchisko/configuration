@@ -19,6 +19,8 @@
                 "properties" : {
                     "comment_body": {"type" : "string", "store":"yes"},
                     "comment_created" : {"type" : "date"},
+                    "comment_helpful_answer" : {"type" : "boolean"},
+                    "comment_correct_answer" : {"type" : "boolean"},
 				    "comment_author" : {
 				        "type" : "object",
 				        "properties" : {
@@ -35,6 +37,13 @@
 				        }
                     }
                 }    
+            },
+            "thread_info" : {
+                "type" : "object",
+                "properties" : {
+                    "question" : { "type" : "boolean" },
+                    "answered" : { "type" : "date" }
+                }
             }
         }
     }

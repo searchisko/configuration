@@ -365,7 +365,21 @@
                     "checked_date"  : "sys_created",
                     "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
-                    "source_bases" : ["sys_authors","sys_comments.comment_author"]
+                    "source_bases" : ["sys_authors"]
+                }
+            },{ 
+                "name"     : "Date range checker to verify employee status for comments.",
+                "class"    : "org.jboss.elasticsearch.tools.content.IsDateInRangePreprocessor",
+                "settings" : {
+                    "left_date"  : "comment_author.red_hat.hire_date",
+                    "left_date_format" : "yyyy-MM-dd",
+                    "right_date"  : "comment_author.red_hat.leave_date",
+                    "right_date_format"  : "yyyy-MM-dd",
+                    "checked_date"  : "sys_created",
+                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+                    "checked_date_relative": "true",
+                    "result_field" : "comment_author.red_hat.employee",
+                    "source_bases" : ["sys_comments"]
                 }
             },{ 
                 "name"     : "Removing hire and leave dates after preprocessing is done.",

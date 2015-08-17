@@ -70,6 +70,17 @@
         "type" : "elasticsearch-river-remote",
         "name" : "rht_knowledgebase_solution"
       }
+    },
+    "rht_user_profile": {
+      "description": "redhat.com user profile",
+      "sys_type": "contributor_profile",
+      "sys_content_content-type": "text/plain",
+      "persist": true,
+      "input_preprocessors": [],
+      "index": {
+        "name": "data_rht_user_profile",
+        "type": "rht_user_profile"
+      }
     }
   }
 }

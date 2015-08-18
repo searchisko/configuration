@@ -30,7 +30,7 @@
 			    "type" : "object",
 			    "properties" : {
 				    "valid"      : { "type": "boolean" },
-				    "signDate"   : { "type": "date" }
+				    "signDate"   : { "type": "long" }
 			    }
 			},
 		  	"company"	     : { "type": "string" },

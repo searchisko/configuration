@@ -68,7 +68,7 @@ Unescaped mustache template:
                 {
                   "range": {
                     "end_date": {
-                      "gte": "now-1000d"
+                      "gte": "now-1d"
                     }
                   }
                 }
@@ -178,7 +178,7 @@ Unescaped mustache template:
                 "filter": {
                   "range": {
                     "end_date": {
-                      "gte": "now-1000d"
+                      "gte": "now-1d"
                     }
                   }
                 },
@@ -202,7 +202,7 @@ Unescaped mustache template:
                 "filter": {
                   "range": {
                     "end_date": {
-                      "gte": "now-1000d"
+                      "gte": "now-1d"
                     }
                   }
                 },
@@ -226,7 +226,7 @@ Unescaped mustache template:
                 "filter": {
                   "range": {
                     "end_date": {
-                      "gte": "now-1000d"
+                      "gte": "now-1d"
                     }
                   }
                 },
@@ -250,7 +250,7 @@ Unescaped mustache template:
                 "filter": {
                   "range": {
                     "end_date": {
-                      "gte": "now-1000d"
+                      "gte": "now-1d"
                     }
                   }
                 },

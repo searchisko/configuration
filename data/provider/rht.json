@@ -77,7 +77,16 @@
       "sys_content_content-type": "text/plain",
       "sys_visible_for_roles" : "trusted",
       "persist": true,
-      "input_preprocessors": [],
+      "input_preprocessors": [
+        {
+          "name"     : "sys_created timestamp converter",
+          "class"    : "org.jboss.elasticsearch.river.remote.content.LongToTimestampValuePreprocessor",
+          "settings" : {
+            "source_field" : "sys_created",
+            "target_field" : "sys_created"
+          } 
+        }
+      ],
       "index": {
         "name": "data_rht_user_profile",
         "type": "rht_user_profile"

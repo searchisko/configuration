@@ -49,14 +49,86 @@
                 "name"     : "Values filler",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
                 "settings" : {
-                    "id"                     : "jbossorg_dm_logs-{id}",
-                    "prep_type"              : "download",
-                    "prep_content_provider"  : "jbossorg",
-                    "prep_content_type"      : "jbossorg_dm_logs",
-                    "prep_contributors"      : "{user_username}",
-                    "prep_sys_created"       : "{date}",
-                    "prep_sys_authors.sys_contributor" : "{user_username}"
+                    "id"                            : "jbossorg_dm_logs-{id}",
+                    "prep_type"                     : "download",
+                    "prep_content_provider"         : "jbossorg",
+                    "prep_content_type"             : "jbossorg_dm_logs",
+                    "prep_sys_created"              : "{date}",
+                    "prep_sys_authors.username"     : "{user_username}",
+                    "prep_sys_authors.account_type" : "{user_type}"
                  } 
+            },{ 
+                "name"     : "Copies username depending on account type for further preprocessing.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+                "settings" : {
+                    "script_engine_name"  : "JavaScript",
+                    "script"  : "
+
+                        var account_type = data.get('user_type');
+                        if( account_type=='J' ) {
+                            data.put( 'jb_username' , data.get('user_username') );
+                        } else if( account_type=='R' ) {
+                            data.put( 'rh_username' , data.get('user_username') );
+                        }
+                    "
+                } 
+            },{ 
+                "name"     : "Mapping jboss.org user to sys_contributor.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+                "settings" : {
+                    "index_name"       : "sys_contributors",
+                    "index_type"       : "contributor",
+                    "source_field"     : "jb_username",
+                    "idx_search_field" : "type_specific_code.jbossorg_username",
+                    "result_mapping"   : [
+                        {
+                            "idx_result_field" : "code",
+                            "target_field"     : "prep_contributors",
+                            "value_default"    : "{jb_username}"
+                        },{
+                            "idx_result_field" : "code",
+                            "target_field"     : "prep_sys_authors.sys_contributor",
+                            "value_default"    : "{jb_username}"
+                        }
+                    ]
+                } 
+            },{ 
+                "name"     : "Getting company/country from data_contributor_profile based on sys_contributor.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+                "settings" : {
+                    "index_name"       : "data_contributor_profile",
+                    "index_type"       : "jbossorg_contributor_profile",
+                    "source_field"     : "sys_contributor",
+                    "idx_search_field" : "sys_contributors",
+                    "result_mapping"   : [
+                        {
+                            "idx_result_field" : "company",
+                            "target_field"     : "company"
+                        },{
+                            "idx_result_field" : "country",
+                            "target_field"     : "country"
+                        }
+                    ],
+                    "source_bases" : ["prep_sys_authors"]
+                } 
+            },{ 
+                "name"     : "Getting company/country from data_rht_user_profile based on rh_username.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+                "settings" : {
+                    "index_name"       : "data_rht_user_profile",
+                    "index_type"       : "rht_user_profile",
+                    "source_field"     : "rh_username",
+                    "idx_search_field" : "username",
+                    "result_mapping"   : [
+                        {
+                            "idx_result_field" : "company",
+                            "target_field"     : "prep_sys_authors.company"
+                        },{
+                            "idx_result_field" : "country",
+                            "target_field"     : "prep_sys_authors.country"
+                        }
+                    ]
+                } 
             },{ 
                 "name"     : "Updated filler",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
@@ -143,6 +215,12 @@
                         data.put('prep_file_ext',file_ext);
                     "
                 } 
+            },{ 
+                "name"     : "Removing jb_username and rh_username after all preprocessing is done.",
+                "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
+                "settings" : {
+                    "fields"  : ["rh_username","jb_username"]
+                }
             }
         ]
     },

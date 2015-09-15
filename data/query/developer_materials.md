@@ -149,58 +149,91 @@ This query uses a lot of conditional clauses. This means the query itself has to
 The following is the query with all the optional filters applied:
 
     {
-      "from": 0,
-      "size" : 9,
+      "from": {{#from}}{{from}}{{/from}}{{^from}}0{{/from}},
+      "size": 9,
       "fields": [
-        "contributors", "duration", "experimental", "github_repo_url", "level", "sys_author",
-        "sys_contributors", "sys_created", "sys_description", "sys_rating_avg", "sys_rating_num",
-        "sys_title", "sys_type", "sys_url_view", "thumbnail", "sys_tags"
+        "contributors", "duration", "experimental", "github_repo_url", "level", "sys_author", "sys_contributors",
+        "sys_created", "sys_description", "sys_rating_avg", "sys_rating_num", "sys_title", "sys_type",
+        "sys_url_view", "thumbnail", "sys_tags"
       ],
       "query": {
         "filtered": {
+          {{#query}}
           "query": {
-            "simple_query_string" : {
-              "query" : "java is fast",
-              "fields":[
-                "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0", "sys_title^2.5"
+            "simple_query_string": {
+              "query": "{{query}}",
+              "fields": [
+                "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5"
               ]
             }
           },
+          {{/query}}
           "filter": {
             "and": {
               "filters": [
-                // 'level' filter
-                { "term": { "level": "beginner" }},
-
-                // 'tag' filter (AND type)
-                { "term": { "sys_tags": "camel" }},
-                { "term": { "sys_tags": "rest" }},
-
-                // 'publish_date' filter
-                { "range": { "sys_created": { "gte": "2014-2-13" } }},
-
-                // 'project' filter (OR type)
-                { "or": [
-                  { "term":  { "sys_project": "eap" }},
-                  { "term":  { "sys_project": "portal" }}
-                ]},
-
-                // 'rating' filter
-                { "range": { "sys_rating_avg": { "gte": 1 } }},
-
-                // 'sys_type' filter (OR type)
-                { "or": [
-                  { "script": {
-                    "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
-                    "params": {
-                      "format_selection": "{{sys_type}}"
-                    },
-                    "lang": "js"
+                {{#level}}
+                {
+                  "term": {
+                    "level": "{{level}}"
                   }
-                ]},
-
-                // no filter for this, this is hardcoded rule
-                { "terms": { "sys_content_provider" : [ "jboss-developer", "rht" ] }}
+                },
+                {{/level}}
+                {{#tag}}
+                {
+                  "term": {
+                    "sys_tags": ["{{.}}"]
+                  }
+                },
+                {{/tag}}
+                {{#publish_date}}
+                {
+                  "range": {
+                    "sys_created": {
+                      "gte": "{{publish_date}}"
+                    }
+                  }
+                },
+                {{/publish_date}}
+                {{#rating}}
+                {
+                  "range": {
+                    "sys_rating_avg": {
+                      "gte": "{{rating}}"
+                    }
+                  }
+                },
+                {{/rating}}
+                {
+                  "or": [
+                    {{#sys_type}}
+                    {
+                      "script": {
+                        "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
+                        "params": {
+                          "format_selection": "{{.}}",
+                          "lang": "js"
+                        }
+                      }
+                    },
+                    {{/sys_type}}
+                    {}
+                  ]
+                },
+                {
+                  "or": [
+                    {{#project}}
+                    {\"term\":{\"sys_project\":\"{{.}}\"}},
+                    {{/project}}
+                    {}
+                  ]
+                },
+                {
+                  "terms": {
+                    "sys_content_provider": [
+                      "jboss-developer", "rht"
+                    ]
+                  }
+                }
               ]
             }
           }
@@ -214,40 +247,85 @@ The following is the query with all the optional filters applied:
               "filter": {
                 "and": {
                   "filters": [
-                    // We need to add query filter to all other filters.
-                    // It is the same query as in 'query.filtered.query'.
+                    {{#query}}
                     {
                       "query": {
                         "simple_query_string": {
-                          "query" : "java is fast",
+                          "query": "{{query}}",
                           "fields": [
                             "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0", "sys_title^2.5"
                           ]
                         }
                       }
                     },
-
-                    // add all the filters from 'query.filtered.filter.and.filters'
-                    { "term": { "level": "beginner" }},
-                    { "term": { "sys_tags": "camel" }},
-                    { "term": { "sys_tags": "rest" }},
-                    { "range": { "sys_created": { "gte": "2014-2-13" } }},
-                    { "or": [
-                      { "term":  { "sys_project": "eap" }},
-                      { "term":  { "sys_project": "portal" }}
-                    ]},
-                    { "range": { "sys_rating_avg": { "gte": 1 } }},
-                    { "or": [
-                      { "script": {
-                        "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
-                        "params": {
-                          "format_selection": "{{sys_type}}"
-                        },
-                        "lang": "js"
+                    {{/query}}
+                    {{#level}}
+                    {
+                      "term": { "level": "{{level}}" }
+                    },
+                    {{/level}}
+                    {{#tag}}
+                    {
+                      "term": { "sys_tags": ["{{.}}"] }
+                    },
+                    {{/tag}}
+                    {{#publish_date}}
+                    {
+                      "range": {
+                        "sys_created": { "gte": "{{publish_date}}" }
                       }
-                    ]},
-                    { "terms": { "sys_content_provider" : [ "jboss-developer", "rht" ] }}
+                    },
+                    {{/publish_date}}
+                    {{#rating}}
+                    {
+                      "range": {
+                        "sys_rating_avg": { "gte": "{{rating}}"}
+                      }
+                    },
+                    {{/rating}}
+                    {
+                      "or": [
+                        {{#sys_type}}
+                        {
+                          "script": {
+                            "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
+                            "params": {
+                              "format_selection": "{{.}}",
+                              "lang": "js"
+                            }
+                          }
+                        },
+                        {{\/sys_type}}
+                        {}
+                      ]
+                    },
+                    {
+                      "or": [
+                        {{#project}}
+                        {
+                          "term": { "sys_project": "{{.}}" }
+                        },
+                        {{/project}}
+                        {}
+                      ]
+                    },
+                    {
+                      "terms": {
+                        "sys_content_provider": [
+                          "jboss-developer", "rht"
+                        ]
+                      }
+                    }
                   ]
+                }
+              },
+              "aggregations": {
+                "format_counts": {
+                  "terms": {
+                    "script": "_source.sys_type == 'jbossdeveloper_quickstart' ? ( _source.experimental != undefined && _source.experimental != null && _source.experimental === true ? _source.sys_type + '_early_access' : _source.sys_type ) : _source.sys_type",
+                    "lang": "js",
+                    "size": 100
+                  }
                 }
               }
             },
@@ -255,7 +333,13 @@ The following is the query with all the optional filters applied:
               "filter": {
                 "and": {
                   "filters": [
-                    { "terms": { "sys_content_provider" : [ "jboss-developer", "rht" ] }}
+                    {
+                      "terms": {
+                        "sys_content_provider": [
+                          "jboss-developer", "rht"
+                        ]
+                      }
+                    }
                   ]
                 }
               },

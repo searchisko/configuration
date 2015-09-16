@@ -118,7 +118,8 @@ The query has hardcoded list of fields that are returned:
       "sys_type",
       "sys_url_view",
       "thumbnail",
-      "sys_tags"
+      "sys_tags",
+      "target_product"
     ]
 
 Additionally returned data contains slice of **matching documents**, **total number** of matching documents
@@ -154,7 +155,7 @@ The following is the query with all the optional filters applied:
       "fields": [
         "contributors", "duration", "experimental", "github_repo_url", "level", "sys_author", "sys_contributors",
         "sys_created", "sys_description", "sys_rating_avg", "sys_rating_num", "sys_title", "sys_type",
-        "sys_url_view", "thumbnail", "sys_tags"
+        "sys_url_view", "thumbnail", "sys_tags", "target_product"
       ],
       "query": {
         "filtered": {

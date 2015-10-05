@@ -3,6 +3,7 @@
     "remote" : {
         "urlGetDocuments"       : "https://developer.jboss.org/data-api/content.jspa?spaceId={space}&type=document&updatedAfter={updatedAfter}&maxSize=100",
         "getDocsResFieldDocuments"  : "items",
+        "getRootResFieldsMapping"   : { "dev" : "container_info.dev" },
         "urlGetSpaces"					: "https://developer.jboss.org/data-api/spaces.jspa",
         "getSpacesResField"			: "spaces",
         "username" 							: "dcp-sbs-integration",
@@ -40,7 +41,8 @@
             "tags"                  : {"remote_field" : "tags"},
             "sys_tags"              : {"remote_field" : "tags"},
             "authors"               : {"remote_field" : "authors", "value_filter" : "user"},
-            "sys_authors"           : {"remote_field" : "prep_sys_authors", "value_filter" : "sys_author" }
+            "sys_authors"           : {"remote_field" : "prep_sys_authors", "value_filter" : "sys_author" },
+            "development_space"     : {"remote_field" : "dev" }
         },
         "value_filters" : {
             "user" : {
@@ -223,7 +225,21 @@
                     "checked_date"  : "published",
                     "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
                     "result_field" : "red_hat.employee",
-                    "source_bases" : ["prep_sys_authors","comments.author"]
+                    "source_bases" : ["prep_sys_authors"]
+                }
+            },{ 
+                "name"     : "Date range checker to verify employee status for comments.",
+                "class"    : "org.jboss.elasticsearch.tools.content.IsDateInRangePreprocessor",
+                "settings" : {
+                    "left_date"  : "author.red_hat.hire_date",
+                    "left_date_format" : "yyyy-MM-dd",
+                    "right_date"  : "author.red_hat.leave_date",
+                    "right_date_format"  : "yyyy-MM-dd",
+                    "checked_date"  : "published",
+                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+                    "checked_date_relative": "true",
+                    "result_field" : "author.red_hat.employee",
+                    "source_bases" : ["comments"]
                 }
             },{ 
                 "name"     : "Removing hire and leave dates after preprocessing is done.",

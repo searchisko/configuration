@@ -35,7 +35,8 @@
 				                }     
 				            }
                 }    
-            }
+            },
+            "development_space" : { "type" : "boolean" }
         }
     }
 }

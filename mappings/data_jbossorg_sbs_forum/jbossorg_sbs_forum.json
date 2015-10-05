@@ -44,7 +44,8 @@
                     "question" : { "type" : "boolean" },
                     "answered" : { "type" : "date" }
                 }
-            }
+            },
+            "development_space" : { "type" : "boolean" }
         }
     }
 }

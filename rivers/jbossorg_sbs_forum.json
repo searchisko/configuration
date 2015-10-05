@@ -3,6 +3,7 @@
     "remote" : {
         "urlGetDocuments"       : "https://developer.jboss.org/data-api/content.jspa?spaceId={space}&type=forum&updatedAfter={updatedAfter}&maxSize=100",
         "getDocsResFieldDocuments"  : "items",
+        "getRootResFieldsMapping"   : { "dev" : "container_info.dev" },
         "urlGetSpaces"					: "https://developer.jboss.org/data-api/spaces.jspa",
         "getSpacesResField"			: "spaces",
         "spacesIndexed" : "2154,2298,2301,2302,2306,2308,2313,2314,2316,2317,2321",
@@ -42,7 +43,8 @@
             "sys_tags"              : {"remote_field" : "tags"},
             "authors"               : {"remote_field" : "authors", "value_filter" : "user"},
             "sys_authors"           : {"remote_field" : "prep_sys_authors", "value_filter" : "sys_author" },
-            "thread_info"           : {"remote_field" : "thread_info" }
+            "thread_info"           : {"remote_field" : "thread_info" },
+            "development_space"     : {"remote_field" : "dev" }
         },
         "value_filters" : {
             "user" : {

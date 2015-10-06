@@ -44,6 +44,26 @@ The query returns up to 9 matching documents only. This means that second page s
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?from=9>
 
+##### `size`
+
+Optional parameter determining number of documents returned in response. Giving public clients option to directly
+specify `size` can be dangerous (imagine clients asking for very high number of records). Usually, it is enough
+to give clients an option to select from a limited set of predefined sizes. In this case client can select from
+one of the following options [`10`, `15`, `20`, `25`]. To select one option client passes one of the following
+parameters with non-null value:
+
+* `size10` = 10 documents (default)
+* `size15` = 15 documents
+* `size20` = 20 documents
+* `size25` = 25 documents
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?size10=true>
+
+If multiple options are used then the highest number wins. Foe example the following request
+will return `20` documents (or less if there not enough matching documents).
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?size10=true&size20=true&size15=true>
+
 ##### `level`
 Optional filter accepting a string value. URL parameter value MUST be lowercased.
 Example values: `beginner`, `intermediate` or `advanced`.
@@ -151,7 +171,10 @@ The following is the query with all the optional filters applied:
 
     {
       "from": {{#from}}{{from}}{{/from}}{{^from}}0{{/from}},
-      "size": 9,
+      "size": 10,
+      {{#size15}}"size": 15,{{/size15}}
+      {{#size20}}"size": 20,{{/size20}}
+      {{#size25}}"size": 25,{{/size25}}
       "fields": [
         "contributors", "duration", "experimental", "github_repo_url", "level", "sys_author", "sys_contributors",
         "sys_created", "sys_description", "sys_rating_avg", "sys_rating_num", "sys_title", "sys_type",
@@ -296,7 +319,7 @@ The following is the query with all the optional filters applied:
                             }
                           }
                         },
-                        {{\/sys_type}}
+                        {{/sys_type}}
                         {}
                       ]
                     },

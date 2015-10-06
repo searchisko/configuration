@@ -57,10 +57,12 @@ parameters with non-null value:
 * `size20` = 20 documents
 * `size25` = 25 documents
 
+For example:
+
 - <http://dcp_server:port/v2/rest/search/developer_materials?size10=true>
 
-If multiple options are used then the highest number wins. Foe example the following request
-will return `20` documents (or less if there not enough matching documents).
+If multiple options are used then the highest number wins. For example the following request
+will return `20` documents (or less if there are not enough matching documents).
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?size10=true&size20=true&size15=true>
 
@@ -117,6 +119,21 @@ _See "Query implementation details" for further details._
 Optional lowercased code of project. This can be used for **product** material finder.
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?project=eap&project=portal>
+
+##### `randomized`
+
+Passing in `randomized` parameter with non-null value orders resulting documents in random fashion
+(i.e. not by Lucene scoring function).
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?randomized=true>
+
+##### `seed`
+
+If `randomized` results are used then `seed` parameter can be passed to get
+[consistent random results](https://www.elastic.co/guide/en/elasticsearch/guide/current/random-scoring.html).
+If not passed then the `default` value is used by default.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?randomized=true&seed=cb1702a54386ad4a>
 
 ## Query output format
 
@@ -180,87 +197,100 @@ The following is the query with all the optional filters applied:
         "sys_created", "sys_description", "sys_rating_avg", "sys_rating_num", "sys_title", "sys_type",
         "sys_url_view", "thumbnail", "sys_tags", "target_product"
       ],
+      {{#randomized}}
       "query": {
-        "filtered": {
-          {{#query}}
+        "function_score": {
+      {{/randomized}}
           "query": {
-            "simple_query_string": {
-              "query": "{{query}}",
-              "fields": [
-                "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5"
-              ]
-            }
-          },
-          {{/query}}
-          "filter": {
-            "and": {
-              "filters": [
-                {{#level}}
-                {
-                  "term": {
-                    "level": "{{level}}"
-                  }
-                },
-                {{/level}}
-                {{#tag}}
-                {
-                  "term": {
-                    "sys_tags": ["{{.}}"]
-                  }
-                },
-                {{/tag}}
-                {{#publish_date}}
-                {
-                  "range": {
-                    "sys_created": {
-                      "gte": "{{publish_date}}"
-                    }
-                  }
-                },
-                {{/publish_date}}
-                {{#rating}}
-                {
-                  "range": {
-                    "sys_rating_avg": {
-                      "gte": "{{rating}}"
-                    }
-                  }
-                },
-                {{/rating}}
-                {
-                  "or": [
-                    {{#sys_type}}
+            "filtered": {
+              {{#query}}
+              "query": {
+                "simple_query_string": {
+                  "query": "{{query}}",
+                  "fields": [
+                    "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5"
+                  ]
+                }
+              },
+              {{/query}}
+              "filter": {
+                "and": {
+                  "filters": [
+                    {{#level}}
                     {
-                      "script": {
-                        "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
-                        "params": {
-                          "format_selection": "{{.}}",
-                          "lang": "js"
+                      "term": {
+                        "level": "{{level}}"
+                      }
+                    },
+                    {{/level}}
+                    {{#tag}}
+                    {
+                      "term": {
+                        "sys_tags": ["{{.}}"]
+                      }
+                    },
+                    {{/tag}}
+                    {{#publish_date}}
+                    {
+                      "range": {
+                        "sys_created": {
+                          "gte": "{{publish_date}}"
                         }
                       }
                     },
-                    {{/sys_type}}
-                    {}
+                    {{/publish_date}}
+                    {{#rating}}
+                    {
+                      "range": {
+                        "sys_rating_avg": {
+                          "gte": "{{rating}}"
+                        }
+                      }
+                    },
+                    {{/rating}}
+                    {
+                      "or": [
+                        {{#sys_type}}
+                        {
+                          "script": {
+                            "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
+                            "params": {
+                              "format_selection": "{{.}}",
+                              "lang": "js"
+                            }
+                          }
+                        },
+                        {{/sys_type}}
+                        {}
+                      ]
+                    },
+                    {
+                      "or": [
+                        {{#project}}
+                        {\"term\":{\"sys_project\":\"{{.}}\"}},
+                        {{/project}}
+                        {}
+                      ]
+                    },
+                    {
+                      "terms": {
+                        "sys_content_provider": [
+                          "jboss-developer", "rht"
+                        ]
+                      }
+                    }
                   ]
-                },
-                {
-                  "or": [
-                    {{#project}}
-                    {\"term\":{\"sys_project\":\"{{.}}\"}},
-                    {{/project}}
-                    {}
-                  ]
-                },
-                {
-                  "terms": {
-                    "sys_content_provider": [
-                      "jboss-developer", "rht"
-                    ]
-                  }
                 }
-              ]
+              }
             }
           }
+          {{#randomized}}
+          ,"functions": [
+            {
+              "random_score": { "seed": "{{#seed}}{{seed}}{{/seed}}{{^seed}}default{{/seed}}" }
+            }
+          ]
+          {{/randomized}}
         }
       },
       "aggregations": {

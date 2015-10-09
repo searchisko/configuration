@@ -18,7 +18,7 @@
                 "type" : "object",
                 "properties" : {
                     "comment_body": {"type" : "string", "store":"yes"},
-                    "comment_created" : {"type" : "date"},
+                    "comment_created" : {"type" : "date", "index":"not_analyzed"},
 				            "comment_author" : {
 				                "type" : "object",
 				                "properties" : {

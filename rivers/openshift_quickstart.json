@@ -56,7 +56,7 @@
                     "prep_content_type"         : "openshift_quickstart",
                     "prep_content_content-type" : "text/html",
                     "prep_sys_content_provider" : "openshift",
-                    "prep_sys_created"          : "{quickstart.updated}",
+                    "prep_sys_created"          : "{quickstart.updated}000",
                     "prep_tags"                 : "{quickstart.tags}",
                     "prep_cartridges"           : "{quickstart.cartridges}",
                     "prep_target_product"       : "openshift",
@@ -82,13 +82,6 @@
                 "settings" : {
                     "script_engine_name"  : "JavaScript",
                     "script"              : "
-
-                        var dateToParse = data.get('prep_sys_created');
-                        var dateParts = dateToParse.match(/(\\d{4})-(\\d{2})-(\\d{2})\\s(\\d{2}):(\\d{2}):(\\d{2})/);
-                        dateParts[2] -= 1; 
-                        var utcDateLong = Date.UTC.apply( this, dateParts.slice(1) ); 
-                        data.put('prep_sys_created', utcDateLong);
-
                         data.put('prep_tags',data.get('prep_tags').toString().split(', '));
                         data.put('prep_cartridges',data.get('prep_cartridges').toString().split(', '));
                     "

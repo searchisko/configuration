@@ -35,9 +35,10 @@
             "provider"                  : { "remote_field" : "quickstart.provider" },
             "sys_created"               : { "remote_field" : "prep_sys_created" },
             "sys_updated"               : { "remote_field" : "prep_sys_updated" },
-            "sys_activity_dates"        : { "remote_field" : "prep_sys_created" },
+            "sys_activity_dates"        : { "remote_field" : "prep_activity_dates" },
             "target_product"            : { "remote_field" : "prep_target_product" },
-            "sys_project"               : { "remote_field" : "prep_sys_project" }
+            "sys_project"               : { "remote_field" : "prep_sys_project" },
+            "sys_last_activity_date"    : { "remote_field" : "prep_last_activity_date" }
         },
         "preprocessors" : [
             {
@@ -56,7 +57,8 @@
                     "prep_content_type"         : "openshift_quickstart",
                     "prep_content_content-type" : "text/html",
                     "prep_sys_content_provider" : "openshift",
-                    "prep_sys_created"          : "{quickstart.updated}000",
+                    "prep_sys_created"          : "{quickstart.created}000",
+                    "prep_last_activity_date"   : "{quickstart.updated}000",
                     "prep_tags"                 : "{quickstart.tags}",
                     "prep_cartridges"           : "{quickstart.cartridges}",
                     "prep_target_product"       : "openshift",
@@ -75,6 +77,14 @@
                     "source_field" : "quickstart.body",
                     "target_field" : "prep_content_plaintext"
                 } 
+            },
+            {
+                "name"     : "Activity dates collector",
+                "class"    : "org.jboss.elasticsearch.tools.content.ValuesCollectingPreprocessor",
+                "settings" : {
+                    "target_field"  : "prep_activity_dates",
+                    "source_fields" : ["prep_sys_created","prep_last_activity_date"]
+                }
             },
             {
                 "name"     : "Parse date in quickstart.updated field into sys_created.",

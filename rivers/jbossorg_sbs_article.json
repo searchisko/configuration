@@ -63,7 +63,11 @@
         "comment_fields" : {
             "comment_body"    : {"remote_field" : "content"},
             "comment_author"  : {"remote_field" : "author", "value_filter" : "sys_author"},
-            "comment_created" : {"remote_field" : "published"}
+            "comment_created" : {"remote_field" : "published"},
+            "sys_project"       : {"remote_field" : "prep_project"},
+            "product"           : {"remote_field" : "prep_product"},
+            "sys_project_name"  : {"remote_field" : "prep_project_name"},
+            "development_space" : {"remote_field" : "prep_development_space"}
         },
         "preprocessors" : [
             {
@@ -248,7 +252,22 @@
                     "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
                     "source_bases" : [ "prep_sys_authors","comments.author" ]
                 }
-            }
+            },{
+                "name"     : "Parse date in quickstart.updated field into sys_created.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+                "settings" : {
+                    "script_engine_name"  : "JavaScript",
+                    "script"              : "
+                        var commentsArr = data.get('comments');
+                        for(var i=0 ; i<commentsArr.size() ; i++ ) {
+                            commentsArr.get(i).put('prep_product',data.get('prep_product'));
+                            commentsArr.get(i).put('prep_project',data.get('prep_project'));
+                            commentsArr.get(i).put('prep_project_name',data.get('prep_project_name'));
+                            commentsArr.get(i).put('prep_development_space',data.get('dev'));
+                        }
+                    "
+                }
+             }
         ]
     },
     "activity_log" : {

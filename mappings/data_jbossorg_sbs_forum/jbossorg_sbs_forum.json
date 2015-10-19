@@ -15,7 +15,8 @@
                 }                    
             },
             "sys_comments" : {
-                "type" : "object",
+                "type" : "nested",
+                "include_in_root" : true,
                 "properties" : {
                     "comment_body": {"type" : "string", "store":"yes"},
                     "comment_created" : {"type" : "date", "index":"not_analyzed"},
@@ -35,7 +36,18 @@
                                 }
                             }
 				        }
-                    }
+                    },
+                    "product"   : {"type" : "boolean"},
+                    "sys_project"   : { "type": "string", "analyzer": "keyword", "store": "yes" },
+                    "sys_project_name"  : { "type": "string", "analyzer": "sys_project_name", "store": "yes" },
+                    "thread_info" : {
+                        "type" : "object",
+                        "properties" : {
+                            "question" : { "type" : "boolean" },
+                            "answered" : { "type" : "date" }
+                        }
+                    },
+                    "development_space" : { "type" : "boolean"}
                 }    
             },
             "thread_info" : {

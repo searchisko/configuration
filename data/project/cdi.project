@@ -2,7 +2,7 @@
   "code": "cdi",
   "name": "CDI",
   "type_specific_code" : {
-    "jbossorg_blog": [""],
+    "jbossorg_blog": ["cdi"],
     "jbossorg_jira": ["CDI", "CDITCK"],
     "jbossorg_sbs" : [],
     "jbossorg_mailing_list": ["cdi"],

@@ -2,7 +2,7 @@
   "code": "weld",
   "name": "Weld",
   "type_specific_code" : {
-    "jbossorg_blog": ["feed_name_weld"],
+    "jbossorg_blog": ["weld"],
     "jbossorg_jira": ["WELD", "WELDRAD", "WELDX", "WELDINT", "WELDSERVLET", "WELDSE"],
     "jbossorg_sbs" : ["2287"],
     "jbossorg_mailing_list": ["weld"],

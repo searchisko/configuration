@@ -1,6 +1,6 @@
 {
   "name": "rht",
-  "description" : "Provider used by jboss.org Development Team to push content from Red Hat systems",
+  "description" : "Provider used by jboss.org Development Team and Developers Red Hat Team to push content from Red Hat systems",
   "contact_email" : "help@jboss.org",
   "type": {
     "rht_knowledgebase_article" : {
@@ -69,6 +69,39 @@
       "indexer" : {
         "type" : "elasticsearch-river-remote",
         "name" : "rht_knowledgebase_solution"
+      }
+    },
+    "rht_website": {
+      "description":"Developers Red Hat website pages",
+      "sys_type":"webpage",
+      "persist": true,
+      "input_preprocessors": [
+        {
+          "name"     : "Projects mapper",
+          "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+          "settings" : {
+            "index_name"       : "sys_projects",
+            "index_type"       : "project",
+            "source_field"     : "website_project_code",
+            "idx_search_field" : "type_specific_code.jbossdeveloper_website_code",
+            "result_mapping"   : [{
+              "idx_result_field" : "code",
+              "target_field"     : "sys_project"
+            },{
+              "idx_result_field" : "name",
+              "target_field"     : "sys_project_name"
+            }
+            ]
+          }
+        }
+      ],
+      "index": {
+        "name":"data_rht_website",
+        "type":"rht_website"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "rht_website"
       }
     },
     "rht_user_profile": {

@@ -80,6 +80,7 @@ Can be used multiple times. URL parameter value MUST be lowercased.
 
 ##### `publish_date`
 Optional filter accepting date in a string format.
+If present then only documents having `sys_created >= publish_date` are included.
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013>
 - <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013-01>
@@ -134,6 +135,18 @@ If `randomized` results are used then `seed` parameter can be passed to get
 If not passed then the `default` value is used by default.
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?randomized=true&seed=cb1702a54386ad4a>
+
+##### `newFirst`
+
+Optional flag to order resulting documents by `sys_created` date (descending).
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?query=java&newFirst=true>
+
+##### `oldFirst`
+
+Optional flag to order resulting documents by `sys_created` date (ascending).
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?query=java&oldFirst=true>
 
 ## Query output format
 
@@ -289,6 +302,13 @@ The following is the query with all the optional filters applied:
             {
               "random_score": { "seed": "{{#seed}}{{seed}}{{/seed}}{{^seed}}default{{/seed}}" }
             }
+          ]
+          {{/randomized}}
+          {{^randomized}}
+          ,"sort": [
+            {{#newFirst}} { "sys_created": "desc" }, {{/newFirst}}
+            {{#oldFirst}} { "sys_created": "asc" }, {{/oldFirst}}
+            "_score"
           ]
           {{/randomized}}
         }

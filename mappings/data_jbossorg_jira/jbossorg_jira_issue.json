@@ -84,7 +84,24 @@
                         }
                     }
                 }                    
-            } 
+            },
+            "resolution_author" : {
+                "type" : "object",
+                "properties" : {
+                    "email_address" : {"type" : "string", "index" : "no"},
+                    "display_name"  : {"type" : "string", "index" : "no"},
+                    "sys_contributor" : {"type" : "string"},
+                    "username" : {"type" : "string", "index" : "no"},
+                    "red_hat" : {
+                        "type" : "nested",
+                        "include_in_root" : true,
+                        "properties" : {
+                            "employee" : { "type" : "boolean", "store": "yes" }
+                        }
+                    }
+                }                    
+            },
+            "changelogs" : { "enabled" : "false" }
         }
     }
 }

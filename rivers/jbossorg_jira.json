@@ -16,6 +16,7 @@
         "field_project_key" : "project_key",
         "field_issue_key"   : "sys_content_id",
         "field_jira_url"    : "sys_url_view",
+        "changelog_mode"    : "embedded",
         "fields" : {
             "sys_id"                : {"jira_field" : "prep_id"},
             "sys_type"              : {"jira_field" : "prep_type"},
@@ -48,7 +49,8 @@
             "assignee"              : {"jira_field" : "fields.assignee", "value_filter" : "sys_author"},
             "fix_versions"          : {"jira_field" : "fields.fixVersions", "value_filter" : "name"},
             "components"            : {"jira_field" : "fields.components", "value_filter" : "name"},
-            "sys_authors"           : {"jira_field" : "prep_sys_authors", "value_filter" : "sys_author" }
+            "sys_authors"           : {"jira_field" : "prep_sys_authors", "value_filter" : "sys_author" },
+            "resolution_author"     : {"jira_field" : "prep_resolution_author", "value_filter" : "sys_author" }
         },
         "value_filters" : {
             "user" : {
@@ -88,6 +90,55 @@
                     "prep_title"             : "{key} - {fields.summary}",
                     "prep_content_content-type" : "text/plain"
                  } 
+            },{
+                "name"     : "Parse date in quickstart.updated field into sys_created.",
+                "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+                "settings" : {
+                    "script_engine_name"  : "JavaScript",
+                    "script"              : "
+                        var changes_history = data.get('changelog').get('histories');
+                        var last_resolution_date=null;
+                        var last_resolution_username=null;
+
+                        for(var i=0 ; i<changes_history.size() ; i++ ) {
+
+                            var element = changes_history.get(i);
+                            var change_items = element.get('items');
+                            var change_created = element.get('created');
+
+                            for( var j=0 ; j<change_items.size() ; j++ ) {
+
+                                if(change_items.get(j).get('field')=='resolution') {
+
+                                    if ( change_items.get(j).get('to') != null ) {
+
+                                        if (last_resolution_date == null || last_resolution_date<change_created) {
+
+                                            last_resolution_date = change_created;
+                                            last_resolution_username = element.get('author').get('name');
+                                        }
+
+                                    } else {
+
+                                        if( last_resolution_date != null && last_resolution_date<change_created ) {
+
+                                            last_resolution_date = null;
+                                            last_resolution_username = null;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if( last_resolution_date != null && last_resolution_username != null ) {
+                            data.put('prep_resolution_date',last_resolution_date);
+                            var resolution_author = new java.util.LinkedHashMap();
+                            resolution_author.put('name', last_resolution_username );
+                            data.put('prep_resolution_author',resolution_author);
+                        }
+
+                    "
+                }
             },{ 
                 "name"     : "Updated filler",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
@@ -148,7 +199,7 @@
 	                    "target_field"     : "prep_contributor",
 	                    "value_default"    : "{displayName}"
                     }],
-                    "source_bases"     : ["fields.reporter", "fields.assignee", "fields.comment.comments.author", "fields.comment.comments.updateAuthor"]
+                    "source_bases"     : ["fields.reporter", "fields.assignee", "prep_resolution_author", "fields.comment.comments.author", "fields.comment.comments.updateAuthor"]
                 } 
             },{ 
                 "name"     : "Contributors collector",
@@ -208,7 +259,7 @@
                             "target_field"     : "red_hat.leave_date"
                         }
                     ],
-                    "source_bases" : [ "prep_sys_authors","fields.assignee" ]
+                    "source_bases" : [ "prep_sys_authors", "fields.assignee", "prep_resolution_author" ]
                 }
             },{ 
                 "name"     : "Date range checker to verify employee status.",
@@ -224,11 +275,24 @@
                     "source_bases" : ["prep_sys_authors","fields.assignee"]
                 }
             },{ 
+                "name"     : "Date range checker to verify employee status for resolution user.",
+                "class"    : "org.jboss.elasticsearch.tools.content.IsDateInRangePreprocessor",
+                "settings" : {
+                    "left_date"  : "red_hat.hire_date",
+                    "left_date_format" : "yyyy-MM-dd",
+                    "right_date"  : "red_hat.leave_date",
+                    "right_date_format"  : "yyyy-MM-dd",
+                    "checked_date"  : "fields.resolutiondate",
+                    "checked_date_format"  : "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+                    "result_field" : "red_hat.employee",
+                    "source_bases" : ["prep_resolution_author"]
+                }
+            },{ 
                 "name"     : "Removing hire and leave dates after preprocessing is done.",
                 "class"    : "org.jboss.elasticsearch.tools.content.RemoveMultipleFieldsPreprocessor",
                 "settings" : {
                     "fields"  : ["red_hat.hire_date","red_hat.leave_date"],
-                    "source_bases" : [ "prep_sys_authors","fields.assignee" ]
+                    "source_bases" : [ "prep_sys_authors","fields.assignee","prep_resolution_author" ]
                 }
             }
         ]

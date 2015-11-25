@@ -1,0 +1,77 @@
+{
+  "name": "cdi-weld",
+  "description": "Provider used by CDI and Weld Teams to push content from websites",
+  "contact_email": "weld-dev@lists.jboss.org",
+  "type": {
+    "cdi_website": {
+      "description": "cdi-spec.org website pages",
+      "sys_type": "webpage",
+      "persist": true,
+      "input_preprocessors": [
+        {
+          "name": "Projects mapper",
+          "class": "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+          "settings": {
+            "index_name": "sys_projects",
+            "index_type": "project",
+            "source_field": "website_project_code",
+            "idx_search_field": "type_specific_code.jbossorg_blog",
+            "result_mapping": [
+              {
+                "idx_result_field": "code",
+                "target_field": "sys_project"
+              },
+              {
+                "idx_result_field": "name",
+                "target_field": "sys_project_name"
+              }
+            ]
+          }
+        }
+      ],
+      "index": {
+        "name": "data_cdi-weld_cdi_website",
+        "type": "cdi-weld_cdi_website"
+      },
+      "indexer": {
+        "type": "elasticsearch-river-remote",
+        "name": "cdi-weld_cdi_website"
+      }
+    },
+    "weld_website": {
+      "description": "weld.cdi-spec.org website pages",
+      "sys_type": "webpage",
+      "persist": true,
+      "input_preprocessors": [
+        {
+          "name": "Projects mapper",
+          "class": "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+          "settings": {
+            "index_name": "sys_projects",
+            "index_type": "project",
+            "source_field": "website_project_code",
+            "idx_search_field": "type_specific_code.jbossorg_blog",
+            "result_mapping": [
+              {
+                "idx_result_field": "code",
+                "target_field": "sys_project"
+              },
+              {
+                "idx_result_field": "name",
+                "target_field": "sys_project_name"
+              }
+            ]
+          }
+        }
+      ],
+      "index": {
+        "name": "data_cdi-weld_weld_website",
+        "type": "cdi-weld_weld_website"
+      },
+      "indexer": {
+        "type": "elasticsearch-river-remote",
+        "name": "cdi-weld_weld_website"
+      }
+    }
+  }
+}

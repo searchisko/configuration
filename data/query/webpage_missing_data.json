@@ -1,0 +1,72 @@
+{
+  "id": "webpage_missing_data",
+  "description": "List webpages with missing important data. Does not accepts URL parameters.",
+  "default": {
+    "sys_type": "webpage"
+  },
+  "template" : {
+    "size": 50,
+    "from": 0,
+    "fields": [
+      "sys_content_id", "sys_content_type",
+      "sys_title", "sys_description", "sys_content_plaintext",
+      "sys_url_view"
+    ],
+    "script_fields": {
+      "check#sys_title": {
+        "script": "_source.sys_title ? 'Field not missing' : 'MISSING'"
+      },
+      "check#sys_description": {
+        "script": "_source.sys_description ? 'Field not missing' : 'MISSING'"
+      },
+      "check#sys_content_plaintext": {
+        "script": "_source.sys_content_plaintext ? 'Field not missing' : 'MISSING'"
+      }
+    },
+    "query": {
+      "filtered": {
+        "query": {
+          "match_all": {}
+        },
+        "filter": {
+          "or": [
+            { "missing": { "field": "sys_title" } },
+            { "missing": { "field": "sys_description" } },
+            { "missing": { "field": "sys_content_plaintext" } }
+          ]
+        }
+      }
+    },
+    "aggs": {
+      "sys_content_provider": {
+        "terms": {
+          "field": "sys_content_provider"
+        },
+        "aggs": {
+          "sys_content_type": {
+            "terms": {
+              "field": "sys_content_type"
+            },
+            "aggs": {
+              "missing#sys_title": {
+                "missing": {
+                  "field": "sys_title"
+                }
+              },
+              "missing#sys_description": {
+                "missing": {
+                  "field": "sys_description"
+                }
+              },
+              "missing#sys_content_plaintext": {
+                "missing": {
+                  "field": "sys_content_plaintext"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

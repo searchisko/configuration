@@ -1,0 +1,57 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?fromdate=1448841600&todate=1448928000&order=desc&sort=activity&tagged=java%3Bcdi%3Bscala&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
+    "simpleGetDocuments"            : "true",
+    "spacesIndexed"                 : "MAIN",
+    "timeout"                       : "20s",
+    "indexUpdatePeriod"             : "1h",
+    "maxIndexingThreads"            : 1,
+    "getDocsResFieldDocuments"      : "items"
+  },
+  "index": {
+    "index": "data_stackoverflow_question",
+    "type": "stackoverflow_question",
+    "remote_field_document_id"      : "question_id",
+    "field_document_id"             : "sys_id",
+    "fields" : {
+      "sys_id"                    : { "remote_field" : "question_id"},
+      "sys_content_id"            : { "remote_field" : "prep_id_remote"},
+      "sys_type"                  : { "remote_field" : "prep_type" },
+      "sys_content_type"          : { "remote_field" : "prep_content_type" },
+      "sys_content_plaintext"     : { "remote_field" : "prep_content_plaintext" },
+      "full_document"                  : { "remote_field" : "prep_answers"}
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id_remote" : "{question_id}"
+        }
+      },
+      {
+        "name"     : "Values filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "quickstart.id"             : "stackoverflow_thread-{question_id}",
+          "prep_type"                 : "question_thread",
+          "prep_content_type"         : "stackoverflow_question",
+          "prep_answers"              : "answers"
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "body",
+          "target_field" : "prep_content_plaintext"
+        }
+      }
+
+    ]
+  },
+  "activity_log" : {
+    "index":"stats_stackoverflow_question_river"
+  }
+}

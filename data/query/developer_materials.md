@@ -297,22 +297,23 @@ The following is the query with all the optional filters applied:
               }
             }
           }
-          {{#randomized}}
+      {{#randomized}}
           ,"functions": [
             {
               "random_score": { "seed": "{{#seed}}{{seed}}{{/seed}}{{^seed}}default{{/seed}}" }
             }
           ]
-          {{/randomized}}
-          {{^randomized}}
-          ,"sort": [
-            {{#newFirst}} { "sys_created": "desc" }, {{/newFirst}}
-            {{#oldFirst}} { "sys_created": "asc" }, {{/oldFirst}}
-            "_score"
-          ]
-          {{/randomized}}
         }
-      },
+      }
+      {{/randomized}}
+      {{^randomized}}
+      ,"sort": [
+        {{#newFirst}} { "sys_created": "desc" }, {{/newFirst}}
+        {{#oldFirst}} { "sys_created": "asc" }, {{/oldFirst}}
+        "_score"
+      ]
+      {{/randomized}}
+      ,
       "aggregations": {
         "format": {
           "global": {},

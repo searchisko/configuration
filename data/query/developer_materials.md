@@ -5,7 +5,7 @@ and it is used to search and filter developer related documents.
 
 It is restricted to search on top of the following `sys_type`s:
 
- - jbossdeveloper_quickstart
+ - quickstart
  - video
  - demo
  - jbossdeveloper_example
@@ -20,10 +20,10 @@ is split into two _arbitrary_ categories depending on `experimental` field value
 
 [terms aggregation]: http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.4/search-aggregations-bucket-terms-aggregation.html
 
-More specifically documents having `sys_type: jbossdeveloper_quickstart` belong to
-either `jbossdeveloper_quickstart` or `jbossdeveloper_quickstart_early_access` category.
-If the document has `experimental: true` then it belongs to the `jbossdeveloper_quickstart_early_access`
-otherwise it belongs to `jbossdeveloper_quickstart`.
+More specifically documents having `sys_type: quickstart` belong to
+either `quickstart` or `quickstart_early_access` category.
+If the document has `experimental: true` then it belongs to the `quickstart_early_access`
+otherwise it belongs to `quickstart`.
 
 The following text consists of three parts:
 
@@ -94,23 +94,23 @@ Optional filter accepting a number value. URL parameter value MUST be a number.
 ##### `sys_type`
 Optional filter used for `sys_type` value (called "format" on the UI page).
 In order to distinguish between **quickstarts** and **early access** materials new _virtual_ `sys_type` value
-called `jbossdeveloper_quickstart_early_access` has been modelled.
+called `quickstart_early_access` has been modelled.
 
-- <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=jbossdeveloper_quickstart_early_access>
-- <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=jbossdeveloper_quickstart>
+- <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=quickstart_early_access>
+- <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=quickstart>
 - <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=video&sys_type=book>
 
-Technically speaking, the `sys_type` value in returned documents is `jbossdeveloper_quickstart` all the time.
+Technically speaking, the `sys_type` value in returned documents is `quickstart` all the time.
 The new (virtual) category appears **only** in aggregations output and can be used as `sys_type` filter input.
 All needed conversions are handled inside the query at execution time.
 
 Pseudo-code of `sys_type` processing is as follows:
 
-    if (sys_type == 'jbossdeveloper_quickstart' && experimental != undefined && experimental != null && experimental === true) {
-      'jbossdeveloper_quickstart_early_access'
-    }
-    if (sys_type == 'jbossdeveloper_quickstart') {
-      'jbossdeveloper_quickstart'
+    if (sys_type == 'quickstart' && experimental != undefined && experimental != null && experimental === true) {
+      'quickstart_early_access'
+    } else
+    if (sys_type == 'quickstart') {
+      'quickstart'
     }
     else { sys_type is used }
 
@@ -180,7 +180,7 @@ and **two aggregation sections**.
 2. `hits.total` contains total number of matching documents
 
 3. `aggregations.format.count_without_filters.format_counts.buckets[]` contains total counts for all **AVAILABLE**
-"formats" (note we have separation between `jbossdeveloper_quickstart` and `jbossdeveloper_quickstart_early_access` formats).
+"formats" (note we have separation between `quickstart` and `quickstart_early_access` formats).
 Counts do not reflect any selected filters, it is always total count of documents in this category. Technically speaking,
 this aggregation can be used to get a list of all available formats in the data.
 
@@ -266,7 +266,7 @@ The following is the query with all the optional filters applied:
                         {{#sys_type}}
                         {
                           "script": {
-                            "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
+                            "script": "(format_selection == 'quickstart_early_access' && _source.sys_type == 'quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'quickstart' && format_selection != 'quickstart_early_access' && _source.sys_type == format_selection)",
                             "params": {
                               "format_selection": "{{.}}",
                               "lang": "js"
@@ -363,7 +363,7 @@ The following is the query with all the optional filters applied:
                         {{#sys_type}}
                         {
                           "script": {
-                            "script": "(format_selection == 'jbossdeveloper_quickstart_early_access' && _source.sys_type == 'jbossdeveloper_quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'jbossdeveloper_quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'jbossdeveloper_quickstart' && format_selection != 'jbossdeveloper_quickstart_early_access' && _source.sys_type == format_selection)",
+                            "script": "(format_selection == 'quickstart_early_access' && _source.sys_type == 'quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'quickstart' && format_selection != 'quickstart_early_access' && _source.sys_type == format_selection)",
                             "params": {
                               "format_selection": "{{.}}",
                               "lang": "js"
@@ -397,7 +397,7 @@ The following is the query with all the optional filters applied:
               "aggregations": {
                 "format_counts": {
                   "terms": {
-                    "script": "_source.sys_type == 'jbossdeveloper_quickstart' ? ( _source.experimental != undefined && _source.experimental != null && _source.experimental === true ? _source.sys_type + '_early_access' : _source.sys_type ) : _source.sys_type",
+                    "script": "_source.sys_type == 'quickstart' ? ( _source.experimental != undefined && _source.experimental != null && _source.experimental === true ? _source.sys_type + '_early_access' : _source.sys_type ) : _source.sys_type",
                     "lang": "js",
                     "size": 100
                   }
@@ -421,7 +421,7 @@ The following is the query with all the optional filters applied:
               "aggregations": {
                 "format_counts": {
                   "terms": {
-                    "script": "_source.sys_type == 'jbossdeveloper_quickstart' ? ( _source.experimental != undefined && _source.experimental != null && _source.experimental === true ? _source.sys_type + '_early_access' : _source.sys_type ) : _source.sys_type",
+                    "script": "_source.sys_type == 'quickstart' ? ( _source.experimental != undefined && _source.experimental != null && _source.experimental === true ? _source.sys_type + '_early_access' : _source.sys_type ) : _source.sys_type",
                     "lang": "js",
                     "size": 100
                   }

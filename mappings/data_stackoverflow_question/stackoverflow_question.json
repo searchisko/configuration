@@ -1,3 +1,18 @@
 {
+  "stackoverflow_question": {
+    "properties": {
+      "sys_content_plaintext": {
+        "type": "string",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "owner": {
+        "type": "nested",
+        "include_in_all": true,
+        "_boost": 1.5
+      }
+
+    }
+  }
 
 }

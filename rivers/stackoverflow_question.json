@@ -1,7 +1,7 @@
 {
   "type" : "remote",
   "remote" : {
-    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?key=2rK8cNLhPN5yt4jq8daXNg((&order=desc&sort=activity&tagged={space}&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
+    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&tagged={space}&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
     "listDocumentsMode"             : "simple",
     "spacesIndexed"                 : "docker, linux-containers, dockerfile, docker-registry",
     "timeout"                       : "20s",

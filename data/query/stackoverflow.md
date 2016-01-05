@@ -10,7 +10,7 @@ Optional number of documents returned. If no `size` parameter is provided then v
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?size=20>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?size=20>
 
 ##### `from`
 
@@ -18,7 +18,7 @@ Optional position of the first document returned. If no `from` parameter is prov
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?from=5>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?from=5>
 
 ##### `query`
 
@@ -31,7 +31,7 @@ If no `query` parameter is provided then all middleware blog documents will matc
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?query=co>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?query=co>
 
 ##### `content`
 
@@ -40,7 +40,7 @@ If provided then the query is restricted to documents having field `sys_content_
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?sys_content_type=stackoverflow_question>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?sys_content_type=stackoverflow_question>
 
 ##### `tag`
 
@@ -49,7 +49,7 @@ If provided then the query is restricted to documents having field `sys_tags` eq
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?tag=docker>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?tag=docker>
 
 ##### `questionid`
 
@@ -58,7 +58,7 @@ If provided then the query is restricted to documents having field `sys_id` equa
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?questionid=12345>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?questionid=12345>
 
 ##### `userid`
 
@@ -67,7 +67,7 @@ If provided then the query is restricted to documents having field `user_id` equ
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?userid=12345>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?userid=12345>
 
 ##### `accepted`
 
@@ -76,16 +76,7 @@ If provided then the query is restricted to documents having field `is_answered`
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?accepted=true>
-
-##### `accepted`
-
-Optional parameter. Can be used multiple times.
-If provided then the query is restricted to documents having field `is_answered` equal to one of provided values.
-
-**Example:**
-
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?accepted=true>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?accepted=true>
 
 ##### `accepted_answer`
 
@@ -94,7 +85,7 @@ If provided then the query is restricted to documents having field `accepted_ans
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?accepted_answer=12345>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?accepted_answer=12345>
 
 ##### `aggs`
 
@@ -103,7 +94,7 @@ of the fields `sys_project` and `sys_tags`.
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/middlewareblogs?aggs=1>
+- <http://dcp_server:port/v2/rest/search/stackoverflow?aggs=1>
 
 ## Query output format
 
@@ -178,15 +169,7 @@ Unescaped mustache template:
 },{
             "or": [
 {{#accepted_answer}}
-{
-"script": {
-"script": "(_source.accepted_answer == format_selection)",
-"params": {
-"format_selection": "{{.}}",
-"lang": "js"
-}
-}
-},
+{ "term": { "accepted_answer": "{{.}}" }},
 {{/accepted_answer}}
 {}
 ]

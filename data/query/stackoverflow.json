@@ -1,0 +1,11 @@
+{
+  "id": "stackoverflow",
+  "description": "Stackoverflow Finder updates to Stackoverflow",
+  "default": {
+    "sys_content_type": [ "stackoverflow_question"]
+  },
+  "template" : "{\n    \"fields\": [\n      \"_source\"\n    ],\n    \"from\": {{#from}}{{from}}{{/from}}{{^from}}0{{/from}},\n    \"size\": {{#size}}{{size}}{{/size}}{{^size}}10{{/size}},\n    \"query\": {\n      \"filtered\": {\n        \"query\": {\n          {{#query}}\n          \"multi_match\": {\n            \"query\": \"{{query}}\",\n            \"fields\": [\n              \"sys_type\",\n              \"sys_created\"\n            ]\n          }\n          {{/query}}\n          {{^query}}\n          \"match_all\": {}\n          {{/query}}\n        },\n        \"filter\": {\n          \"and\": [\n            {\n              \"or\": [\n                {{#content}}\n                { \"term\": { \"sys_content_type\": \"{{.}}\" }},\n                {{/content}}\n                {}\n              ]\n            },{\n            \"or\": [\n                {{#tag}}\n                { \"term\": { \"sys_tags\": \"{{.}}\" }},\n                {{/tag}}\n                {}\n              ]\n            },{\n            \"or\": [\n{{#questionid}}\n{ \"term\": { \"sys_id\": \"{{.}}\" }},\n{{/questionid}}\n{}\n]\n},{\n            \"or\": [\n{{#userid}}\n{ \"term\": { \"user_id\": \"{{.}}\" }},\n{{/userid}}\n{}\n]\n},{\n            \"or\": [\n{{#accepted}}\n{ \"term\": { \"is_answered\": \"{{.}}\" }},\n{{/accepted}}\n{}\n]\n},{\n            \"or\": [\n{{#accepted_answer}}\n{ \"term\": { \"accepted_answer\": \"{{.}}\" }},\n{{/accepted_answer}}\n{}\n]\n}\n          ]\n        }\n      }\n    },\n    \"sort\": [\n      { \"sys_created\": \"desc\" },\n      {{#viewcount}} { \"_source.viewcount\": \"desc\" }, {{/viewcount}}\n      {{#lastactivity}} { \"last_activity\": \"desc\" }, {{/lastactivity}}\n      \"_score\"\n    ]\n    {{#aggs}},\n    \"aggs\": {\n      \"sys_content_type\": {\n        \"terms\": {\n          \"field\": \"sys_content_type\"\n        }\n      },\n      \"sys_tags\": {\n        \"terms\": {\n          \"field\": \"sys_tags\"\n        }\n      },\n\"accepted_answer\": {\n\"terms\": {\n\"field\": \"accepted_answer\"\n}\n}\n    }\n   {{/aggs}}\n}"
+
+}
+
+

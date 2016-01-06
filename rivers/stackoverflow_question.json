@@ -1,0 +1,86 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&tagged={space}&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
+    "listDocumentsMode"             : "simple",
+    "spacesIndexed"                 : "docker, linux-containers, dockerfile, docker-registry",
+    "timeout"                       : "20s",
+    "indexUpdatePeriod"             : "1h",
+    "maxIndexingThreads"            : 6,
+    "getDocsResFieldDocuments"      : "items"
+  },
+  "index": {
+    "index": "data_stackoverflow_question",
+    "type": "stackoverflow_question",
+    "remote_field_updated"          : "last_activity_date",
+    "remote_field_document_id"      : "question_id",
+    "field_document_id"             : "sys_id",
+    "fields" : {
+      "sys_id"                    : { "remote_field" : "prep_id"},
+      "sys_content_id"            : { "remote_field" : "prep_id_remote"},
+      "sys_type"                  : { "remote_field" : "prep_type" },
+      "sys_content_type"          : { "remote_field" : "prep_content_type" },
+      "sys_content_plaintext"     : { "remote_field" : "prep_content_plaintext" },
+      "sys_title"                 : { "remote_field" : "title"},
+      "sys_tags"                  : { "remote_field" : "tags"},
+      "sys_updated"               : { "remote_field" : "prep_updated"},
+      "sys_created"               : { "remote_field" : "creation_date"},
+      "sys_url_view"              : { "remote_field" : "link"},
+      "sys_content_content-type"  : { "remote_field" : "prep_content_content-type"},
+      "sys_content"               : { "remote_field" : "body" },
+      "last_activity"             : { "remote_field" : "last_activity_date"},
+      "tags"                      : { "remote_field" : "tags"},
+      "comments"                  : { "remote_field" : "comments"},
+      "answers"                   : { "remote_field" : "answers"},
+      "owner"                     : { "remote_field" : "owner"},
+      "author"                    : { "remote_field" : "prep_author"},
+      "is_answered"               : { "remote_field" : "prep_is_answered"},
+      "accepted_answer"           : { "remote_field" : "accepted_answer_id"},
+      "user_id"                   : { "remote_field" : "prep_user_id"}
+
+
+
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id_remote" : "{question_id}"
+        }
+      },
+      {
+        "name"     : "Values filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id"                   : "stackoverflow_question-{question_id}",
+          "prep_type"                 : "question_thread",
+          "prep_title"                : "title",
+          "prep_content_type"         : "stackoverflow_question",
+          "prep_content_content-type" : "text/plain",
+          "prep_author"               : "{owner.display_name}-{owner.user_id}",
+          "prep_user_id"              : "{owner.user_id}",
+          "prep_is_answered"          : "{is_answered}"
+
+        }
+      },
+      {
+        "name"     : "Updated filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+        "settings" : { "field" : "prep_updated" }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "body",
+          "target_field" : "prep_content_plaintext"
+        }
+      }
+
+    ]
+  },
+  "activity_log" : {
+    "index":"stats_stackoverflow_question_river"
+  }
+}

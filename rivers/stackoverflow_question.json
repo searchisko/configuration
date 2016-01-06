@@ -1,0 +1,121 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?key=*oqXg*yfHIdBzU)eLl8pMw((&order=asc&sort=activity&tagged={space}&site=stackoverflow&pagesize=100&fromdate={updatedAfter}&filter=!LfWKThW0g(DobcVscp0aEa",
+    "updatedAfterFormat"            : "{unixEpoch}",
+    "listDocumentsMode"             : "updateTimestamp",
+    "minGetDocumentsDelay"          : "10s",
+    "spacesIndexed"                 : "JBoss,JBoss7.x,Jboss5.x,JBoss6.x,JBoss-eap-6,JBoss-4.0.x,JBoss-3,jboss-as-7,wildfly,wildfly-8,vagrant,vagrantfile,vagrant-plugin,redhat,rhel,rhel5,rhel6,rhel7,rhel-scl,jbossfuse,camel,apache-camel,jbossmq",
+    "timeout"                       : "20s",
+    "indexUpdatePeriod"             : "1h",
+    "indexFullUpdatePeriod"         : "0",
+    "maxIndexingThreads"            : 10,
+    "getDocsResFieldDocuments"      : "items"
+  },
+  "index": {
+    "index": "data_stackoverflow_question",
+    "type": "stackoverflow_question",
+    "remote_field_updated"          : "last_activity_date",
+    "remote_field_updated_format"   : "{unixEpoch}",
+    "remote_field_document_id"      : "question_id",
+    "field_document_id"             : "sys_id",
+    "fields" : {
+      "sys_id"                    : { "remote_field" : "prep_id"},
+      "sys_content_id"            : { "remote_field" : "prep_id_remote"},
+      "sys_type"                  : { "remote_field" : "prep_type" },
+      "sys_content_type"          : { "remote_field" : "prep_content_type" },
+      "sys_content_plaintext"     : { "remote_field" : "prep_content_plaintext" },
+      "sys_title"                 : { "remote_field" : "title"},
+      "sys_tags"                  : { "remote_field" : "tags"},
+      "sys_updated"               : { "remote_field" : "prep_updated"},
+      "sys_created"               : { "remote_field" : "creation_date"},
+      "sys_url_view"              : { "remote_field" : "link"},
+      "sys_content_content-type"  : { "remote_field" : "prep_content_content-type"},
+      "sys_content"               : { "remote_field" : "body" },
+      "last_activity"             : { "remote_field" : "last_activity+date"},
+      "tags"                      : { "remote_field" : "tags"},
+      "comments"                  : { "remote_field" : "comments"},
+      "answers"                   : { "remote_field" : "answers"},
+      "owner"                     : { "remote_field" : "owner"},
+      "author"                    : { "remote_field" : "prep_author"},
+      "is_answered"               : { "remote_field" : "prep_is_answered"},
+      "accepted_answer"           : { "remote_field" : "accepted_answer_id"},
+      "user_id"                   : { "remote_field" : "prep_user_id"}
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id_remote"            : "{question_id}",
+          "prep_id"                   : "stackoverflow_question-{question_id}",
+          "prep_type"                 : "stackoverflow_thread",
+          "prep_title"                : "title",
+          "prep_content_type"         : "stackoverflow_question",
+          "prep_content_content-type" : "text/plain",
+          "prep_author"               : "{owner.display_name}-{owner.user_id}",
+          "prep_user_id"              : "{owner.user_id}",
+          "prep_is_answered"          : "{is_answered}"
+        }
+      },
+      {
+        "name"     : "UNIX Epoch to long milliseconds dates converter.",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+            data.put( 'creation_date' , data.get('creation_date').toString()+'000' );
+            data.put( 'last_activity_date' , data.get('last_activity_date').toString()+'000' );
+
+            var commentsArr = data.get('comments');
+            if( commentsArr ) {
+              for(var i=0 ; i<commentsArr.size() ; i++ ) {
+                var comment = commentsArr.get(i);
+                comment.put( 'creation_date' , comment.get('creation_date').toString()+'000' );
+              }
+            }
+
+            var answersArr = data.get('answers');
+            if( answersArr ) {
+              for(var i=0 ; i<answersArr.size() ; i++ ) {
+                var answer = answersArr.get(i);
+                answer.put( 'creation_date' , answer.get('creation_date').toString()+'000' );
+                answer.put( 'last_activity_date' , answer.get('last_activity_date').toString()+'000' );
+
+                var community_owned_date = answer.get('community_owned_date');
+                if(community_owned_date) {
+                  answer.put( 'community_owned_date' , community_owned_date.toString()+'000' );
+                }
+
+                var commentsArr = answer.get('comments');
+                if( commentsArr ) {
+                  for( var j=0 ; j<commentsArr.size() ; j++ ) {
+                    var comment = commentsArr.get(j);
+                    comment.put( 'creation_date' , comment.get('creation_date').toString()+'000' );
+                  }
+                }
+              }
+            }
+          "
+        }
+      },
+      {
+        "name"     : "Updated filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+        "settings" : { "field" : "prep_updated" }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "body",
+          "target_field" : "prep_content_plaintext"
+        }
+      }
+
+    ]
+  },
+  "activity_log" : {
+    "index":"stats_stackoverflow_question_river"
+  }
+}

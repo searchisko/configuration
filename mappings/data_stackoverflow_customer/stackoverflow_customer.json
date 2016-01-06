@@ -1,0 +1,58 @@
+{
+  "stackoverflow_customer": {
+    "properties": {
+      "sys_content_plaintext": {
+        "type": "string",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "owner": {
+        "type": "nested",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "comments": {
+        "type": "nested",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "answers": {
+        "type": "nested",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "author": {
+        "type": "string",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "is_answered": {
+        "type": "boolean",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "accepted_answer": {
+        "type": "long",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "user_id": {
+        "type": "long",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
+      "last_activity": {
+        "type": "long",
+        "include_in_all": true,
+        "_boost": 1.5
+      }
+
+
+
+
+
+
+    }
+  }
+
+}

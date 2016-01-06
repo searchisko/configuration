@@ -1,0 +1,285 @@
+{
+  "stackoverflow_question": {
+    "properties": {
+      "sys_content_plaintext": {
+        "type": "string",
+        "index" : "no",
+        "_boost": 1.5
+      },
+      "owner": {
+        "type": "nested",
+        "index" : "no",
+        "_boost": 1.5
+      },
+      "comments": {
+        "type": "nested",
+        "index" : "no",
+        "_boost": 1.5,
+        "properties":{
+          "comment_id":{
+            "index" : "no",
+            "type":"long"
+          },
+          "creation_date":{
+            "index" : "no",
+            "type":"date"
+          },
+          "edited":{
+            "index" : "no",
+            "type":"boolean"
+          },
+          "owner":{
+            "index" : "no",
+            "properties":{
+              "accept_rate":{
+                "index" : "no",
+                "type":"long"
+              },
+              "display_name":{
+                "index" : "no",
+                "type":"string"
+              },
+              "link":{
+                "index" : "no",
+                "type":"string"
+              },
+              "profile_image":{
+                "index" : "no",
+                "type":"string"
+              },
+              "reputation":{
+                "index" : "no",
+                "type":"long"
+              },
+              "user_id":{
+                "index" : "no",
+                "type":"long"
+              },
+              "user_type":{
+                "index" : "no",
+                "type":"string"
+              }
+            }
+          },
+          "post_id":{
+            "index" : "no",
+            "type":"long"
+          },
+          "reply_to_user":{
+            "index" : "no",
+            "properties":{
+              "accept_rate":{
+                "index" : "no",
+                "type":"long"
+              },
+              "display_name":{
+                "index" : "no",
+                "type":"string"
+              },
+              "link":{
+                "index" : "no",
+                "type":"string"
+              },
+              "profile_image":{
+                "index" : "no",
+                "type":"string"
+              },
+              "reputation":{
+                "index" : "no",
+                "type":"long"
+              },
+              "user_id":{
+                "index" : "no",
+                "type":"long"
+              },
+              "user_type":{
+                "index" : "no",
+                "type":"string"
+              }
+            }
+          },
+          "score":{
+            "index" : "no",
+            "type":"long"
+          }
+        }
+      },
+      "answers": {
+        "type": "nested",
+        "index" : "no",
+        "_boost": 1.5,
+        "properties":{
+          "answer_id":{
+            "index" : "no",
+            "type":"long"
+          },
+          "body":{
+            "index" : "no",
+            "type":"string"
+          },
+          "comment_count":{
+            "index" : "no",
+            "type":"long"
+          },
+          "comments":{
+            "index" : "no",
+            "properties":{
+              "comment_id":{
+                "index" : "no",
+                "type":"long"
+              },
+              "creation_date":{
+                "index" : "no",
+                "type":"date"
+              },
+              "edited":{
+                "index" : "no",
+                "type":"boolean"
+              },
+              "owner":{
+                "index" : "no",
+                "properties":{
+                  "accept_rate":{
+                    "index" : "no",
+                    "type":"long"
+                  },
+                  "display_name":{
+                    "index" : "no",
+                    "type":"string"
+                  },
+                  "link":{
+                    "index" : "no",
+                    "type":"string"
+                  },
+                  "profile_image":{
+                    "index" : "no",
+                    "type":"string"
+                  },
+                  "reputation":{
+                    "index" : "no",
+                    "type":"long"
+                  },
+                  "user_id":{
+                    "index" : "no",
+                    "type":"long"
+                  },
+                  "user_type":{
+                    "index" : "no",
+                    "type":"string"
+                  }
+                }
+              },
+              "post_id":{
+                "index" : "no",
+                "type":"long"
+              },
+              "reply_to_user":{
+                "properties":{
+                  "accept_rate":{
+                    "index" : "no",
+                    "type":"long"
+                  },
+                  "display_name":{
+                    "index" : "no",
+                    "type":"string"
+                  },
+                  "link":{
+                    "index" : "no",
+                    "type":"string"
+                  },
+                  "profile_image":{
+                    "index" : "no",
+                    "type":"string"
+                  },
+                  "reputation":{
+                    "index" : "no",
+                    "type":"long"
+                  },
+                  "user_id":{
+                    "index" : "no",
+                    "type":"long"
+                  },
+                  "user_type":{
+                    "index" : "no",
+                    "type":"string"
+                  }
+                }
+              },
+              "score":{
+                "index" : "no",
+                "type":"long"
+              }
+            }
+          },
+          "community_owned_date":{
+            "index" : "no",
+            "type":"date"
+          },
+          "creation_date":{
+            "index" : "no",
+            "type":"date"
+          },
+          "down_vote_count":{
+            "index" : "no",
+            "type":"long"
+          },
+          "is_accepted":{
+            "index" : "no",
+            "type":"boolean"
+          },
+          "last_activity_date":{
+            "index" : "no",
+            "type":"date"
+          },
+          "question_id":{
+            "index" : "no",
+            "type":"long"
+          },
+          "score":{
+            "index" : "no",
+            "type":"long"
+          },
+          "share_link":{
+            "index" : "no",
+            "type":"string"
+          },
+          "title":{
+            "index" : "no",
+            "type":"string"
+          },
+          "up_vote_count":{
+            "index" : "no",
+            "type":"long"
+          }
+        }
+      },
+      "author": {
+        "type": "string",
+        "index" : "no",
+        "_boost": 1.5
+      },
+      "is_answered": {
+        "type": "boolean",
+        "index" : "not_analyzed",
+        "_boost": 1.5
+      },
+      "accepted_answer": {
+        "type": "long",
+        "index" : "not_analyzed",
+        "_boost": 1.5
+      },
+      "user_id": {
+        "type": "long",
+        "index" : "not_analyzed",
+        "store" : "yes",
+        "_boost": 1.5
+      },
+      "last_activity": {
+        "type": "long",
+        "index" : "no",
+        "_boost": 1.5
+      }
+    }
+  }
+
+}

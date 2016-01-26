@@ -8,7 +8,7 @@
 
 clear
 
-sysurl=https://dcp-jbossorgdev.rhcloud.com
+sysurl=https://dcp2-jbossorgdev.rhcloud.com
 if [ -n "${OPENSHIFT_JBOSSEAP_IP}" ]; then
   sysurl=http://${OPENSHIFT_JBOSSEAP_IP}:8080
 fi

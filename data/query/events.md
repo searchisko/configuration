@@ -131,6 +131,7 @@ Unescaped mustache template:
                       "image",
                       "format",
                       "sys_id"
+                      "event_url"
                     ]
                   },
                   "size": 500
@@ -164,6 +165,7 @@ Unescaped mustache template:
                       "image",
                       "format",
                       "sys_id"
+                      "event_url"                      
                     ]
                   },
                   "size": 500

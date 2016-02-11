@@ -1,15 +1,17 @@
 {
   "type" : "remote",
   "remote" : {
-    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search/advanced?key=*oqXg*yfHIdBzU)eLl8pMw((&fromdate={updatedAfter}&order=desc&sort=activity&user={space}&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
+    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search/advanced?key=*oqXg*yfHIdBzU)eLl8pMw((&fromdate={updatedAfter}&pagesize=100&order=asc&sort=activity&user={space}&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
     "updatedAfterFormat"            : "{unixEpoch}",
     "listDocumentsMode"             : "updateTimestamp",
     "spacesIndexed"                 : "29407",
-    "minGetDocumentsDelay"          : "10s",
+    "minGetDocumentsDelay"          : 1000,
+    "forcedIndexingPauseFieldTimeUnit"  : "SECONDS",
+    "forcedIndexingPauseField"      : "backoff",
     "timeout"                       : "20s",
     "indexUpdatePeriod"             : "1h",
     "indexFullUpdatePeriod"         : "0",
-    "maxIndexingThreads"            : 10,
+    "maxIndexingThreads"            : 1,
     "getDocsResFieldDocuments"      : "items"
   },
   "index": {

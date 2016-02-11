@@ -4,12 +4,14 @@
     "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?key=*oqXg*yfHIdBzU)eLl8pMw((&order=asc&sort=activity&tagged={space}&site=stackoverflow&pagesize=100&fromdate={updatedAfter}&filter=!LfWKThW0g(DobcVscp0aEa",
     "updatedAfterFormat"            : "{unixEpoch}",
     "listDocumentsMode"             : "updateTimestamp",
-    "minGetDocumentsDelay"          : "10s",
+    "minGetDocumentsDelay"          : 1000,
     "spacesIndexed"                 : "JBoss,JBoss7.x,Jboss5.x,JBoss6.x,JBoss-eap-6,JBoss-4.0.x,JBoss-3,jboss-as-7,wildfly,wildfly-8,vagrant,vagrantfile,vagrant-plugin,redhat,rhel,rhel5,rhel6,rhel7,rhel-scl,jbossfuse,camel,apache-camel,jbossmq",
     "timeout"                       : "20s",
+    "forcedIndexingPauseFieldTimeUnit"  : "SECONDS",
+    "forcedIndexingPauseField"      : "backoff",
     "indexUpdatePeriod"             : "1h",
     "indexFullUpdatePeriod"         : "0",
-    "maxIndexingThreads"            : 10,
+    "maxIndexingThreads"            : 1,
     "getDocsResFieldDocuments"      : "items"
   },
   "index": {

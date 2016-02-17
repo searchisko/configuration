@@ -2,7 +2,7 @@
   "type" : "remote",
   "remote" : {
     "remoteClientClass"     : "org.jboss.elasticsearch.river.remote.GetSitemapHtmlClient",
-    "urlGetSitemap"         : "http://cdi-spec.org/sitemap.xml",
+    "urlGetSitemap"         : "http://www.cdi-spec.org/sitemap.xml",
     "timeout"               : "10s",
     "spacesIndexed"         : "MAIN",
     "simpleGetDocuments"    : true,
@@ -12,7 +12,7 @@
     "htmlMapping"           : {
       "title"       : {"cssSelector" : "head title", "stripHtml" : true},
       "description" : {"cssSelector" : "head meta[name=description]", "valueAttribute" : "content"},
-      "content"     : {"cssSelector" : "body .content-wrapper", "stripHtml" : true}
+      "content"     : {"cssSelector" : "body", "stripHtml" : true}
     }
   },
   "index" : {
@@ -49,19 +49,13 @@
           "id"                    : "cdi-weld_cdi_website-{id}",
           "prep_type"             : "webpage",
           "prep_content_provider" : "cdi-weld",
-          "prep_content_type"     : "cdi-weld_cdi_website"
+          "prep_content_type"     : "cdi-weld_cdi_website",
+          "website_project_code"  : "cdi"
         }
       },{
         "name"     : "Updated filler",
         "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
         "settings" : { "field" : "prep_updated" }
-      },{
-        "name"     : "Value filler (hardcoded)",
-        "class"    : "org.jboss.elasticsearch.tools.content.AddValuePreprocessor",
-        "settings" : {
-          "field"  : "website_project_code",
-          "value"  : "cdi"
-        }
       },{
         "name"     : "Projects mapper",
         "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",

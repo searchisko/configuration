@@ -72,6 +72,41 @@
         "type": "elasticsearch-river-remote",
         "name": "cdi-weld_weld_website"
       }
+    },
+    "weld_documentation": {
+      "description": "Weld documentation pages",
+      "sys_type": "documentation",
+      "persist": true,
+      "input_preprocessors": [
+        {
+          "name": "Projects mapper",
+          "class": "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+          "settings": {
+            "index_name": "sys_projects",
+            "index_type": "project",
+            "source_field": "website_project_code",
+            "idx_search_field": "type_specific_code.jbossorg_blog",
+            "result_mapping": [
+              {
+                "idx_result_field": "code",
+                "target_field": "sys_project"
+              },
+              {
+                "idx_result_field": "name",
+                "target_field": "sys_project_name"
+              }
+            ]
+          }
+        }
+      ],
+      "index": {
+        "name": "data_cdi-weld_weld_documentation",
+        "type": "cdi-weld_weld_documentation"
+      },
+      "indexer": {
+        "type": "elasticsearch-river-remote",
+        "name": "cdi-weld_weld_documentation"
+      }
     }
   }
 }

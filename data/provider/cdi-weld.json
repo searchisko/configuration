@@ -15,7 +15,7 @@
             "index_name": "sys_projects",
             "index_type": "project",
             "source_field": "website_project_code",
-            "idx_search_field": "type_specific_code.jbossorg_blog",
+            "idx_search_field": "code",
             "result_mapping": [
               {
                 "idx_result_field": "code",
@@ -50,7 +50,7 @@
             "index_name": "sys_projects",
             "index_type": "project",
             "source_field": "website_project_code",
-            "idx_search_field": "type_specific_code.jbossorg_blog",
+            "idx_search_field": "code",
             "result_mapping": [
               {
                 "idx_result_field": "code",
@@ -85,7 +85,7 @@
             "index_name": "sys_projects",
             "index_type": "project",
             "source_field": "website_project_code",
-            "idx_search_field": "type_specific_code.jbossorg_blog",
+            "idx_search_field": "code",
             "result_mapping": [
               {
                 "idx_result_field": "code",

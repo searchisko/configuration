@@ -18,6 +18,7 @@
     "index": "data_stackoverflow_customer",
     "type": "stackoverflow_customer",
     "remote_field_updated"          : "last_activity_date",
+    "remote_field_updated_format"   : "{unixEpoch}",
     "remote_field_document_id"      : "question_id",
     "field_document_id"             : "sys_id",
     "fields" : {
@@ -59,7 +60,7 @@
         "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
         "settings" : {
           "prep_id"                   : "stackoverflow_customer-{question_id}",
-          "prep_type"                 : "question_thread",
+          "prep_type"                 : "stackoverflow_thread",
           "prep_title"                : "title",
           "prep_content_type"         : "stackoverflow_customer",
           "prep_content_content-type" : "text/plain",

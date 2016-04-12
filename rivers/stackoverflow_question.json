@@ -1,18 +1,20 @@
 {
   "type" : "remote",
   "remote" : {
-    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?key=*oqXg*yfHIdBzU)eLl8pMw((&order=asc&sort=activity&tagged={space}&site=stackoverflow&pagesize=100&fromdate={updatedAfter}&filter=!LfWKThW0g(DobcVscp0aEa",
+    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search?key={apiKey}&order=asc&sort=activity&tagged={space}&site=stackoverflow&pagesize=100&fromdate={updatedAfter}&filter=!LfWKThW0g(DobcVscp0aEa",
     "updatedAfterFormat"            : "{unixEpoch}",
     "listDocumentsMode"             : "updateTimestamp",
     "minGetDocumentsDelay"          : 1000,
-    "spacesIndexed"                 : "JBoss,JBoss7.x,JBoss5.x,JBoss6.x,JBoss-eap-6,JBoss-4.0.x,JBoss-3,jboss-as-7,wildfly,wildfly-8,linux-containers,docker,dockerfile,docker-registry,vagrant,vagrantfile,vagrant-plugin,redhat,rhel,rhel5,rhel6,rhel7,rhel-scl,jbossfuse,camel,apache-camel,jbossmq,JBoss-messaging,JBoss-amq,activemq,rhel-scl,openshift,openshift-client-tools,openshift-origin,openshift-cartridge,openshift-enterprise,openshift-php-cartridges,openshift-gears,openshift-web-console,openshift-env-variables,tomcat,tomcat7,tomcat6,tomcat8,JBoss-modules,JBoss-arquillian,JBoss-weld,jboss-tools,jboss-mdb,jbossws,jboss-esb,JBoss-cache,JBoss-portal,JBoss-seam,JBoss-logging,JBoss-forge,JBoss-web,JBoss-cli,JBoss-rules,embedded-jboss,JBoss-ne,drools,aerogear,cxf,karaf,apache-karaf,servicemix,apache-servicemix,apiman,jboss-arquillian,fabric8,forge,jboss-forge,hawtio,hibernate,infinispan,jbpm,jgroups,keycloak,osgi,nodyn,switchyard,torquebox,vert.x",
+    "spacesIndexed"                 : "jboss,jboss7.x,jboss5.x,jboss6.x,jboss-eap-6,jboss-4.0.x,jboss-3,jboss-as-7,wildfly,wildfly-8,linux-containers,docker,dockerfile,docker-registry,vagrant,vagrantfile,vagrant-plugin,redhat,rhel,rhel5,rhel6,rhel7,rhel-scl,jbossfuse,camel,apache-camel,jbossmq,jboss-messaging,jboss-amq,activemq,rhel-scl,openshift,openshift-client-tools,openshift-origin,openshift-cartridge,openshift-enterprise,openshift-php-cartridges,openshift-gears,openshift-web-console,openshift-env-variables,tomcat,tomcat7,tomcat6,tomcat8,jboss-modules,jboss-arquillian,jboss-weld,jboss-tools,jboss-mdb,jbossws,jboss-esb,jboss-cache,jboss-portal,jboss-seam,jboss-logging,jboss-forge,jboss-web,jboss-cli,jboss-rules,embedded-jboss,jboss-ne,drools,aerogear,cxf,karaf,apache-karaf,servicemix,apache-servicemix,apiman,jboss-arquillian,fabric8,forge,jboss-forge,hawtio,hibernate,infinispan,jbpm,jgroups,keycloak,osgi,nodyn,switchyard,torquebox,vert.x",
     "timeout"                       : "20s",
     "forcedIndexingPauseFieldTimeUnit"  : "SECONDS",
     "forcedIndexingPauseField"      : "backoff",
     "indexUpdatePeriod"             : "1h",
     "indexFullUpdatePeriod"         : "0",
     "maxIndexingThreads"            : 1,
-    "getDocsResFieldDocuments"      : "items"
+    "getDocsResFieldDocuments"      : "items",
+    "embedUrlApiKeyUsername"        : "stackoverflow"
+
   },
   "index": {
     "index": "data_stackoverflow_question",

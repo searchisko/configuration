@@ -1,7 +1,7 @@
 {
   "type" : "remote",
   "remote" : {
-    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search/advanced?key=*oqXg*yfHIdBzU)eLl8pMw((&fromdate={updatedAfter}&pagesize=100&order=asc&sort=activity&user={space}&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
+    "urlGetDocuments"               : "https://api.stackexchange.com/2.2/search/advanced?key={apiKey}&fromdate={updatedAfter}&pagesize=100&order=asc&sort=activity&user={space}&site=stackoverflow&filter=!LfWKThW0g(DobcVscp0aEa",
     "updatedAfterFormat"            : "{unixEpoch}",
     "listDocumentsMode"             : "updateTimestamp",
     "spacesIndexed"                 : "29407",
@@ -12,7 +12,8 @@
     "indexUpdatePeriod"             : "1h",
     "indexFullUpdatePeriod"         : "0",
     "maxIndexingThreads"            : 1,
-    "getDocsResFieldDocuments"      : "items"
+    "getDocsResFieldDocuments"      : "items",
+    "embedUrlApiKeyUsername"        : "stackoverflow"
   },
   "index": {
     "index": "data_stackoverflow_customer",

@@ -280,7 +280,9 @@ The following is the query with all the optional filters applied:
                     {
                       "or": [
                         {{#project}}
-                        {\"term\":{\"sys_project\":\"{{.}}\"}},
+                        {
+                            "term": { "sys_project": "{{.}}" }
+                        },
                         {{/project}}
                         {}
                       ]

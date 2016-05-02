@@ -130,7 +130,7 @@ Unescaped mustache template:
                       "sys_url_view",
                       "image",
                       "format",
-                      "sys_id"
+                      "sys_id",
                       "event_url"
                     ]
                   },

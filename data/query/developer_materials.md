@@ -86,6 +86,22 @@ If present then only documents having `sys_created >= publish_date` are included
 - <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013-01>
 - <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013-02-22>
 
+##### `activity_date_from`
+Optional filter accepting date in ISO timestamp format.
+Filters out documents that do not have any date in `sys_activity_dates`
+ array **greater or equal** to given value, i.e. there hasn't been any
+ activity recorded for such document after this date.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?activity_date_from=2010-12-06T06:34:55.000Z>
+
+##### `activity_date_to`
+Optional filter accepting date in ISO timestamp format.
+Filters out documents that do not have any date in `sys_activity_dates`
+ array **lower or equal** to given value, i.e. there hasn't been any
+ activity recorded for such document prior to this date.
+ 
+- <http://dcp_server:port/v2/rest/search/developer_materials?activity_date_to=2010-12-06T06:34:55.000Z>
+
 ##### `rating`
 Optional filter accepting a number value. URL parameter value MUST be a number.
 
@@ -252,6 +268,24 @@ The following is the query with all the optional filters applied:
                       }
                     },
                     {{/publish_date}}
+                    {{#activity_date_from}}
+                    {
+                      "range": {
+                        "sys_activity_dates": {
+                          "gte": "{{activity_date_from}}"
+                        }
+                      }
+                    },
+                    {{/activity_date_from}}
+                    {{#activity_date_to}}
+                    {
+                      "range": {
+                        "sys_activity_dates": {
+                          "lte": "{{activity_date_to}}"
+                        }
+                      }
+                    },
+                    {{/activity_date_to}}
                     {{#rating}}
                     {
                       "range": {
@@ -353,6 +387,24 @@ The following is the query with all the optional filters applied:
                       }
                     },
                     {{/publish_date}}
+                    {{#activity_date_from}}
+                    {
+                      "range": {
+                        "sys_activity_dates": {
+                          "gte": "{{activity_date_from}}"
+                        }
+                      }
+                    },
+                    {{/activity_date_from}}
+                    {{#activity_date_to}}
+                    {
+                      "range": {
+                        "sys_activity_dates": {
+                          "lte": "{{activity_date_to}}"
+                        }
+                      }
+                    },
+                    {{/activity_date_to}}
                     {{#rating}}
                     {
                       "range": {

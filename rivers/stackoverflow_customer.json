@@ -10,7 +10,7 @@
     "forcedIndexingPauseField"      : "backoff",
     "timeout"                       : "20s",
     "indexUpdatePeriod"             : "1h",
-    "indexFullUpdatePeriod"         : "0",
+    "indexFullUpdatePeriod"         : "24h",
     "maxIndexingThreads"            : 1,
     "getDocsResFieldDocuments"      : "items",
     "embedUrlApiKeyUsername"        : "stackoverflow"

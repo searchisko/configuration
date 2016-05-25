@@ -82,10 +82,11 @@ All of those documents belong to `rht_website` content type. In these documents 
 ## Query implementation details
 
 Source of the query can be found in [`webpage_missing_data.json`](webpage_missing_data.json) file. Here is an unencoded version of the mustache query for easier reference.
-
+```
   {
     "size": 50,
     "from": {{#from}}{{from}}{{/from}}{{^from}}0{{/from}},
+    "sort": [ "sys_created" ],
     "fields": [
       "sys_content_id", "sys_content_type",
       "sys_title", "sys_description", "sys_content_plaintext",
@@ -148,3 +149,4 @@ Source of the query can be found in [`webpage_missing_data.json`](webpage_missin
       }
     }
   }
+```

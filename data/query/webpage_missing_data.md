@@ -9,11 +9,22 @@ individual fields for each content provider.
 
 ## URL parameters
 
-No URL parameters accepted.
+##### `from`
+
+Optional position of the first document returned. If no `from` parameter is provided then value of `0` is used.
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/webpage_missing_data>
+- <http://dcp_server:port/v2/rest/search/webpage_missing_data?from=5>
+
+##### `contentType`
+
+Optional parameter that allows limiting the results to the particular sys_content_type. If no `contentType` parameter is provided then all sys_content_type's are being returned.
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/webpage_missing_data?contentType=rht_website>
+
 
 ## Query output format
 
@@ -70,5 +81,70 @@ All of those documents belong to `rht_website` content type. In these documents 
 
 ## Query implementation details
 
-Source of the query can be found in [`webpage_missing_data.json`](webpage_missing_data.json) file.
-It is not string-encoded ATM thus the source is easily readable.
+Source of the query can be found in [`webpage_missing_data.json`](webpage_missing_data.json) file. Here is an unencoded version of the mustache query for easier reference.
+
+  {
+    "size": 50,
+    "from": {{#from}}{{from}}{{/from}}{{^from}}0{{/from}},
+    "fields": [
+      "sys_content_id", "sys_content_type",
+      "sys_title", "sys_description", "sys_content_plaintext",
+      "sys_url_view"
+    ],
+    "script_fields": {
+      "check#sys_title": {
+        "script": "_source.sys_title ? 'Field not missing' : 'MISSING'"
+      },
+      "check#sys_description": {
+        "script": "_source.sys_description ? 'Field not missing' : 'MISSING'"
+      },
+      "check#sys_content_plaintext": {
+        "script": "_source.sys_content_plaintext ? 'Field not missing' : 'MISSING'"
+      }
+    },
+    "query": {
+      "filtered": {
+        "query": {
+          "match_all": {}
+        },
+        "filter": {
+          "or": [
+            { "missing": { "field": "sys_title" } },
+            { "missing": { "field": "sys_description" } },
+            { "missing": { "field": "sys_content_plaintext" } }
+          ]
+        }
+      }
+    },
+    "aggs": {
+      "sys_content_provider": {
+        "terms": {
+          "field": "sys_content_provider"
+        },
+        "aggs": {
+          "sys_content_type": {
+            "terms": {
+              "field": "sys_content_type"
+            },
+            "aggs": {
+              "missing#sys_title": {
+                "missing": {
+                  "field": "sys_title"
+                }
+              },
+              "missing#sys_description": {
+                "missing": {
+                  "field": "sys_description"
+                }
+              },
+              "missing#sys_content_plaintext": {
+                "missing": {
+                  "field": "sys_content_plaintext"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

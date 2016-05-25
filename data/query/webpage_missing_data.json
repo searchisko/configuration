@@ -4,69 +4,9 @@
   "default": {
     "sys_type": "webpage"
   },
-  "template" : {
-    "size": 50,
-    "from": 0,
-    "fields": [
-      "sys_content_id", "sys_content_type",
-      "sys_title", "sys_description", "sys_content_plaintext",
-      "sys_url_view"
-    ],
-    "script_fields": {
-      "check#sys_title": {
-        "script": "_source.sys_title ? 'Field not missing' : 'MISSING'"
-      },
-      "check#sys_description": {
-        "script": "_source.sys_description ? 'Field not missing' : 'MISSING'"
-      },
-      "check#sys_content_plaintext": {
-        "script": "_source.sys_content_plaintext ? 'Field not missing' : 'MISSING'"
-      }
-    },
-    "query": {
-      "filtered": {
-        "query": {
-          "match_all": {}
-        },
-        "filter": {
-          "or": [
-            { "missing": { "field": "sys_title" } },
-            { "missing": { "field": "sys_description" } },
-            { "missing": { "field": "sys_content_plaintext" } }
-          ]
-        }
-      }
-    },
-    "aggs": {
-      "sys_content_provider": {
-        "terms": {
-          "field": "sys_content_provider"
-        },
-        "aggs": {
-          "sys_content_type": {
-            "terms": {
-              "field": "sys_content_type"
-            },
-            "aggs": {
-              "missing#sys_title": {
-                "missing": {
-                  "field": "sys_title"
-                }
-              },
-              "missing#sys_description": {
-                "missing": {
-                  "field": "sys_description"
-                }
-              },
-              "missing#sys_content_plaintext": {
-                "missing": {
-                  "field": "sys_content_plaintext"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  "override" : {
+    "sys_content_type": "contentType"
+  },
+  "template" : "{\n    \"size\": 50,\n    \"from\": {{#from}}{{from}}{{/from}}{{^from}}0{{/from}},\n    \"fields\": [\n      \"sys_content_id\", \"sys_content_type\",\n      \"sys_title\", \"sys_description\", \"sys_content_plaintext\",\n      \"sys_url_view\"\n    ],\n    \"script_fields\": {\n      \"check#sys_title\": {\n        \"script\": \"_source.sys_title ? 'Field not missing' : 'MISSING'\"\n      },\n      \"check#sys_description\": {\n        \"script\": \"_source.sys_description ? 'Field not missing' : 'MISSING'\"\n      },\n      \"check#sys_content_plaintext\": {\n        \"script\": \"_source.sys_content_plaintext ? 'Field not missing' : 'MISSING'\"\n      }\n    },\n    \"query\": {\n      \"filtered\": {\n        \"query\": {\n          \"match_all\": {}\n        },\n        \"filter\": {\n          \"or\": [\n            { \"missing\": { \"field\": \"sys_title\" } },\n            { \"missing\": { \"field\": \"sys_description\" } },\n            { \"missing\": { \"field\": \"sys_content_plaintext\" } }\n          ]\n        }\n      }\n    },\n    \"aggs\": {\n      \"sys_content_provider\": {\n        \"terms\": {\n          \"field\": \"sys_content_provider\"\n        },\n        \"aggs\": {\n          \"sys_content_type\": {\n            \"terms\": {\n              \"field\": \"sys_content_type\"\n            },\n            \"aggs\": {\n              \"missing#sys_title\": {\n                \"missing\": {\n                  \"field\": \"sys_title\"\n                }\n              },\n              \"missing#sys_description\": {\n                \"missing\": {\n                  \"field\": \"sys_description\"\n                }\n              },\n              \"missing#sys_content_plaintext\": {\n                \"missing\": {\n                  \"field\": \"sys_content_plaintext\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }"
+ 
 }

@@ -1,0 +1,8 @@
+{
+  "id": "forum_threads_by_project",
+  "description": "Finds the last active forum threads for a given project. Accepts the following parameters: 'from', 'size10', 'size15', 'size20', 'size25', 'project'",
+  "default": {
+    "sys_content_type": [ "jbossorg_sbs_forum" ]
+  },
+  "template": "{\r\n   \"from\": {{#from}}{{from}}{{\/from}}{{^from}}0{{\/from}},\r\n   \"size\": 8,\r\n   {{#size10}}\"size\": 10,{{\/size10}}\r\n   {{#size15}}\"size\": 15,{{\/size15}}\r\n   {{#size20}}\"size\": 20,{{\/size20}}\r\n   {{#size25}}\"size\": 25,{{\/size25}}\r\n   \"sort\": [ { \"sys_last_activity_date\": \"desc\" } ],\r\n   \"fields\": [\r\n      \"sys_title\", \"sys_url_view\", \"sys_last_activity_date\"\r\n   ],\r\n   \"script_fields\" : {\r\n      \"replies_count\" : {\r\n         \"script\" : \"_source.sys_comments ? _source.sys_comments.length : 0\"\r\n      }\r\n   },\r\n   \"query\" : {\r\n      \"filtered\": {\r\n         \"filter\": {\r\n            \"and\": [\r\n               {{#project}}\r\n                  {\r\n                     \"term\": { \"sys_project\": \"{{.}}\" }\r\n                  },\r\n               {{\/project}}\r\n               {}\r\n            ]\r\n         }\r\n      }\r\n   }\r\n}"
+}

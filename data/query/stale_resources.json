@@ -1,0 +1,8 @@
+{
+  "id": "stale_resources",
+  "description": "This query will display a list of documents from various sys_types of 'jboss-developer' and 'rht' providers that were not updated since the provided 'last_updated' date parameter.",
+  "default": {
+    "sys_type": [ "jbossdeveloper_bom", "quickstart", "jbossdeveloper_archetype", "video", "article", "solution", "jbossdeveloper_example" ]
+  },
+  "template": "{\n    \"fields\" : [ \"sys_updated\",\"sys_created\",\"sys_description\",\"sys_title\",\"sys_url_view\",\"sys_type\",\"sys_content_type\",\"sys_content_id\" ],\n    \"size\" : 100,\n    \"sort\" : [\n        { \"sys_updated\" : \"asc\" },\n        \"_score\"\n    ],\n    \"query\" : {\n        \"filtered\": {\n            \"filter\": {\n                \"and\": {\n                    \"filters\": [\n                        {{#last_updated_before}}\n                        {\n                            \"range\" : {\n                                \"sys_updated\" : {\n                                    \"lt\": \"{{last_updated_before}}\"\n                                }\n                            }\n                        },\n                        {{/last_updated_before}}\n                        {\n                            \"terms\": {\n                                \"sys_content_provider\": [ \"jboss-developer\", \"rht\" ]\n                            }\n                        }\n                    ]\n                }\n            }\n        }\n    }\n}"
+}

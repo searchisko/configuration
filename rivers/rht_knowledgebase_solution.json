@@ -1,20 +1,25 @@
 {
     "type" : "remote",
     "remote" : {
-        "urlGetDocuments"       : "https://api.access.redhat.com/rs/search?keyword=product:*JBoss*%20and%20language:en&contentTypes=solution&offset={startAtIndex}&limit=30",
-        "getDocsResFieldDocuments" : "search_result",
-        "listDocumentsMode"     : "pagination",
-        "spacesIndexed"					: "MAIN",
-        "timeout"               : "20s",
-        "indexUpdatePeriod"     : "24h",
-        "maxIndexingThreads"    : 1
+        "urlGetDocuments"           : "https://api.access.redhat.com/rs/search?q=category%3ADeveloper%20or%20product%3A*JBoss*&fq=language%3Aen&fq=documentKind%3ASolution&fq=id%3A%5B{updatedAfter}%20TO%20*%5D&start={startAtIndex}&rows=30&sort=id%20asc",
+        "headerAccept"              : "application/vnd.redhat.solr+json",
+        "getDocsResFieldDocuments"  : "response.docs",
+        "getDocsResFieldTotalcount" : "response.numFound",
+        "listDocumentsMode"         : "updateTimestamp",
+        "updatedAfterInitialValue"  : "0",
+        "spacesIndexed"			    : "MAIN",
+        "timeout"                   : "60s",
+        "indexUpdatePeriod"         : "0",
+        "indexFullUpdatePeriod"     : "24h",
+        "maxIndexingThreads"        : 1
     },
     "index" : {
-        "index"             : "data_rht_knowledgebase_solution",
-        "type"              : "rht_knowledgebase_solution",
-        "remote_field_document_id" : "display_id",
-        "field_space_key"   : "space_key",
-        "field_document_id" : "sys_id",
+        "index"                     : "data_rht_knowledgebase_solution",
+        "type"                      : "rht_knowledgebase_solution",
+        "remote_field_document_id"  : "id",
+        "remote_field_updated"      : "id",
+        "field_space_key"           : "space_key",
+        "field_document_id"         : "sys_id",
         "fields" : {
             "sys_content_id"        : {"remote_field" : "prep_id_remote"},
             "sys_type"              : {"remote_field" : "prep_type"},
@@ -23,25 +28,29 @@
             "sys_content_type"      : {"remote_field" : "prep_content_type"},
             "sys_project"           : {"remote_field" : "prep_project"},
             "sys_project_name"      : {"remote_field" : "prep_project_name"},
-            "sys_url_view"			    : {"remote_field" : "view_uri"},
-            "sys_title"             : {"remote_field" : "title"},
-            "sys_description"       : {"remote_field" : "abstract"},
-            "product"               : {"remote_field" : "solution.products.product"},
-            "tags"                  : {"remote_field" : "solution.tags.tag"},
-            "sys_tags"              : {"remote_field" : "solution.tags.tag"}
+            "sys_activity_dates"    : {"remote_field" : "prep_activity_dates"},
+            "sys_last_activity_date": {"remote_field" : "prep_last_activity_date"},
+            "sys_url_view"			: {"remote_field" : "view_uri"},
+            "sys_created"           : {"remote_field" : "createdDate"},
+            "modified"              : {"remote_field" : "lastModifiedDate"},
+            "sys_title"             : {"remote_field" : "publishedTitle"},
+            "sys_description"       : {"remote_field" : "publishedAbstract"},
+            "product"               : {"remote_field" : "product"},
+            "tags"                  : {"remote_field" : "tag"},
+            "sys_tags"              : {"remote_field" : "tag"}
         },
         "preprocessors" : [
             {
                 "name"     : "Remote id copy",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
                 "settings" : {
-                    "prep_id_remote" : "{display_id}"
+                    "prep_id_remote" : "{id}"
                  } 
             },{
                 "name"     : "Values filler",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
                 "settings" : {
-                    "display_id"             : "rht_knowledgebase_solution-{display_id}",
+                    "id"                     : "rht_knowledgebase_solution-{id}",
                     "prep_type"              : "solution",
                     "prep_content_provider"  : "rht",
                     "prep_content_type"      : "rht_knowledgebase_solution"
@@ -51,12 +60,26 @@
                 "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
                 "settings" : { "field" : "prep_updated" }
             },{ 
+                "name"     : "Activity dates collector",
+                "class"    : "org.jboss.elasticsearch.tools.content.ValuesCollectingPreprocessor",
+                "settings" : {
+                    "target_field"  : "prep_activity_dates",
+                    "source_fields" : ["createdDate","lastModifiedDate"]
+                } 
+            },{ 
+                "name"     : "Max activity date extractor",
+                "class"    : "org.jboss.elasticsearch.tools.content.MaxTimestampPreprocessor",
+                "settings" : {
+                    "source_field" : "prep_activity_dates",
+                    "target_field" : "prep_last_activity_date"
+                } 
+            },{ 
                 "name"     : "Projects mapper",
                 "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
                 "settings" : {
                     "index_name"       : "sys_projects",
                     "index_type"       : "project",
-                    "source_field"     : "solution.products.product",
+                    "source_field"     : "product",
                     "idx_search_field" : "jbossdeveloper_website_code",
                     "result_mapping"   : [{
 		                    "idx_result_field" : "code",

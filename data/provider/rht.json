@@ -10,6 +10,20 @@
       "persist" : true,
       "input_preprocessors": [
         { 
+          "name"     : "Activity dates collector",
+          "class"    : "org.jboss.elasticsearch.tools.content.ValuesCollectingPreprocessor",
+          "settings" : {
+            "target_field"  : "sys_activity_dates",
+            "source_fields" : ["modified"]
+          } 
+        },{ 
+          "name"     : "Max activity date extractor",
+          "class"    : "org.jboss.elasticsearch.tools.content.MaxTimestampPreprocessor",
+          "settings" : {
+            "source_field" : "sys_activity_dates",
+            "target_field" : "sys_last_activity_date"
+          } 
+        },{ 
 	        "name"     : "Projects mapper",
 	        "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
 	        "settings" : {
@@ -44,6 +58,20 @@
       "persist" : true,
       "input_preprocessors": [
         { 
+          "name"     : "Activity dates collector",
+          "class"    : "org.jboss.elasticsearch.tools.content.ValuesCollectingPreprocessor",
+          "settings" : {
+            "target_field"  : "sys_activity_dates",
+            "source_fields" : ["sys_created","modified"]
+          } 
+        },{ 
+          "name"     : "Max activity date extractor",
+          "class"    : "org.jboss.elasticsearch.tools.content.MaxTimestampPreprocessor",
+          "settings" : {
+            "source_field" : "sys_activity_dates",
+            "target_field" : "sys_last_activity_date"
+          } 
+        },{ 
 	        "name"     : "Projects mapper",
 	        "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
 	        "settings" : {
@@ -84,13 +112,14 @@
             "index_type"       : "project",
             "source_field"     : "website_project_code",
             "idx_search_field" : "type_specific_code.jbossdeveloper_website_code",
-            "result_mapping"   : [{
-              "idx_result_field" : "code",
-              "target_field"     : "sys_project"
-            },{
-              "idx_result_field" : "name",
-              "target_field"     : "sys_project_name"
-            }
+            "result_mapping"   : [
+                {
+                  "idx_result_field" : "code",
+                  "target_field"     : "sys_project"
+                },{
+                  "idx_result_field" : "name",
+                  "target_field"     : "sys_project_name"
+                }
             ]
           }
         }

@@ -5,6 +5,7 @@
             "space_key" : {"type" : "string", "analyzer" : "keyword"},
             "source"    : {"type" : "string", "analyzer" : "keyword"},
             "tags"      : {"type" : "string", "index" : "no"},
+            "modified"  : {"type" : "date", "index" : "no"},
             "product"   : {"type" : "string", "analyzer" : "keyword_lowercase"}
         }
     }

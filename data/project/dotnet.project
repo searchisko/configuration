@@ -1,0 +1,12 @@
+{
+  "code": "dotnet",
+  "name": ".NET on RHEL",
+  "type_specific_code" : {
+    "jbossorg_blog": [""],
+    "jbossorg_jira": [""],
+    "jbossorg_sbs" : ["2361"],
+    "jbossorg_mailing_list": "",
+    "jbossorg_project_info": "",
+    "product" : true
+  }
+}

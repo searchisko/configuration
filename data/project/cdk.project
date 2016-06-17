@@ -1,0 +1,12 @@
+{
+  "code": "cdk",
+  "name": "Red Hat Container Development Kit",
+  "type_specific_code" : {
+    "jbossorg_blog": [""],
+    "jbossorg_jira": [""],
+    "jbossorg_sbs" : ["2357"],
+    "jbossorg_mailing_list": "",
+    "jbossorg_project_info": "",
+    "product" : true
+  }
+}

@@ -3,16 +3,19 @@
 **Developer materials** query is designed for the needs of developer materials finder web page
 and it is used to search and filter developer related documents.
 
-It is restricted to search on top of the following `sys_type`s:
+ It is restricted to search on top of the following `sys_content_type`s:
 
- - quickstart
- - video
- - demo
- - jbossdeveloper_example
- - jbossdeveloper_archetype
+ - jbossdeveloper_quickstart
+ - jbossdeveloper_demo
  - jbossdeveloper_bom
- - solution
- - article
+ - jbossdeveloper_archetype
+ - jbossdeveloper_example
+ - jbossdeveloper_vimeo
+ - jbossdeveloper_youtube
+ - jbossdeveloper_book
+ - rht_knowledgebase_article
+ - rht_knowledgebase_solution
+ - jbossorg_blog
 
 In addition to matching documents it also provides two aggregations around "format" which is basically
 [terms aggregation] of `sys_type` field. The tricky part is that one specific `sys_type` category
@@ -79,12 +82,17 @@ Can be used multiple times. URL parameter value MUST be lowercased.
 - <http://dcp_server:port/v2/rest/search/developer_materials?tag=camel&tag=rest>
 
 ##### `publish_date`
-Optional filter accepting date in a string format.
+Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
 If present then only documents having `sys_created >= publish_date` are included.
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013>
 - <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013-01>
 - <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013-02-22>
+
+##### `activity_interval`
+Optional filter accepting date intervals e.g. 'now-1y' or 'now-7d'. More about date math can be found [here](https://www.elastic.co/guide/en/elasticsearch/reference/2.1/common-options.html#date-math)
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?activity_interval=now-1d>
 
 ##### `activity_date_from`
 Optional filter accepting date in ISO timestamp format.
@@ -268,6 +276,15 @@ The following is the query with all the optional filters applied:
                       }
                     },
                     {{/publish_date}}
+                    {{#activity_interval}}
+                    {
+                      "range": {
+                        "sys_activity_dates": {
+                          "gte": "{{activity_interval}}"
+                        }
+                      }
+                    },
+                    {{/activity_interval}}
                     {{#activity_date_from}}
                     {
                       "range": {
@@ -324,7 +341,7 @@ The following is the query with all the optional filters applied:
                     {
                       "terms": {
                         "sys_content_provider": [
-                          "jboss-developer", "rht"
+                          "jboss-developer", "jbossorg", "rht"
                         ]
                       }
                     }
@@ -387,6 +404,15 @@ The following is the query with all the optional filters applied:
                       }
                     },
                     {{/publish_date}}
+                    {{#activity_interval}}
+                    {
+                      "range": {
+                        "sys_activity_dates": {
+                          "gte": "{{activity_interval}}"
+                        }
+                      }
+                    },
+                    {{/activity_interval}}
                     {{#activity_date_from}}
                     {
                       "range": {
@@ -441,7 +467,7 @@ The following is the query with all the optional filters applied:
                     {
                       "terms": {
                         "sys_content_provider": [
-                          "jboss-developer", "rht"
+                          "jboss-developer", "jbossorg", "rht"
                         ]
                       }
                     }
@@ -465,7 +491,7 @@ The following is the query with all the optional filters applied:
                     {
                       "terms": {
                         "sys_content_provider": [
-                          "jboss-developer", "rht"
+                          "jboss-developer", "jbossorg", "rht"
                         ]
                       }
                     }

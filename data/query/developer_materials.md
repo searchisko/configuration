@@ -52,13 +52,15 @@ The query returns up to 9 matching documents only. This means that second page s
 Optional parameter determining number of documents returned in response. Giving public clients option to directly
 specify `size` can be dangerous (imagine clients asking for very high number of records). Usually, it is enough
 to give clients an option to select from a limited set of predefined sizes. In this case client can select from
-one of the following options [`10`, `15`, `20`, `25`]. To select one option client passes one of the following
+one of the following options [`10`, `15`, `20`, `25`, `50`, `100`]. To select one option client passes one of the following
 parameters with non-null value:
 
 * `size10` = 10 documents (default)
 * `size15` = 15 documents
 * `size20` = 20 documents
 * `size25` = 25 documents
+* `size50` = 50 documents
+* `size100` = 100 documents
 
 For example:
 
@@ -229,6 +231,8 @@ The following is the query with all the optional filters applied:
       {{#size15}}"size": 15,{{/size15}}
       {{#size20}}"size": 20,{{/size20}}
       {{#size25}}"size": 25,{{/size25}}
+      {{#size50}}"size": 50,{{/size50}}
+      {{#size100}}"size": 100,{{/size100}}
       "fields": [
         "contributors", "duration", "experimental", "github_repo_url", "level", "sys_author", "sys_contributors",
         "sys_created", "sys_description", "sys_rating_avg", "sys_rating_num", "sys_title", "sys_type",

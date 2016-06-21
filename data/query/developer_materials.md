@@ -83,16 +83,28 @@ Can be used multiple times. URL parameter value MUST be lowercased.
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?tag=camel&tag=rest>
 
-##### `publish_date`
+##### `publish_date_from`
 Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
-If present then only documents having `sys_created >= publish_date` are included.
+If present then only documents having `sys_created >= publish_date_from` are included.
 
-- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013>
-- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013-01>
-- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date=2013-02-22>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_from=2013>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_from=2013-01>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_from=2013-02-22>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_from=2013-02-22T01:02:04.009Z>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_from=now-1y>
+
+##### `publish_date_to`
+Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
+If present then only documents having `sys_created <= publish_date_to` are included.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_to=2013>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_to=2013-01>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_to=2013-02-22>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_to=2013-02-22T01:02:04.009Z>
+- <http://dcp_server:port/v2/rest/search/developer_materials?publish_date_to=now-1y>
 
 ##### `activity_interval`
-Optional filter accepting date intervals e.g. 'now-1y' or 'now-7d'. More about date math can be found [here](https://www.elastic.co/guide/en/elasticsearch/reference/2.1/common-options.html#date-math)
+Optional filter working on the last_activity_date field and accepting date intervals e.g. 'now-1y' or 'now-7d'. More about date math can be found [here](https://www.elastic.co/guide/en/elasticsearch/reference/2.1/common-options.html#date-math)
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?activity_interval=now-1d>
 
@@ -271,15 +283,24 @@ The following is the query with all the optional filters applied:
                       }
                     },
                     {{/tag}}
-                    {{#publish_date}}
+                    {{#publish_date_from}}
                     {
                       "range": {
                         "sys_created": {
-                          "gte": "{{publish_date}}"
+                          "gte": "{{publish_date_from}}"
                         }
                       }
                     },
-                    {{/publish_date}}
+                    {{/publish_date_from}}
+                    {{#publish_date_to}}
+                    {
+                      "range": {
+                        "sys_created": {
+                          "lte": "{{publish_date_to}}"
+                        }
+                      }
+                    },
+                    {{/publish_date_to}}
                     {{#activity_interval}}
                     {
                       "range": {
@@ -401,13 +422,22 @@ The following is the query with all the optional filters applied:
                       "term": { "sys_tags": ["{{.}}"] }
                     },
                     {{/tag}}
-                    {{#publish_date}}
+                    {{#publish_date_from}}
                     {
                       "range": {
-                        "sys_created": { "gte": "{{publish_date}}" }
+                        "sys_created": { "gte": "{{publish_date_from}}" }
                       }
                     },
-                    {{/publish_date}}
+                    {{/publish_date_from}}
+                    {{#publish_date_to}}
+                    {
+                      "range": {
+                        "sys_created": {
+                          "lte": "{{publish_date_to}}"
+                        }
+                      }
+                    },
+                    {{/publish_date_to}}
                     {{#activity_interval}}
                     {
                       "range": {

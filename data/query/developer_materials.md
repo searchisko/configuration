@@ -3,7 +3,7 @@
 **Developer materials** query is designed for the needs of developer materials finder web page
 and it is used to search and filter developer related documents.
 
- It is restricted to search on top of the following `sys_content_type`s:
+By default it searches through the following `sys_content_type`s:
 
  - jbossdeveloper_quickstart
  - jbossdeveloper_demo
@@ -16,6 +16,8 @@ and it is used to search and filter developer related documents.
  - rht_knowledgebase_article
  - rht_knowledgebase_solution
  - jbossorg_blog
+
+However, the sys_content_type can be overriden by `type` parameter, documented below.
 
 In addition to matching documents it also provides two aggregations around "format" which is basically
 [terms aggregation] of `sys_type` field. The tricky part is that one specific `sys_type` category
@@ -153,6 +155,12 @@ Pseudo-code of `sys_type` processing is as follows:
     else { sys_type is used }
 
 _See "Query implementation details" for further details._
+
+##### `type`
+
+This optional parameter can be specified one or more times in order to enforce different sys_content_type's than the default list configured for this query.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?type=rht_website&type=jbossorg_sbs_forum>
 
 ##### `project`
 Optional lowercased code of project. This can be used for **product** material finder.

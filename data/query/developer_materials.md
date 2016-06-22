@@ -43,6 +43,12 @@ Optional simple query string free text. Example: `query=java+tutorial`.
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?query=java+tutorial>
 
+##### `query_highlight`
+
+When set to true and full text search is used over query param, then results contains data with query matches highlighted by <span class='hlt'>***</span>.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?query=jboss&query_highlight=true>
+
 ##### `from`
 Optional number of document that will be the first in the hits section. Default value is `0`. This is useful for pagination.
 The query returns up to 9 matching documents only. This means that second page should use `9`, third page `18`.
@@ -256,8 +262,19 @@ The following is the query with all the optional filters applied:
       "fields": [
         "contributors", "duration", "experimental", "github_repo_url", "level", "sys_author", "sys_contributors",
         "sys_created", "sys_description", "sys_rating_avg", "sys_rating_num", "sys_title", "sys_type",
-        "sys_url_view", "thumbnail", "sys_tags", "target_product"
+        "sys_url_view", "thumbnail", "sys_tags", "sys_content_plaintext", "target_product"
       ],
+      {{#query_highlight}}
+      "highlight" : {
+        "pre_tags" : ["<span class='hlt'>"],
+        "post_tags" : ["</span>"],
+        "fields" : {
+            "sys_title" : {},
+            "sys_content_plaintext" : {},
+            "sys_description" : {}
+        }
+      },
+      {{/query_highlight}}
       {{#randomized}}
       "query": {
         "function_score": {

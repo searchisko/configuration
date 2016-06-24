@@ -7,6 +7,7 @@
     "jbossorg_sbs" : ["2357"],
     "jbossorg_mailing_list": "",
     "jbossorg_project_info": "",
+    "jbossdeveloper_website_code": ["cdk","Red Hat Container Development Kit"],
     "product" : true
   }
 }

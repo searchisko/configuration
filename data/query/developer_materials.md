@@ -275,10 +275,8 @@ The following is the query with all the optional filters applied:
         }
       },
       {{/query_highlight}}
-      {{#randomized}}
       "query": {
         "function_score": {
-      {{/randomized}}
           "query": {
             "filtered": {
               {{#query}}
@@ -410,6 +408,50 @@ The following is the query with all the optional filters applied:
       }
       {{/randomized}}
       {{^randomized}}
+          ,"boost_mode":"multiply",
+          "functions": [
+            {
+              "filter" : {
+                "term" : { "sys_title" : "topic"}
+              },
+              "weight":3.0
+            },
+            {
+              "filter" : {
+                "query" : {
+                  "match" : { 
+                    "sys_title" : {
+                      "query" : "About Us",
+                      "operator" : "and"
+                    }
+                  }
+                }
+              },
+              "script_score" : {
+                "params" : {
+                  "query_param" : "{{query}}",
+                  "expected_phrase" : "red hat developers"
+                },
+                "script" : "query_param.toLowerCase()==expected_phrase ? 100 : 1;"
+              }
+            },
+            {
+              "filter" : {
+                "term" : { 
+                  "sys_url_view" : "rhel"
+                }
+              },
+              "script_score" : {
+                "params" : {
+                  "query_param" : "{{query}}",
+                  "expected_phrase" : "enterprise linux"
+                },
+                "script" : "query_param.toLowerCase()==expected_phrase ? 1.5 : 1;"
+              }
+            }
+          ]
+        }
+      }
       ,"sort": [
         {{#newFirst}} { "sys_created": "desc" }, {{/newFirst}}
         {{#oldFirst}} { "sys_created": "asc" }, {{/oldFirst}}

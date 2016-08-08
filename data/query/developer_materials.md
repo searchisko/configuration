@@ -414,7 +414,7 @@ The following is the query with all the optional filters applied:
               "filter" : {
                 "term" : { "sys_title" : "topic"}
               },
-              "weight":3.0
+              "weight":2.5
             },
             {
               "filter" : {
@@ -453,9 +453,9 @@ The following is the query with all the optional filters applied:
         }
       }
       ,"sort": [
-        {{#newFirst}} { "sys_created": "desc" }, {{/newFirst}}
-        {{#oldFirst}} { "sys_created": "asc" }, {{/oldFirst}}
-        "_score"
+        {{#newFirst}} { "sys_created": "desc" } {{/newFirst}}
+        {{#oldFirst}} { "sys_created": "asc" } {{/oldFirst}}
+        {{^newFirst}}{{^oldFirst}} "_score" {{/oldFirst}}{{/newFirst}}
       ]
       {{/randomized}}
       ,

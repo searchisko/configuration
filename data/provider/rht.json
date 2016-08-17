@@ -2,6 +2,8 @@
   "name": "rht",
   "description" : "Provider used by jboss.org Development Team and Developers Red Hat Team to push content from Red Hat systems",
   "contact_email" : "help@jboss.org",
+  "pwd_hash" : "06f298c6671a1abca66139d9dd8d4a6c1fef5b73",
+  "super_provider" : false,
   "type": {
     "rht_knowledgebase_article" : {
       "description": "Articles from Red Hat knowledgebase - https://access.redhat.com/search/browse/articles",
@@ -137,7 +139,7 @@
       "description": "redhat.com user profile",
       "sys_type": "contributor_profile",
       "sys_content_content-type": "text/plain",
-      "sys_visible_for_roles" : "trusted",
+      "sys_visible_for_roles" : ["trusted","provider"],
       "persist": true,
       "input_preprocessors": [
         {

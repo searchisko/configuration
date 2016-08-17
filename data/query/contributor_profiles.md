@@ -27,6 +27,14 @@ Get Pete's profile:
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?contributor=Pete+Muir+<pmuir%40bleepbleep.org.uk>>
 
+##### `total`
+
+Providing any non-empty value for parameter total will cause the query to return only the total number of accounts matching the query. If the query parameter is empty then total number of contributor profiles is returned (note: This number may vary depending on the roles if access to a particular contributor profile data source is constrained to a particular role owner.).
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?total=yes>
+
 ## Query output format
 
 Matching documents are returned in `hits.hits[]`. Every document contains `fields` section.
@@ -38,7 +46,8 @@ This chapter discusses implementation details of Elasticsearch query. It should 
 Unescaped mustache template:
 
           {
-            "size": 30,
+            {{#total}} "size":  0, {{/total}}
+            {{^total}} "size": 30, {{/total}}
             "fields": [ "sys_contributors", "sys_title", "sys_url_view" ],
             "script_fields": {
               "accounts": {

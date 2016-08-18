@@ -68,6 +68,14 @@ Optional parameter which can be used together with `aggregate` parameter in orde
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=yes&timezone_offset=America/New_York>
 
+##### `source`
+
+Optional parameter which can be used to limit the results to a particular content type(s).
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?source=rht_user_profile>
+
 ## Query output format
 
 Matching documents are returned in `hits.hits[]`. Every document contains `fields` section.

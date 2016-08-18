@@ -26,6 +26,7 @@
       "sys_id"                    : { "remote_field" : "prep_id"},
       "sys_content_id"            : { "remote_field" : "prep_id_remote"},
       "sys_type"                  : { "remote_field" : "prep_type" },
+      "sys_content_provider"      : { "remote_field" : "prep_sys_content_provider" },
       "sys_content_type"          : { "remote_field" : "prep_content_type" },
       "sys_content_plaintext"     : { "remote_field" : "prep_content_plaintext" },
       "sys_title"                 : { "remote_field" : "title"},
@@ -62,6 +63,7 @@
         "settings" : {
           "prep_id"                   : "stackoverflow_customer-{question_id}",
           "prep_type"                 : "stackoverflow_thread",
+          "prep_sys_content_provider" : "stackoverflow",
           "prep_title"                : "title",
           "prep_content_type"         : "stackoverflow_customer",
           "prep_content_content-type" : "text/plain",

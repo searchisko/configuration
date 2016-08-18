@@ -13,8 +13,11 @@ By default it searches through the following `sys_content_type`s:
  - jbossdeveloper_vimeo
  - jbossdeveloper_youtube
  - jbossdeveloper_book
+ - jbossdeveloper_event
  - rht_knowledgebase_article
  - rht_knowledgebase_solution
+ - stackoverflow_question
+ - jbossorg_sbs_forum
  - jbossorg_blog
 
 However, the sys_content_type can be overriden by `type` parameter, documented below.
@@ -284,7 +287,7 @@ The following is the query with all the optional filters applied:
                 "simple_query_string": {
                   "query": "{{query}}",
                   "fields": [
-                    "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5"
+                    "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5","sys_content_plaintext"
                   ]
                 }
               },
@@ -389,7 +392,7 @@ The following is the query with all the optional filters applied:
                     {
                       "terms": {
                         "sys_content_provider": [
-                          "jboss-developer", "jbossorg", "rht"
+                          "jboss-developer", "stackoverflow", "jbossorg", "rht"
                         ]
                       }
                     }
@@ -473,7 +476,7 @@ The following is the query with all the optional filters applied:
                         "simple_query_string": {
                           "query": "{{query}}",
                           "fields": [
-                            "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0", "sys_title^2.5"
+                            "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0", "sys_title^2.5","sys_content_plaintext"
                           ]
                         }
                       }
@@ -568,7 +571,7 @@ The following is the query with all the optional filters applied:
                     {
                       "terms": {
                         "sys_content_provider": [
-                          "jboss-developer", "jbossorg", "rht"
+                          "jboss-developer", "stackoverflow", "jbossorg", "rht"
                         ]
                       }
                     }
@@ -592,7 +595,7 @@ The following is the query with all the optional filters applied:
                     {
                       "terms": {
                         "sys_content_provider": [
-                          "jboss-developer", "jbossorg", "rht"
+                          "jboss-developer", "stackoverflow", "jbossorg", "rht"
                         ]
                       }
                     }

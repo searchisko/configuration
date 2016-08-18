@@ -35,6 +35,39 @@ Providing any non-empty value for parameter total will cause the query to return
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?total=yes>
 
+##### `aggregate`
+
+Optional parameter which if non-empty switches on aggregation of the returned results. By default it'll collect them in form of monthly buckets. You can change the time interval with parameter documented below.
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=y>
+
+##### `interval`
+
+Optional parameter which can be used together with `aggregate` parameter in order to change time interval in which the results are aggreagated into buckets. The possible values are:
+
+* second
+* minute
+* hour
+* day
+* week
+* month (default)
+* quarter
+* year
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=yes&interval=week>
+
+##### `timezone_offset`
+
+Optional parameter which can be used together with `aggregate` parameter in order to change timezone used when aggregating results into buckets. The timezone setting defaults to 'America/New_York'. Time zones may either be specified as an ISO 8601 UTC offset (e.g. +01:00 or -08:00) or as a timezone id, an identifier used in the TZ database like America/Los_Angeles.
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=yes&timezone_offset=America/New_York>
+
 ## Query output format
 
 Matching documents are returned in `hits.hits[]`. Every document contains `fields` section.
@@ -82,6 +115,18 @@ Unescaped mustache template:
                 }
               }
             }
+            {{#aggregate}}
+            ,
+            "aggs" : {
+              "bucketed" : {
+                "date_histogram" : {
+                  "field" : "{{date_field}}{{^date_field}}sys_created{{/date_field}}",
+                  "interval" : "{{interval}}{{^interval}}month{{/interval}}",
+                  "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
+                }
+              }
+            }
+            {{/aggregate}}
           }          
           
 There are some hacks used to workaround Mustache and ES restrictions.

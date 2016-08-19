@@ -60,6 +60,26 @@ Optional parameter which can be used together with `aggregate` parameter in orde
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=yes&interval=week>
 
+##### `date_from`
+Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
+If present then only contributors having `sys_created >= date_from` are included.
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_from=2013>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_from=2013-01>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_from=2013-02-22>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_from=2013-02-22T01:02:04.009Z>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_from=now-1y>
+
+##### `date_to`
+Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
+If present then only contributors having `sys_created < date_to` are included.
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_to=2013>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_to=2013-01>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_to=2013-02-22>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_to=2013-02-22T01:02:04.009Z>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?date_to=now-1y>
+
 ##### `timezone_offset`
 
 Optional parameter which can be used together with `aggregate` parameter in order to change timezone used when aggregating results into buckets. The timezone setting defaults to 'America/New_York'. Time zones may either be specified as an ISO 8601 UTC offset (e.g. +01:00 or -08:00) or as a timezone id, an identifier used in the TZ database like America/Los_Angeles.
@@ -97,18 +117,45 @@ Unescaped mustache template:
             },
             "query": {
               "filtered": {
-                {{#contributor}}
-                "filter": {
-                  "terms": {
-                    "sys_contributors": [
+                "filter" : {
+                  "and": {
+                    "filters": [
                       {{#contributor}}
-                      "{{.}}",
+                      {
+                        "terms": {
+                          "sys_contributors": [
+                            {{#contributor}}
+                            "{{.}}",
+                            {{/contributor}}
+                            {}
+                          ]
+                        }
+                      },
                       {{/contributor}}
+                      {{#date_from}}
+                      {
+                        "range": {
+                          "sys_created": {
+                            "gte": "{{date_from}}",
+                            "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
+                          }
+                        }
+                      },
+                      {{/date_from}}
+                      {{#date_to}}
+                      {
+                        "range": {
+                          "sys_created": {
+                            "lt": "{{date_to}}",
+                            "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
+                          }
+                        }
+                      },
+                      {{/date_to}}
                       {}
                     ]
                   }
                 },
-                {{/contributor}}
                 "query": {
                   {{#query}}
                   "simple_query_string": {

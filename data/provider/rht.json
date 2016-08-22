@@ -2,7 +2,7 @@
   "name": "rht",
   "description" : "Provider used by jboss.org Development Team and Developers Red Hat Team to push content from Red Hat systems",
   "contact_email" : "help@jboss.org",
-  "pwd_hash" : "06f298c6671a1abca66139d9dd8d4a6c1fef5b73",
+  "pwd_hash" : "660d346c8c8fc688cbb8fb3f26fd7f2c5639cedc",
   "super_provider" : false,
   "type": {
     "rht_knowledgebase_article" : {

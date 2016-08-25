@@ -219,6 +219,7 @@ The query has hardcoded list of fields that are returned:
       "sys_description",
       "sys_rating_avg",
       "sys_rating_num",
+      "sys_content_plaintext",
       "sys_title",
       "sys_type",
       "sys_url_view",
@@ -287,7 +288,7 @@ The following is the query with all the optional filters applied:
                 "simple_query_string": {
                   "query": "{{query}}",
                   "fields": [
-                    "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5","sys_content_plaintext"
+                    "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5","sys_content_plaintext","answers.body"
                   ]
                 }
               },
@@ -476,7 +477,7 @@ The following is the query with all the optional filters applied:
                         "simple_query_string": {
                           "query": "{{query}}",
                           "fields": [
-                            "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0", "sys_title^2.5","sys_content_plaintext"
+                            "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0", "sys_title^2.5","sys_content_plaintext","answers.body"
                           ]
                         }
                       }

@@ -278,6 +278,9 @@ The following is the query with all the optional filters applied:
             "sys_description" : {}
         }
       },
+      "indices_boost": { 
+        "data_rht_website": 2
+      },
       {{/query_highlight}}
       "query": {
         "function_score": {
@@ -288,7 +291,7 @@ The following is the query with all the optional filters applied:
                 "simple_query_string": {
                   "query": "{{query}}",
                   "fields": [
-                    "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0","sys_title^2.5","sys_content_plaintext","answers.body"
+                    "sys_description", "sys_tags", "sys_contributors.fulltext", "sys_project_name","sys_title","sys_content_plaintext","answers.body"
                   ]
                 }
               },
@@ -418,7 +421,7 @@ The following is the query with all the optional filters applied:
               "filter" : {
                 "term" : { "sys_title" : "topic"}
               },
-              "weight":2.5
+              "weight":1.5
             },
             {
               "filter" : {
@@ -450,7 +453,7 @@ The following is the query with all the optional filters applied:
                   "query_param" : "{{query}}",
                   "expected_phrase" : "enterprise linux"
                 },
-                "script" : "query_param.toLowerCase()==expected_phrase ? 1.5 : 1;"
+                "script" : "query_param.toLowerCase()==expected_phrase ? 2.5 : 1;"
               }
             }
           ]
@@ -477,7 +480,7 @@ The following is the query with all the optional filters applied:
                         "simple_query_string": {
                           "query": "{{query}}",
                           "fields": [
-                            "sys_description", "sys_tags^1.5", "sys_contributors.fulltext", "sys_project_name^2.0", "sys_title^2.5","sys_content_plaintext","answers.body"
+                            "sys_description", "sys_tags", "sys_contributors.fulltext", "sys_project_name", "sys_title","sys_content_plaintext","answers.body"
                           ]
                         }
                       }

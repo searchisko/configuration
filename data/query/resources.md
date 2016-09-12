@@ -149,6 +149,12 @@ Optional flag to order resulting documents by `sys_created` date (descending).
 
 - <http://dcp_server:port/v2/rest/search/resources?query=java&newFirst=true>
 
+##### `blogbyurl`
+
+Optional filter to return only blogposts that contain the parameters text.
+
+- <http://dcp_server:port/v2/rest/search/resources?blogbyurl=developers.redhat.com>
+
 ##### `oldFirst`
 
 Optional flag to order resulting documents by `sys_created` date (ascending).
@@ -236,6 +242,26 @@ The following is the query with all the optional filters applied:
               "filter": {
                 "and": {
                   "filters": [
+                    {{#blogbyurl}}
+                    {
+                      "or": [
+                    {
+                      "not": {
+                        "term": { "sys_type" : "blogpost" }
+                      }
+                    },
+                    {
+                      "and": [
+                          {"term":{"sys_url_view":"{{blogbyurl}}"}},
+                          {"term":{"sys_type":"blogpost"}},
+
+                          {}
+                        ]
+                      },
+                        {}
+                      ]
+                    },
+                    {{/blogbyurl}}
                     {{#level}}
                     {
                       "term": {

@@ -1,6 +1,6 @@
 {
   "code": "wildflyswarm",
-  "name": "Wildfly Swarm",
+  "name": "WildFly Swarm",
   "type_specific_code" : {
     "jbossorg_blog": ["wildfly_swarm"],
     "jbossorg_jira": ["SWARM"],

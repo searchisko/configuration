@@ -1,0 +1,13 @@
+{
+  "code": "wildflyswarm",
+  "name": "Wildfly Swarm",
+  "type_specific_code" : {
+    "jbossorg_blog": ["wildfly_swarm"],
+    "jbossorg_jira": ["SWARM"],
+    "jbossorg_sbs" : [],
+    "jbossorg_mailing_list": [],
+    "jbossorg_project_info": "wildflyswarm",
+    "product" : false
+  }
+}
+

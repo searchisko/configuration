@@ -94,6 +94,11 @@ Can be used multiple times. URL parameter value MUST be lowercased.
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?tag=camel&tag=rest>
 
+##### `tags_or_logic`
+Optional parameter that switches from the default AND operator between `tag`s parameters to OR. Any value assigned to this parameter enables the OR logic. If the parameter value is empty or it is missing the logic defaults to AND.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?tag=jboss&tag=hibernate&tags_or_logic=e>
+
 ##### `publish_date_from`
 Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
 If present then only documents having `sys_created >= publish_date_from` are included.
@@ -306,13 +311,20 @@ The following is the query with all the optional filters applied:
                       }
                     },
                     {{/level}}
-                    {{#tag}}
+                    {{#tags_or_logic}}
                     {
-                      "term": {
-                        "sys_tags": ["{{.}}"]
-                      }
+                      "or": [
+                    {{/tags_or_logic}}
+                      {{#tag}}
+                      {
+                        "term": { "sys_tags": ["{{.}}"] }
+                      },
+                      {{/tag}}
+                    {{#tags_or_logic}}
+                      {}
+                      ]
                     },
-                    {{/tag}}
+                    {{/tags_or_logic}}
                     {{#publish_date_from}}
                     {
                       "range": {
@@ -470,6 +482,7 @@ The following is the query with all the optional filters applied:
         "format": {
           "global": {},
           "aggregations": {
+            {{count_with_filters}}
             "count_with_filters": {
               "filter": {
                 "and": {
@@ -491,11 +504,20 @@ The following is the query with all the optional filters applied:
                       "term": { "level": "{{level}}" }
                     },
                     {{/level}}
-                    {{#tag}}
+                    {{#tags_or_logic}}
                     {
-                      "term": { "sys_tags": ["{{.}}"] }
+                      "or": [
+                    {{/tags_or_logic}}
+                      {{#tag}}
+                      {
+                        "term": { "sys_tags": ["{{.}}"] }
+                      },
+                      {{/tag}}
+                    {{#tags_or_logic}}
+                      {}
+                      ]
                     },
-                    {{/tag}}
+                    {{/tags_or_logic}}
                     {{#publish_date_from}}
                     {
                       "range": {
@@ -591,7 +613,10 @@ The following is the query with all the optional filters applied:
                   }
                 }
               }
-            },
+            }
+            {{/count_with_filters}}
+            {{#count_with_filters}}{{#count_without_filters}},{{/count_without_filters}}{{/count_with_filters}}
+            {{#count_without_filters}}
             "count_without_filters": {
               "filter": {
                 "and": {
@@ -616,6 +641,7 @@ The following is the query with all the optional filters applied:
                 }
               }
             }
+            {{/count_without_filters}}
           }
         }
       }

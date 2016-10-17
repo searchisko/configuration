@@ -208,6 +208,12 @@ Optional flag to order resulting documents by `sys_created` date (ascending).
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?query=java&oldFirst=true>
 
+##### `blogbyurl`
+
+Optional filter to return only blogposts that contain the parameters text.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?blogbyurl=developers.redhat.com>
+
 ## Query output format
 
 The query has hardcoded list of fields that are returned:
@@ -304,6 +310,26 @@ The following is the query with all the optional filters applied:
               "filter": {
                 "and": {
                   "filters": [
+                    {{#blogbyurl}}
+                    {
+                      "or": [
+                    {
+                      "not": {
+                        "term": { "sys_type" : "blogpost" }
+                      }
+                    },
+                    {
+                      "and": [
+                          {"term":{"sys_url_view":"{{blogbyurl}}"}},
+                          {"term":{"sys_type":"blogpost"}},
+
+                          {}
+                        ]
+                      },
+                        {}
+                      ]
+                    },
+                    {{/blogbyurl}}
                     {{#level}}
                     {
                       "term": {
@@ -499,6 +525,26 @@ The following is the query with all the optional filters applied:
                       }
                     },
                     {{/query}}
+                    {{#blogbyurl}}
+                    {
+                      "or": [
+                    {
+                      "not": {
+                        "term": { "sys_type" : "blogpost" }
+                      }
+                    },
+                    {
+                      "and": [
+                          {"term":{"sys_url_view":"{{blogbyurl}}"}},
+                          {"term":{"sys_type":"blogpost"}},
+
+                          {}
+                        ]
+                      },
+                        {}
+                      ]
+                    },
+                    {{/blogbyurl}}
                     {{#level}}
                     {
                       "term": { "level": "{{level}}" }

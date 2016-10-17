@@ -1,6 +1,6 @@
 {
   "id": "resources",
-  "description": "Resources finder. Accepts the following parameters: 'from', 'query', 'size10', 'size15', 'size20', 'size25', 'level', 'tag', 'publish_date', 'rating', 'sys_type', 'project', 'randomized', 'seed', 'newFirst', 'oldFirst'",
+  "description": "DEPRECATED, please use developer_materials query instead. Resources finder. Accepts the following parameters: 'from', 'query', 'size10', 'size15', 'size20', 'size25', 'level', 'tag', 'publish_date', 'rating', 'sys_type', 'project', 'randomized', 'seed', 'newFirst', 'oldFirst'",
   "default": {
     "sys_type": [ "quickstart", "video", "demo", "jbossdeveloper_example", "jbossdeveloper_archetype", "jbossdeveloper_bom", "solution", "article", "blogpost", "book" ]
   },

@@ -1,4 +1,4 @@
-# Query: Resources
+# Query: Resources - DEPRECATED, please use 'developer_materials' query instead
 
 **Resources** query is designed for the needs of resources finder web page
 and it is used to search and filter developer related documents.

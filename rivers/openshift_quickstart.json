@@ -92,8 +92,8 @@
                 "settings" : {
                     "script_engine_name"  : "JavaScript",
                     "script"              : "
-                        data.put('prep_tags',data.get('prep_tags').toString().split(', '));
-                        data.put('prep_cartridges',data.get('prep_cartridges').toString().split(', '));
+                        data.put('prep_tags',Java.to(data.get('prep_tags').toString().split(', ')));
+                        data.put('prep_cartridges',Java.to(data.get('prep_cartridges').toString().split(', ')));
                     "
                 }
             }

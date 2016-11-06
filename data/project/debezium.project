@@ -1,0 +1,12 @@
+{
+  "code": "debezium",
+  "name": "Debezium",
+  "type_specific_code" : {
+    "jbossorg_blog": [],
+    "jbossorg_jira": ["DBZ"],
+    "jbossorg_sbs" : [],
+    "jbossorg_mailing_list": "",
+    "jbossorg_project_info": "debezium",
+    "product" : false
+  }
+}

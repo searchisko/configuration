@@ -290,7 +290,7 @@ The following is the query with all the optional filters applied:
         }
       },
       "indices_boost": { 
-        "data_rht_website": 2
+        "data_rht_website": 3
       },
       {{/query_highlight}}
       "query": {
@@ -457,9 +457,9 @@ The following is the query with all the optional filters applied:
           "functions": [
             {
               "filter" : {
-                "term" : { "sys_title" : "topic"}
+                "term" : { "page_type" : "topic"}
               },
-              "weight":1.5
+              "weight":3.5
             },
             {
               "filter" : {

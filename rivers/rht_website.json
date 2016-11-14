@@ -12,7 +12,8 @@
     "htmlMapping"           : {
       "title"       : {"cssSelector" : "head title", "stripHtml" : true},
       "description" : {"cssSelector" : "head meta[name=description]", "valueAttribute" : "content"},
-      "content"     : {"cssSelector" : "body .content-wrapper", "stripHtml" : true}
+      "content"     : {"cssSelector" : "body .content-wrapper", "stripHtml" : true},
+      "page_type"        : {"cssSelector" : "head meta[property=og:type]", "valueAttribute" : "content"}
     }
   },
   "index" : {
@@ -33,7 +34,8 @@
       "sys_title"             : {"remote_field" : "detail.title"},
       "sys_description"       : {"remote_field" : "detail.description"},
       "sys_content_plaintext" : {"remote_field" : "detail.content"},
-      "website_project_code"  : {"remote_field" : "website_project_code"}
+      "website_project_code"  : {"remote_field" : "website_project_code"},
+      "page_type"             : {"remote_field" : "detail.page_type"}
     },
     "preprocessors" : [
       {

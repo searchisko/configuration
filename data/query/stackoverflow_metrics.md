@@ -136,6 +136,9 @@ Unescaped mustache template:
                 },
                 "correct_answer": {
                     "filter" : { "term" : { "is_answered" : "true"} }
+                }, 
+                "view_count": {
+                    "stats" : { "field" : "view_count" }
                 }
             }
         }

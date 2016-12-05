@@ -278,6 +278,9 @@
         "type": "long",
         "index" : "no",
         "_boost": 1.5
+      },
+      "view_count" : {
+        "type" : "long"
       }
     }
   }

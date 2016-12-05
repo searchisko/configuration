@@ -45,6 +45,9 @@
         "type": "long",
         "include_in_all": true,
         "_boost": 1.5
+      },
+      "view_count" : {
+        "type" : "long"
       }
 
 

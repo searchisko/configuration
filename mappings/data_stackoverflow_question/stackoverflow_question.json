@@ -281,6 +281,14 @@
       },
       "view_count" : {
         "type" : "long"
+      },
+      "time_to_answer_mins" : {
+        "type" : "long",
+        "index" : "not_analyzed"
+      },
+      "time_to_correct_answer_mins" : {
+        "type" : "long",
+        "index" : "not_analyzed"
       }
     }
   }

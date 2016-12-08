@@ -49,7 +49,9 @@
       "view_count"                : { "remote_field" : "prep_view_count"},
       "down_vote_count"           : { "remote_field" : "prep_down_vote_count"},
       "up_vote_count"             : { "remote_field" : "prep_up_vote_count"},
-      "answer_count"              : { "remote_field" : "prep_answer_count"}
+      "answer_count"              : { "remote_field" : "prep_answer_count"},
+      "time_to_answer_mins"       : { "remote_field" : "prep_time_to_answer_mins"},
+      "time_to_correct_answer_mins" : { "remote_field" : "prep_time_to_correct_answer_mins"}
     },
     "preprocessors" : [
       {
@@ -109,6 +111,41 @@
                   }
                 }
               }
+            }
+          "
+        }
+      },
+      {
+        "name"     : "Time to answer/correct answer script",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+            var createdDate = data.get('creation_date');
+            var correctAnswerDate = null;
+            var firstAnswerDate = null;
+
+            var answersArr = data.get('answers');
+            if( answersArr ) {
+              for(var i=0 ; i<answersArr.size() ; i++ ) {
+                var answer = answersArr.get(i);
+                var answerDate = answer.get('creation_date');
+
+                if (answer.get('is_accepted') == true) {
+                  correctAnswerDate = answerDate;
+                }
+                if (firstAnswerDate == null || answerDate < firstAnswerDate) {
+                  firstAnswerDate = answerDate;
+                }
+              }
+            }
+            if (firstAnswerDate != null) {
+              var timeToAnswer = (firstAnswerDate - createdDate) / 1000 / 60;
+              data.put( 'prep_time_to_answer_mins', timeToAnswer );
+            }
+            if (correctAnswerDate != null) {
+              var timeToCorrectAnswer = (correctAnswerDate - createdDate) / 1000 / 60;
+              data.put( 'prep_time_to_correct_answer_mins', timeToCorrectAnswer );
             }
           "
         }

@@ -139,6 +139,12 @@ Unescaped mustache template:
                 }, 
                 "view_count": {
                     "stats" : { "field" : "view_count" }
+                },
+                "time_to_answer_mins": {
+                    "stats" : { "field" : "time_to_answer_mins" }
+                },
+                "time_to_correct_answer_mins": {
+                    "stats" : { "field" : "time_to_correct_answer_mins" }
                 }
             }
         }

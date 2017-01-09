@@ -6,7 +6,7 @@
     "jbossorg_jira": [""],
     "jbossorg_sbs" : ["2298"],
     "jbossorg_mailing_list": "",
-    "jbossorg_project_info": "",
+    "jbossorg_project_info": "jbosseap",
     "jbossdeveloper_website_code": ["jbosseap","eap","Red Hat JBoss Enterprise Application Platform","JBoss EAP","JBoss Enterprise Application Platform"],
     "product" : true
   }

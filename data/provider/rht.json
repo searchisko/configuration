@@ -135,6 +135,49 @@
         "name" : "rht_website"
       }
     },
+    "rht_apidocs": {
+      "description":"Apidocs stored on developers.redhat.com",
+      "sys_type":"webpage",
+      "persist": true,
+      "input_preprocessors": [
+        {
+        "name"     : "Project code extractor",
+        "class"    : "org.jboss.elasticsearch.tools.content.RegExpCapturingGroupPreprocessor",
+        "settings" : {
+          "source_field"  : "sys_url_view",
+          "pattern"       : "https://developers(?:\\.stage)\\.redhat\\.com/apidocs/([^/]*)/.*",
+          "result_mapping" : {
+            "1" : "product_id_name"
+          }
+        }
+      },{
+        "name"     : "Projects mapper",
+        "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+        "settings" : {
+          "index_name"       : "sys_projects",
+          "index_type"       : "project",
+          "source_field"     : "product_id_name",
+          "idx_search_field" : "code",
+          "result_mapping"   : [{
+            "idx_result_field" : "code",
+            "target_field"     : "sys_project"
+          },{
+            "idx_result_field" : "name",
+            "target_field"     : "sys_project_name"
+          }
+          ]
+        }
+      }
+      ],
+      "index": {
+        "name":"data_rht_apidocs",
+        "type":"rht_apidocs"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "rht_apidocs"
+      }
+    },
     "rht_user_profile": {
       "description": "redhat.com user profile",
       "sys_type": "contributor_profile",

@@ -43,6 +43,22 @@ Optional parameter which if non-empty switches on aggregation of the returned re
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=y>
 
+##### `by_company`
+
+Optional parameter which if non-empty switches on sub-aggregation of the returned results by company. It'll work only if `aggregate` parameter is also specified.
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=y&by_company=y>
+
+##### `by_country`
+
+Optional parameter which if non-empty switches on sub-aggregation of the returned results by country. It'll work only if `aggregate` parameter is also specified.
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=y&by_country=y>
+
 ##### `interval`
 
 Optional parameter which can be used together with `aggregate` parameter in order to change time interval in which the results are aggreagated into buckets. The possible values are:
@@ -178,6 +194,25 @@ Unescaped mustache template:
                   "field" : "{{date_field}}{{^date_field}}sys_created{{/date_field}}",
                   "interval" : "{{interval}}{{^interval}}month{{/interval}}",
                   "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
+                },
+                "aggs" : { 
+                  {{#by_country}}
+                  "by_country" : { 
+                      "terms" : { 
+                        "field" : "country",
+                        "size" : "0"
+                      }
+                    }
+                    {{#by_company}},{{/by_company}}
+                  {{/by_country}}
+                  {{#by_company}}
+                  "by_company" : { 
+                    "terms" : {
+                      "field" : "company",
+                      "size" : "0"
+                    }
+                  }
+                  {{/by_company}}
                 }
               }
             }

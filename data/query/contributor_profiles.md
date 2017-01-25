@@ -76,6 +76,17 @@ Optional parameter which can be used together with `aggregate` parameter in orde
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=yes&interval=week>
 
+##### `bucket_key_format`
+
+Optional parameter which specifies format of the key of time breakdown bucket.
+
+Default value: `yyyy-MM`
+
+See spec for more info. [ElasticSearch reference docs](https://www.elastic.co/guide/en/elasticsearch/reference/1.4/search-aggregations-bucket-daterange-aggregation.html#date-format-pattern)
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?bucket_key_format=yyyy-MM-dd&interval=day>
+
+
 ##### `date_from`
 Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
 If present then only contributors having `sys_created >= date_from` are included.
@@ -122,103 +133,111 @@ This chapter discusses implementation details of Elasticsearch query. It should 
 
 Unescaped mustache template:
 
-          {
-            {{#total}} "size":  0, {{/total}}
-            {{^total}} "size": 30, {{/total}}
-            "fields": [ "sys_contributors", "sys_title", "sys_url_view" ],
-            "script_fields": {
-              "accounts": {
-                "script": "(_source.accounts && _source.accounts.length > 0 ) ? _source.accounts[0] : ''"
-              }
-            },
-            "query": {
-              "filtered": {
-                "filter" : {
-                  "and": {
-                    "filters": [
-                      {{#contributor}}
-                      {
-                        "terms": {
-                          "sys_contributors": [
-                            {{#contributor}}
-                            "{{.}}",
-                            {{/contributor}}
-                            {}
-                          ]
-                        }
-                      },
-                      {{/contributor}}
-                      {{#date_from}}
-                      {
-                        "range": {
-                          "sys_created": {
-                            "gte": "{{date_from}}",
-                            "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
-                          }
-                        }
-                      },
-                      {{/date_from}}
-                      {{#date_to}}
-                      {
-                        "range": {
-                          "sys_created": {
-                            "lt": "{{date_to}}",
-                            "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
-                          }
-                        }
-                      },
-                      {{/date_to}}
-                      {}
-                    ]
-                  }
-                },
-                "query": {
-                  {{#query}}
-                  "simple_query_string": {
-                    "fields": ["sys_contributors.fulltext", "sys_title"],
-                    "query": "{{query}}",
-                    "default_operator": "and"
-                  }
-                  {{/query}}
-                  {{^query}}
-                  "match_all": {}
-                  {{/query}}
+````
+{
+    {{#total}} "size":  0, {{/total}}
+    {{^total}} "size": 30, {{/total}}
+    "fields": [ "sys_contributors", "sys_title", "sys_url_view" ],
+    "script_fields": {
+      "accounts": {
+        "script": "(_source.accounts && _source.accounts.length > 0 ) ? _source.accounts[0] : ''"
+      }
+    },
+    "query": {
+      "filtered": {
+        "filter" : {
+          "and": {
+            "filters": [
+              {{#contributor}}
+              {
+                "terms": {
+                  "sys_contributors": [
+                    {{#contributor}}
+                    "{{.}}",
+                    {{/contributor}}
+                    {}
+                  ]
                 }
-              }
-            }
-            {{#aggregate}}
-            ,
-            "aggs" : {
-              "bucketed" : {
-                "date_histogram" : {
-                  "field" : "{{date_field}}{{^date_field}}sys_created{{/date_field}}",
-                  "interval" : "{{interval}}{{^interval}}month{{/interval}}",
-                  "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
-                },
-                "aggs" : { 
-                  {{#by_country}}
-                  "by_country" : { 
-                      "terms" : { 
-                        "field" : "country",
-                        "size" : "0"
-                      }
-                    }
-                    {{#by_company}},{{/by_company}}
-                  {{/by_country}}
-                  {{#by_company}}
-                  "by_company" : { 
-                    "terms" : {
-                      "field" : "company",
-                      "size" : "0"
-                    }
+              },
+              {{/contributor}}
+              {{#date_from}}
+              {
+                "range": {
+                  "sys_created": {
+                    "gte": "{{date_from}}",
+                    "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
                   }
-                  {{/by_company}}
                 }
-              }
+              },
+              {{/date_from}}
+              {{#date_to}}
+              {
+                "range": {
+                  "sys_created": {
+                    "lt": "{{date_to}}",
+                    "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
+                  }
+                }
+              },
+              {{/date_to}}
+              {}
+            ]
+          }
+        },
+        "query": {
+          {{#query}}
+          "simple_query_string": {
+            "fields": ["sys_contributors.fulltext", "sys_title"],
+            "query": "{{query}}",
+            "default_operator": "and"
+          }
+          {{/query}}
+          {{^query}}
+          "match_all": {}
+          {{/query}}
+        }
+      }
+    }
+    {{#aggregate}}
+    ,
+    "aggs" : {
+      "bucketed" : {
+        "date_histogram" : {
+          "field" : "{{date_field}}{{^date_field}}sys_created{{/date_field}}",
+          "interval" : "{{interval}}{{^interval}}month{{/interval}}",
+          "format": "{{bucket_key_format}}{{^bucket_key_format}}yyyy-MM{{/bucket_key_format}}",
+          "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
+        },
+        "aggs" : {
+          "by_kpi" : { 
+            "terms" : { 
+              "field" : "regInfo.kpi",
+                "size" : "0"
             }
-            {{/aggregate}}
-          }          
-          
+          }
+          {{#by_country}}
+          ,"by_country" : {
+              "terms" : { 
+                "field" : "country",
+                "size" : "0"
+              }
+          }
+          {{/by_country}}
+          {{#by_company}}
+          ,"by_company" : { 
+            "terms" : {
+              "field" : "company",
+              "size" : "0"
+            }
+          }
+          {{/by_company}}
+        }
+      }
+    }
+    {{/aggregate}}
+}
+````
+
 There are some hacks used to workaround Mustache and ES restrictions.
 
 - To get `accounts` data we are using `script_fields` (see [#232](https://github.com/searchisko/searchisko/issues/232)).

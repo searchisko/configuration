@@ -1,0 +1,94 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "http://{apiKey}",
+    "listDocumentsMode"             : "simple",
+    "spacesIndexed"                 : "MAIN",
+    "timeout"                       : "20s",
+    "indexUpdatePeriod"             : "10m",
+    "maxIndexingThreads"            : 1,
+    "embedUrlApiKeyUsername"        : "drupal_url"
+
+  },
+  "index" : {
+    "index"                         : "data_jbossdeveloper_event",
+    "type"                          : "jbossdeveloper_event",
+    "remote_field_document_id"      : "nid",
+    "field_document_id"             : "sys_id",
+    "fields" : {
+      "start_date"                  : { "remote_field" : "prep_start_date" },
+      "end_date"                    : { "remote_field" : "prep_end_date" },
+      "sys_title"                   : { "remote_field" : "prep_sys_title"},
+      "sys_description"             : { "remote_field" : "prep_content_plaintext"},
+      "image"                       : { "remote_field" : "prep_image"},
+      "event_url"                   : { "remote_field" : "prep_event_url"},
+      "format"                      : { "remote_field" : "prep_format"},
+      "featured"                    : { "remote_field" : "prep_featured"},
+      "site"                        : { "remote_field" : "prep_site"},
+      "img_upload"                  : { "remote_field" : "prep_img_upload" },
+      "sys_content_provider"        : { "remote_field" : "prep_sys_content_provider"},
+      "sys_content_id"              : { "remote_field" : "prep_id_remote"},
+      "sys_content_type"            : { "remote_field" : "prep_sys_content_type"},
+      "sys_type"                    : { "remote_field" : "prep_sys_type"},
+      "sys_id"                      : { "remote_field" : "prep_id"},
+      "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
+      "sys_url_view"                : { "remote_field" : "prep_sys_url_view" },
+      "sys_tags"                    : { "remote_field" : "prep_sys_tags"}
+
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_event_url"           : "{field_more_details}",
+          "prep_featured"            : "{field_on_homepage}",
+          "prep_format"              : "{field_event_format}",
+          "prep_id"                  : "jbossdeveloper_event-{nid}",
+          "prep_id_remote"           : "{nid}",
+          "prep_image"               : "{field_event_image}",
+          "prep_img_upload"          : "{field_event_background_image}",
+          "prep_site"                : "{field_site}",
+          "prep_sys_content_provider": "jboss-developer",
+          "prep_sys_content_type"    : "jbossdeveloper_event",
+          "prep_sys_created"         : "{created}",
+          "prep_sys_tags"            : "{field_data_tags}",
+          "prep_sys_type"             : "event",
+          "prep_sys_title"           : "{title}",
+          "prep_sys_url_view"        : "https://developers.redhat.com/events/event#!id={nid}"
+
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "field_description",
+          "target_field" : "prep_content_plaintext"
+        }
+      },{
+        "name"     : "String to ISO Date formatter",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+          var start_date = new Date(data.get('field_start_date'));
+          var end_date = new Date(data.get('field_end_date'));
+          data.put('prep_start_date', start_date.toISOString());
+          data.put('prep_end_date', end_date.toISOString());
+
+          "
+        }
+      },
+      {
+        "name"     : "Updated filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+        "settings" : { "field" : "prep_sys_updated" }
+      }
+
+    ]
+  },
+  "activity_log" : {
+    "index":"stats_jbossdeveloper_events_river"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "http://{apiKey}",
+    "listDocumentsMode"             : "simple",
+    "spacesIndexed"                 : "MAIN",
+    "timeout"                       : "20s",
+    "indexUpdatePeriod"             : "10m",
+    "maxIndexingThreads"            : 1,
+    "embedUrlApiKeyUsername"        : "drupal_url"
+
+  },
+  "index" : {
+    "index"                         : "data_jbossdeveloper_book",
+    "type"                          : "jbossdeveloper_book",
+    "remote_field_document_id"      : "nid",
+    "field_document_id"             : "sys_id",
+    "fields": {
+      "authors"                  : {"remote_field":"prep_authors"},
+      "average_rating"           : {"remote_field":"field_average_rating"},
+      "categories"               : {"remote_field":"field_categories"},
+      "info_link"                : {"remote_field":"field_preview_url"},
+      "isbn"                     : {"remote_field":"prep_isbn"},
+      "preview_link"             : {"remote_field":"field_preview_url"},
+      "published_date"           : {"remote_field":"field_published_date"},
+      "publisher"                : {"remote_field":"prep_publisher"},
+      "pull_from_google"         : {"remote_field":"prep_pull_from_google"},
+      "sys_activity_dates"       : {"remote_field":"prep_sys_activity_dates"},
+      "sys_content"              : {"remote_field":"prep_book_description"},
+      "sys_content_content-type" : {"remote_field":"prep_sys_content_content-type"},
+      "sys_content_id"           : {"remote_field":"prep_isbn"},
+      "sys_content_provider"     : {"remote_field":"prep_sys_content_provider"},
+      "sys_content_type"         : {"remote_field":"prep_sys_content_type"},
+      "sys_contributors"         : {"remote_field":"prep_contributor"},
+      "sys_created"              : {"remote_field":"prep_sys_created"},
+      "sys_description"          : {"remote_field":"prep_book_description"},
+      "sys_id"                   : {"remote_field":"prep_id"},
+      "sys_tags"                 : {"remote_field":"prep_sys_tags"},
+      "sys_title"                : {"remote_field":"prep_sys_title"},
+      "sys_type"                 : {"remote_field":"prep_sys_type"},
+      "sys_updated"              : {"remote_field":"prep_sys_updated"},
+      "sys_url_view"             : {"remote_field":"prep_book_url"},
+      "tags"                     : {"remote_field":"prep_sys_tags"},
+      "thumbnail"                : {"remote_field":"field_thumbnail_url"},
+      "web_reader_link"          : {"remote_field":"field_web_reader_url"}
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id_remote"                 :"{nid}",
+          "prep_id"                        :"jbossdeveloper_book-{nid}",
+          "prep_sys_title"                 :"{title}",
+          "prep_book_description"          :"{field_book_description}",
+          "prep_book_url"                  :"{field_book_url}",
+          "prep_categories"                :"{field_categories}",
+          "prep_sys_created"               :"{field_published_date}",
+          "prep_isbn"                      :"{field_isbn}",
+          "prep_publisher"                 :"{field_publisher}",
+          "prep_sys_content_content-type"  :"text/plain",
+          "prep_sys_content_provider"      :"jboss-developer",
+          "prep_sys_content_type"          :"jbossdeveloper_book",
+          "prep_sys_tags"                  :[],
+          "prep_sys_type"                  :"book",
+          "prep_pull_from_google"          :"{field_pull_from_google}"
+
+        }
+      },
+      {
+        "name"     : "Nullify false strings",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+
+          var books_fields = ['field_published_date', 'field_thumbnail_url', 'field_web_reader_url', 'field_preview_url', 'field_categories', 'field_average_rating'];
+          for (var i=0; i < books_fields.length; i++){
+            var field_value = data.get(books_fields[i]);
+            if (field_value.toString() == 'false'){
+              data.put(books_fields[i], null);
+            }else{
+              data.put(books_fields[i], field_value);
+
+            }
+          }
+      "
+      }
+    },{
+        "name"     : "Format author array from string to array",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+
+          var author = data.get('field_author').split(', ');
+
+          data.put('prep_authors', author);
+      "
+      }
+    },{
+        "name"     : "Contributors mapper",
+        "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+        "settings" : {
+          "index_name"       : "sys_contributors",
+          "index_type"       : "contributor",
+          "source_field"     : "field_author",
+          "idx_search_field" : "name",
+          "result_mapping"   : [{
+            "idx_result_field" : "code",
+            "target_field"     : "prep_contributor",
+            "value_default"    : "unknown"
+          }],
+          "source_bases"     : ["authors"]
+        }
+      },{
+        "name"     : "String to ISO Date formatter",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+          var date = new Date(data.get('field_published_date'));
+          data.put('prep_sys_created', date.toISOString());
+
+          "
+        }
+      },{
+        "name"     : "Activity date filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.ValuesCollectingPreprocessor",
+        "settings" : {
+          "target_field"  : "prep_sys_activity_dates",
+          "source_fields" : ["prep_sys_created"]
+        }
+      },
+      {
+        "name"     : "Updated filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+        "settings" : { "field" : "prep_sys_updated" }
+      }
+
+    ]
+  },
+
+  "activity_log" : {
+    "index":"stats_jbossdeveloper_books_river"
+  }
+}

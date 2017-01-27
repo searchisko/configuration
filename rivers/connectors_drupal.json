@@ -1,0 +1,106 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "http://{apiKey}",
+    "listDocumentsMode"             : "simple",
+    "spacesIndexed"                 : "MAIN",
+    "timeout"                       : "20s",
+    "indexUpdatePeriod"             : "10m",
+    "maxIndexingThreads"            : 1,
+    "embedUrlApiKeyUsername"        : "drupal_url"
+
+  },
+  "index" : {
+    "index"                         : "data_jbossdeveloper_connector",
+    "type"                          : "jbossdeveloper_connector",
+    "remote_field_document_id"      : "nid",
+    "field_document_id"             : "sys_id",
+    "fields" : {
+      "id"                          : { "remote_field" : "prep_sys_content_id" },
+      "sys_title"                   : { "remote_field" : "prep_sys_title" },
+      "sys_description"             : { "remote_field" : "prep_sys_description" },
+      "more_details_url"            : { "remote_field" : "prep_more_details_url" },
+      "target_product_1"            : { "remote_field" : "prep_target_product_1" },
+      "target_product_2"            : { "remote_field" : "prep_target_product_2" },
+      "target_product_3"            : { "remote_field" : "field_connector_target_product_3" },
+      "priority"                    : { "remote_field" : "prep_priority" },
+      "link_1_text"                 : { "remote_field" : "field_connector_link_1_text" },
+      "link_1_url"                  : { "remote_field" : "field_connector_link_1" },
+      "link_2_text"                 : { "remote_field" : "field_connector_link_2_text" },
+      "link_2_url"                  : { "remote_field" : "field_connector_link_2" },
+      "sys_url_view"                : { "remote_field" : "prep_sys_url_view" },
+      "sys_content_provider"        : { "remote_field" : "prep_sys_content_provider" },
+      "sys_content_id"              : { "remote_field" : "prep_sys_content_id" },
+      "sys_content_type"            : { "remote_field" : "prep_sys_content_type" },
+      "sys_id"                      : { "remote_field" : "prep_id" },
+      "sys_type"                    : { "remote_field" : "prep_sys_type" },
+      "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
+      "sys_tags"                    : { "remote_field" : "prep_sys_tags" }
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id_remote"            : "{nid}",
+          "prep_id"                   : "jbossdeveloper_connector-{field_connector_id}",
+          "prep_sys_title"            : "{title}",
+          "prep_more_details_url"     : "{field_connector_details_url}",
+          "prep_sys_content_id"       : "{field_connector_id}",
+          "prep_priority"             : "{field_connector_priority}",
+          "prep_sys_url_view"         : "https://developers.redhat.com/products/fuse/connectors#!id={field_connector_id}",
+          "prep_target_product_1"     : "{field_connector_target_product_1}",
+          "prep_target_product_2"     : "{field_connector_target_product_2}",
+          "prep_sys_type"             : "connector",
+          "prep_sys_content_type"     : "jbossdeveloper_connector",
+          "prep_sys_content_provider" : "jboss-developer"
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "field_connector_short_descriptio",
+          "target_field" : "prep_sys_description"
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "field_connector_long_description",
+          "target_field" : "prep_sys_content"
+        }
+      },
+      {
+        "name"     : "Nullify false strings",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+
+          var connector_fields = ['field_connector_target_product_3', 'field_connector_link_1', 'field_connector_link_1_text', 'field_connector_link_2', 'field_connector_link_2_text'];
+          for (var i=0; i < connector_fields.length; i++){
+            var field_value = data.get(connector_fields[i]);
+            if (field_value.toString() == 'false'){
+              data.put(connector_fields[i], null);
+           }else{
+              data.put(connector_fields[i], field_value);
+
+            }
+          }
+      "
+      }
+    },
+      {
+        "name"     : "Updated filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+        "settings" : { "field" : "prep_sys_updated" }
+      }
+
+    ]
+  },
+  "activity_log" : {
+    "index":"stats_jbossdeveloper_connector_river"
+  }
+}

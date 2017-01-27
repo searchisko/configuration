@@ -421,6 +421,10 @@
       "index": {
         "name": "data_jbossdeveloper_book",
         "type": "jbossdeveloper_book"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "books_drupal"
       }
     },
     "jbossdeveloper_website": {
@@ -466,6 +470,10 @@
       "index": {
         "name":"data_jbossdeveloper_connector",
         "type":"jbossdeveloper_connector"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "connectors_drupal"
       }
     },
       "jbossdeveloper_event": {
@@ -478,7 +486,12 @@
       "index": {
         "name":"data_jbossdeveloper_event",
         "type":"jbossdeveloper_event"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "events_drupal"
       }
+
     }
 
   }

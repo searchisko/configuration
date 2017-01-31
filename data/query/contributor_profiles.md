@@ -210,9 +210,16 @@ Unescaped mustache template:
         },
         "aggs" : {
           "by_kpi" : { 
-            "terms" : { 
-              "field" : "regInfo.kpi",
-                "size" : "0"
+            "filters" : {
+              "filters" : {
+                "website" :   { "term" : { "regInfo.kpi" : "website"   }},
+                "website_from_rh" : { "term" : { "regInfo.kpi" : "website_from_rh" }},
+                "infoq" :   { "term" : { "regInfo.kpi" : "infoq"   }},
+                "infoq_from_rh" :   { "term" : { "regInfo.kpi" : "infoq_from_rh"   }},
+                "dzone" :   { "term" : { "regInfo.kpi" : "dzone"   }},
+                "dzone_from_rh" :   { "term" : { "regInfo.kpi" : "dzone_from_rh"   }},
+                "conference" :   { "term" : { "regInfo.kpi" : "conference"   }}
+              }
             }
           }
           {{#by_country}}

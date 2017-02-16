@@ -93,10 +93,11 @@
           "script_engine_name"  : "JavaScript",
           "script"              : "
 
-          var author = data.get('field_author').split(', ');
+          var author = data.get('field_author').toString().split(', ');
 
-          data.put('prep_authors', author);
-      "
+          data.put('prep_authors', java.util.Arrays.asList(Java.to(author, Java.type('java.lang.String[]')) ));
+
+          "
       }
     },{
         "name"     : "Contributors mapper",
@@ -104,14 +105,12 @@
         "settings" : {
           "index_name"       : "sys_contributors",
           "index_type"       : "contributor",
-          "source_field"     : "field_author",
+          "source_field"     : "prep_authors",
           "idx_search_field" : "name",
           "result_mapping"   : [{
             "idx_result_field" : "code",
-            "target_field"     : "prep_contributor",
-            "value_default"    : "unknown"
-          }],
-          "source_bases"     : ["authors"]
+            "target_field"     : "prep_contributor"
+          }]
         }
       },{
         "name"     : "String to ISO Date formatter",

@@ -32,6 +32,7 @@
       "sys_content_provider"        : { "remote_field" : "prep_sys_content_provider" },
       "sys_content_id"              : { "remote_field" : "prep_sys_content_id" },
       "sys_content_type"            : { "remote_field" : "prep_sys_content_type" },
+      "sys_created"                 : { "remote_field" : "prep_sys_created" },
       "sys_id"                      : { "remote_field" : "prep_id" },
       "sys_type"                    : { "remote_field" : "prep_sys_type" },
       "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
@@ -51,6 +52,7 @@
           "prep_sys_url_view"         : "https://developers.redhat.com/products/fuse/connectors#!id={field_connector_id}",
           "prep_target_product_1"     : "{field_connector_target_product_1}",
           "prep_target_product_2"     : "{field_connector_target_product_2}",
+          "prep_sys_created"          : "{created}",
           "prep_sys_type"             : "connector",
           "prep_sys_content_type"     : "jbossdeveloper_connector",
           "prep_sys_content_provider" : "jboss-developer"

@@ -6,7 +6,7 @@
         "index" : "no"
       },
       "author": { 
-        "type": "string", 
+        "type": "string",
         "index" : "no" 
       },
       "sys_description": {

@@ -26,6 +26,7 @@
       "featured"                    : { "remote_field" : "prep_featured"},
       "site"                        : { "remote_field" : "prep_site"},
       "img_upload"                  : { "remote_field" : "prep_img_upload" },
+      "sys_created"                 : { "remote_field" : "prep_sys_created" },
       "sys_content_provider"        : { "remote_field" : "prep_sys_content_provider"},
       "sys_content_id"              : { "remote_field" : "prep_id_remote"},
       "sys_content_type"            : { "remote_field" : "prep_sys_content_type"},

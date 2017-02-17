@@ -14,6 +14,7 @@
     "index"                         : "data_jbossdeveloper_event",
     "type"                          : "jbossdeveloper_event",
     "remote_field_document_id"      : "nid",
+    "field_space_key"               : "space_key",
     "field_document_id"             : "sys_id",
     "fields" : {
       "start_date"                  : { "remote_field" : "prep_start_date" },

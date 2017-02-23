@@ -424,7 +424,7 @@
       },
       "indexer" : {
         "type" : "elasticsearch-river-remote",
-        "name" : "books_drupal"
+        "name" : "jbossdeveloper_books_drupal"
       }
     },
     "jbossdeveloper_website": {
@@ -473,7 +473,7 @@
       },
       "indexer" : {
         "type" : "elasticsearch-river-remote",
-        "name" : "connectors_drupal"
+        "name" : "jbossdeveloper_connectors_drupal"
       }
     },
       "jbossdeveloper_event": {
@@ -489,7 +489,7 @@
       },
       "indexer" : {
         "type" : "elasticsearch-river-remote",
-        "name" : "events_drupal"
+        "name" : "jbossdeveloper_events_drupal"
       }
 
     }

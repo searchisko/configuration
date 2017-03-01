@@ -4,7 +4,7 @@
     "urlGetDocuments"               : "http://{apiKey}",
     "listDocumentsMode"             : "simple",
     "spacesIndexed"                 : "MAIN",
-    "timeout"                       : "20s",
+    "timeout"                       : "60s",
     "indexUpdatePeriod"             : "10m",
     "maxIndexingThreads"            : 1,
     "embedUrlApiKeyUsername"        : "drupal_url"

@@ -14,7 +14,6 @@
     "maxIndexingThreads"            : 1,
     "getDocsResFieldDocuments"      : "items",
     "embedUrlApiKeyUsername"        : "stackoverflow"
-
   },
   "index": {
     "index": "data_stackoverflow_question",
@@ -25,7 +24,7 @@
     "field_document_id"             : "sys_id",
     "fields" : {
       "sys_id"                    : { "remote_field" : "prep_id"},
-      "sys_content_id"            : { "remote_field" : "prep_id_remote"},
+      "sys_content_id"            : { "remote_field" : "question_id"},
       "sys_type"                  : { "remote_field" : "prep_type" },
       "sys_content_provider"      : { "remote_field" : "prep_sys_content_provider" },
       "sys_content_type"          : { "remote_field" : "prep_content_type" },
@@ -43,35 +42,28 @@
       "answers"                   : { "remote_field" : "answers"},
       "owner"                     : { "remote_field" : "owner"},
       "author"                    : { "remote_field" : "prep_author"},
-      "is_answered"               : { "remote_field" : "prep_is_answered"},
+      "is_answered"               : { "remote_field" : "is_answered"},
       "accepted_answer"           : { "remote_field" : "accepted_answer_id"},
-      "user_id"                   : { "remote_field" : "prep_user_id"},
-      "view_count"                : { "remote_field" : "prep_view_count"},
-      "down_vote_count"           : { "remote_field" : "prep_down_vote_count"},
-      "up_vote_count"             : { "remote_field" : "prep_up_vote_count"},
-      "answer_count"              : { "remote_field" : "prep_answer_count"},
+      "user_id"                   : { "remote_field" : "owner.user_id"},
+      "view_count"                : { "remote_field" : "view_count"},
+      "down_vote_count"           : { "remote_field" : "down_vote_count"},
+      "up_vote_count"             : { "remote_field" : "up_vote_count"},
+      "answer_count"              : { "remote_field" : "answer_count"},
       "time_to_answer_mins"       : { "remote_field" : "prep_time_to_answer_mins"},
       "time_to_correct_answer_mins" : { "remote_field" : "prep_time_to_correct_answer_mins"}
     },
     "preprocessors" : [
       {
-        "name"     : "Remote id copy",
+        "name"     : "Values filter",
         "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
         "settings" : {
-          "prep_id_remote"            : "{question_id}",
           "prep_id"                   : "stackoverflow_question-{question_id}",
           "prep_type"                 : "stackoverflow_thread",
           "prep_sys_content_provider" : "stackoverflow",
           "prep_title"                : "title",
           "prep_content_type"         : "stackoverflow_question",
           "prep_content_content-type" : "text/plain",
-          "prep_author"               : "{owner.display_name}-{owner.user_id}",
-          "prep_user_id"              : "{owner.user_id}",
-          "prep_is_answered"          : "{is_answered}",
-          "prep_view_count"           : "{view_count}",
-          "prep_down_vote_count"      : "{down_vote_count}",
-          "prep_up_vote_count"        : "{up_vote_count}",
-          "prep_answer_count"         : "{answer_count}"
+          "prep_author"               : "{owner.display_name}-{owner.user_id}"
         }
       },
       {
@@ -80,14 +72,14 @@
         "settings" : {
           "script_engine_name"  : "JavaScript",
           "script"              : "
-            data.put( 'creation_date' , data.get('creation_date').toString()+'000' );
-            data.put( 'last_activity_date' , data.get('last_activity_date').toString()+'000' );
+            data.put( 'creation_date' , data.get('creation_date') * 1000 );
+            data.put( 'last_activity_date' , data.get('last_activity_date') * 1000 );
 
             var commentsArr = data.get('comments');
             if( commentsArr ) {
               for(var i=0 ; i<commentsArr.size() ; i++ ) {
                 var comment = commentsArr.get(i);
-                comment.put( 'creation_date' , comment.get('creation_date').toString()+'000' );
+                comment.put( 'creation_date' , comment.get('creation_date') * 1000 );
               }
             }
 
@@ -95,19 +87,19 @@
             if( answersArr ) {
               for(var i=0 ; i<answersArr.size() ; i++ ) {
                 var answer = answersArr.get(i);
-                answer.put( 'creation_date' , answer.get('creation_date').toString()+'000' );
-                answer.put( 'last_activity_date' , answer.get('last_activity_date').toString()+'000' );
+                answer.put( 'creation_date' , answer.get('creation_date') * 1000 );
+                answer.put( 'last_activity_date' , answer.get('last_activity_date') * 1000 );
 
                 var community_owned_date = answer.get('community_owned_date');
                 if(community_owned_date) {
-                  answer.put( 'community_owned_date' , community_owned_date.toString()+'000' );
+                  answer.put( 'community_owned_date' , community_owned_date * 1000 );
                 }
 
                 var commentsArr = answer.get('comments');
                 if( commentsArr ) {
                   for( var j=0 ; j<commentsArr.size() ; j++ ) {
                     var comment = commentsArr.get(j);
-                    comment.put( 'creation_date' , comment.get('creation_date').toString()+'000' );
+                    comment.put( 'creation_date' , comment.get('creation_date') * 1000 );
                   }
                 }
               }

@@ -1,9 +1,14 @@
 {
   "jbossdeveloper_connector": {
     "properties": {
+      "space_key" : {"type" : "string", "analyzer" : "keyword"},
       "sys_title": {
         "type": "string",
         "include_in_all": true,
+        "_boost": 1.5
+      },
+      "field_connector_priority": {
+        "type": "integer",
         "_boost": 1.5
       }
     }

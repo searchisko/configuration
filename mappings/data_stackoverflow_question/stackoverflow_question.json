@@ -1,6 +1,9 @@
 {
   "stackoverflow_question": {
     "properties": {
+      "space_key" : {"type" : "string", "analyzer" : "keyword"},
+      "source"    : {"type" : "string", "analyzer" : "keyword"},
+      "tags"      : {"type" : "string", "index" : "no"},
       "sys_content_plaintext": {
         "type": "string",
         "index" : "no",
@@ -263,6 +266,9 @@
         "index" : "not_analyzed",
         "_boost": 1.5
       },
+      "answer_count": {
+        "type": "long"
+      },
       "accepted_answer": {
         "type": "long",
         "index" : "not_analyzed",
@@ -278,6 +284,12 @@
         "type": "long",
         "index" : "no",
         "_boost": 1.5
+      },
+      "up_vote_count": {
+        "type":"long"
+      },
+      "down_vote_count": {
+        "type":"long"
       },
       "view_count" : {
         "type" : "long"

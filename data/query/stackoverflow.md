@@ -180,7 +180,6 @@ Unescaped mustache template:
                 },
                 "sort": [
                   { "sys_created": "desc" },
-                  {{#viewcount}} { "_source.viewcount": "desc" }, {{/viewcount}}
                   {{#lastactivity}} { "last_activity": "desc" }, {{/lastactivity}}
 
                   "_score"

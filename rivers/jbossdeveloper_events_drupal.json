@@ -19,14 +19,14 @@
     "fields" : {
       "start_date"                  : { "remote_field" : "prep_start_date" },
       "end_date"                    : { "remote_field" : "prep_end_date" },
-      "sys_title"                   : { "remote_field" : "prep_sys_title"},
+      "sys_title"                   : { "remote_field" : "title"},
       "sys_description"             : { "remote_field" : "prep_content_plaintext"},
-      "image"                       : { "remote_field" : "prep_image"},
-      "event_url"                   : { "remote_field" : "prep_event_url"},
-      "format"                      : { "remote_field" : "prep_format"},
-      "featured"                    : { "remote_field" : "prep_featured"},
-      "site"                        : { "remote_field" : "prep_site"},
-      "img_upload"                  : { "remote_field" : "prep_img_upload" },
+      "image"                       : { "remote_field" : "field_event_image"},
+      "event_url"                   : { "remote_field" : "field_more_details"},
+      "format"                      : { "remote_field" : "field_event_format"},
+      "featured"                    : { "remote_field" : "field_on_homepage"},
+      "site"                        : { "remote_field" : "field_site"},
+      "img_upload"                  : { "remote_field" : "field_event_background_image" },
       "sys_created"                 : { "remote_field" : "prep_sys_created" },
       "sys_content_provider"        : { "remote_field" : "prep_sys_content_provider"},
       "sys_content_id"              : { "remote_field" : "prep_id_remote"},
@@ -35,7 +35,7 @@
       "sys_id"                      : { "remote_field" : "prep_id"},
       "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
       "sys_url_view"                : { "remote_field" : "prep_sys_url_view" },
-      "sys_tags"                    : { "remote_field" : "prep_sys_tags"}
+      "sys_tags"                    : { "remote_field" : "prep_data_tags"}
 
     },
     "preprocessors" : [
@@ -43,20 +43,12 @@
         "name"     : "Remote id copy",
         "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
         "settings" : {
-          "prep_event_url"           : "{field_more_details}",
-          "prep_featured"            : "{field_on_homepage}",
-          "prep_format"              : "{field_event_format}",
           "prep_id"                  : "jbossdeveloper_event-{nid}",
           "prep_id_remote"           : "{nid}",
-          "prep_image"               : "{field_event_image}",
-          "prep_img_upload"          : "{field_event_background_image}",
-          "prep_site"                : "{field_site}",
           "prep_sys_content_provider": "jboss-developer",
           "prep_sys_content_type"    : "jbossdeveloper_event",
           "prep_sys_created"         : "{created}",
-          "prep_sys_tags"            : "{field_data_tags}",
-          "prep_sys_type"             : "event",
-          "prep_sys_title"           : "{title}",
+          "prep_sys_type"            : "event",
           "prep_sys_url_view"        : "https://developers.redhat.com/events/event#!id={nid}"
 
         }
@@ -67,6 +59,24 @@
         "settings" : {
           "source_field" : "field_description",
           "target_field" : "prep_content_plaintext"
+        }
+      },{
+        "name"     : "Format author array from string to array",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+
+          var tags = data.get('field_data_tags').toString();
+
+          if (tags == 'false'){
+            data.put('prep_data_tags', null);
+          }else{
+            data.put('prep_data_tags', java.util.Arrays.asList(Java.to(tags.split(', '), Java.type('java.lang.String[]')) ));
+
+          }
+
+          "
         }
       },{
         "name"     : "String to ISO Date formatter",

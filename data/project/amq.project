@@ -7,6 +7,7 @@
     "jbossorg_sbs" : ["2302"],
     "jbossorg_mailing_list": "",
     "jbossorg_project_info": "",
+    "stackoverflow_question": ["jbossamq"],
     "jbossdeveloper_website_code" : ["amq","Red Hat JBoss A-MQ","JBoss A-MQ","Fuse MQ Enterprise"],
     "product" : true
   }

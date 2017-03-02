@@ -7,6 +7,7 @@
     "jbossorg_sbs" : ["2358"],
     "jbossorg_mailing_list": "",
     "jbossorg_project_info": "",
+    "stackoverflow_question": ["redhat-dts"],
     "jbossdeveloper_website_code": ["developertoolset","Red Hat Developer Toolset"],
     "product" : true
   }

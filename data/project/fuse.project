@@ -7,6 +7,7 @@
     "jbossorg_sbs" : ["2301"],
     "jbossorg_mailing_list": "",
     "jbossorg_project_info": "",
+    "stackoverflow_question": ["jbossfuse"],
     "jbossdeveloper_website_code": ["jbossfuse","fuse","Red Hat JBoss Fuse","JBoss Fuse","Fuse Enterprise ESB"],
     "product" : true
   }

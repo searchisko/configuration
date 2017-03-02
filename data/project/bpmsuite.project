@@ -7,6 +7,7 @@
     "jbossorg_sbs" : ["2313"],
     "jbossorg_mailing_list": "",
     "jbossorg_project_info": "",
+    "stackoverflow_question": ["redhat-bpm"],
     "jbossdeveloper_website_code": ["bpmsuite","Red Hat JBoss BPM Suite","JBoss BPM Suite","BPM-SUITE"],
     "product" : true
   }

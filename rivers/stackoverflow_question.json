@@ -36,6 +36,8 @@
       "sys_url_view"              : { "remote_field" : "link"},
       "sys_content_content-type"  : { "remote_field" : "prep_content_content-type"},
       "sys_content"               : { "remote_field" : "body" },
+      "sys_project"               : { "remote_field" : "prep_project"},
+      "sys_project_name"          : { "remote_field" : "prep_project_name"},
       "last_activity"             : { "remote_field" : "last_activity_date"},
       "tags"                      : { "remote_field" : "tags"},
       "comments"                  : { "remote_field" : "comments"},
@@ -146,6 +148,25 @@
         "name"     : "Updated filler",
         "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
         "settings" : { "field" : "prep_updated" }
+      },
+      {
+        "name"     : "Projects mapper",
+        "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+        "settings" : {
+          "index_name"       : "sys_projects",
+          "index_type"       : "project",
+          "source_field"     : "tags",
+          "idx_search_field" : "type_specific_code.stackoverflow_question",
+          "result_mapping"   : [
+            {
+              "idx_result_field" : "code",
+              "target_field"     : "prep_project"
+            },{
+              "idx_result_field" : "name",
+              "target_field"     : "prep_project_name"
+            }
+          ]
+        }
       },
       {
         "name"     : "Body HTML stripper",

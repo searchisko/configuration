@@ -8,6 +8,7 @@
     "jbossorg_sbs" : [""],
     "jbossorg_mailing_list": "",
     "jbossorg_project_info": "",
+    "stackoverflow_question": ["redhat-mobile"],
     "jbossdeveloper_website_code": ["mobileplatform","Red Hat Mobile Application Platform"],
     "product" : true
   }

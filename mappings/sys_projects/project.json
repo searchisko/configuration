@@ -14,6 +14,7 @@
 					"jbossorg_sbs" : {"type" : "string", "analyzer" : "keyword"},
 					"jbossorg_mailing_list" : {"type" : "string", "analyzer" : "keyword"},
 					"jbossorg_project_info" : {"type" : "string", "analyzer" : "keyword"},
+					"stackoverflow_question" : {"type" : "string", "analyzer" : "keyword_lowercase"},
 					"jbossdeveloper_website_code" : {"type" : "string", "analyzer" : "keyword_lowercase"},
 					"product" : {"type" : "boolean"}
 				}

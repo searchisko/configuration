@@ -7,6 +7,7 @@
     "jbossorg_sbs" : ["2298"],
     "jbossorg_mailing_list": "",
     "jbossorg_project_info": "jbosseap",
+    "stackoverflow_question": ["jboss", "jboss-4.0.x", "jboss5.x", "jboss6.x", "jboss7.x", "jboss-eap-6", "redhat-eap"],
     "jbossdeveloper_website_code": ["jbosseap","eap","Red Hat JBoss Enterprise Application Platform","JBoss EAP","JBoss Enterprise Application Platform"],
     "product" : true
   }

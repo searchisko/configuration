@@ -42,7 +42,21 @@
 				"properties" : {
 					"channel"                : { "type": "string", "index" : "not_analyzed" },
 					"fromExistingRhtAccount" : { "type": "boolean" },
-					"kpi"                    : { "type": "string", "index" : "not_analyzed" }
+					"kpi"                    : { "type": "string", "index" : "not_analyzed" },
+					"firstAccessByExistingAccount" : {
+						"type" : "object",
+						"properties" : {
+							"rhd"             : { "type": "string", "index" : "not_analyzed" },
+							"openShiftOnline" : { "type": "string", "index" : "not_analyzed" }
+						}
+					},
+					"firstAccessTimestamp" : {
+						"type" : "object",
+						"properties" : {
+							"rhd"             : { "type": "date", "index" : "not_analyzed" },
+							"openShiftOnline" : { "type": "date", "index" : "not_analyzed" }
+						}
+					}
 				}
 			}
         }

@@ -86,10 +86,14 @@ See spec for more info. [ElasticSearch reference docs](https://www.elastic.co/gu
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?bucket_key_format=yyyy-MM-dd&interval=day>
 
+##### `date_field`
+Optional parameter defining what field to use when filtering on dates e.g. `date_from` resp. `date_to` or doing histogram (buckets). By default it's `sys_created`.
+
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?total=t&aggregate=t&source=rht_user_profile&date_field=regInfo.firstAccessTimestamp.rhd>
 
 ##### `date_from`
 Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
-If present then only contributors having `sys_created >= date_from` are included.
+If present then only contributors having `sys_created >= date_from` resp. `<date_field> >= date_from` are included.
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?date_from=2013>
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?date_from=2013-01>
@@ -99,7 +103,7 @@ If present then only contributors having `sys_created >= date_from` are included
 
 ##### `date_to`
 Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
-If present then only contributors having `sys_created < date_to` are included.
+If present then only contributors having `sys_created < date_to` resp. `<date_field> >= date_to` are included.
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?date_to=2013>
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?date_to=2013-01>
@@ -163,7 +167,7 @@ Unescaped mustache template:
               {{#date_from}}
               {
                 "range": {
-                  "sys_created": {
+                  "{{date_field}}{{^date_field}}sys_created{{/date_field}}": {
                     "gte": "{{date_from}}",
                     "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
                   }
@@ -173,7 +177,7 @@ Unescaped mustache template:
               {{#date_to}}
               {
                 "range": {
-                  "sys_created": {
+                  "{{date_field}}{{^date_field}}sys_created{{/date_field}}": {
                     "lt": "{{date_to}}",
                     "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
                   }
@@ -212,13 +216,48 @@ Unescaped mustache template:
           "by_kpi" : { 
             "filters" : {
               "filters" : {
-                "website" :   { "term" : { "regInfo.kpi" : "website"   }},
-                "website_from_rh" : { "term" : { "regInfo.kpi" : "website_from_rh" }},
-                "infoq" :   { "term" : { "regInfo.kpi" : "infoq"   }},
-                "infoq_from_rh" :   { "term" : { "regInfo.kpi" : "infoq_from_rh"   }},
-                "dzone" :   { "term" : { "regInfo.kpi" : "dzone"   }},
-                "dzone_from_rh" :   { "term" : { "regInfo.kpi" : "dzone_from_rh"   }},
-                "conference" :   { "term" : { "regInfo.kpi" : "conference"   }}
+                "website" : { 
+                    "and": [ 
+                        { "term" : { "regInfo.kpi" : "website"   } }, 
+                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
+                    ]
+                },
+                "website_from_rh" : {
+                    "and": [
+                        { "term" : { "regInfo.kpi" : "website_from_rh" } },
+                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
+                    ]
+                },
+                "infoq" :   {
+                    "and": [
+                        { "term" : { "regInfo.kpi" : "infoq"   } },
+                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
+                    ]
+                },
+                "infoq_from_rh" :   {
+                    "and": [
+                        { "term" : { "regInfo.kpi" : "infoq_from_rh"   } },
+                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
+                    ]
+                },
+                "dzone" :   {
+                    "and": [
+                        { "term" : { "regInfo.kpi" : "dzone" } },
+                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
+                    ]
+                },
+                "dzone_from_rh" :   {
+                    "and": [
+                        { "term" : { "regInfo.kpi" : "dzone_from_rh" } },
+                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
+                    ]
+                },
+                "conference" :   {
+                    "and": [
+                        { "term" : { "regInfo.kpi" : "conference"   } },
+                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
+                    ]
+                }
               }
             }
           }

@@ -5,7 +5,7 @@
     "updatedAfterFormat"            : "{unixEpoch}",
     "listDocumentsMode"             : "updateTimestamp",
     "minGetDocumentsDelay"          : 1000,
-    "spacesIndexed"                 : "redhat,jboss,jboss7.x,jboss5.x,jboss6.x,jboss-eap-6,jboss-4.0.x,jbossamq,jbossfuse,jboss-logging,jboss-web,jboss-cli,rhel,rhel5,rhel6,rhel7,rhel-scl,openshift,openshift-client-tools,openshift-enterprise,openshift-cartridge,openshift-gears,openshift-php-cartridges,openshift-web-console,openshift-env-variables,redhat-datagrid,redhat-eap,redhat-containers,rhel-developer,redhat-brms,redhat-bpm,redhat-datavirt,redhat-mobile,redhat-openjdk,redhat-dts,jboss-developer-studio,jboss-tools,systemtap",
+    "spacesIndexed"                 : "redhat,jboss,jboss7.x,jboss5.x,jboss6.x,jboss-eap-6,jboss-eap-7,jboss-4.0.x,jbossamq,jbossfuse,jboss-logging,jboss-web,jboss-cli,rhel,rhel5,rhel6,rhel7,rhel-scl,rhel.net,openshift,openshift-client-tools,openshift-enterprise,openshift-cartridge,openshift-gears,openshift-php-cartridges,openshift-web-console,openshift-env-variables,redhat-datagrid,redhat-eap,redhat-containers,rhel-developer,redhat-brms,redhat-bpm,redhat-datavirt,redhat-mobile,redhat-openjdk,redhat-dts,jboss-developer-studio,jboss-tools,systemtap",
     "timeout"                       : "20s",
     "forcedIndexingPauseFieldTimeUnit"  : "SECONDS",
     "forcedIndexingPauseField"      : "backoff",

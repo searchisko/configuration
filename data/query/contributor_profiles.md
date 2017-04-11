@@ -43,22 +43,6 @@ Optional parameter which if non-empty switches on aggregation of the returned re
 
 - <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=y>
 
-##### `by_company`
-
-Optional parameter which if non-empty switches on sub-aggregation of the returned results by company. It'll work only if `aggregate` parameter is also specified.
-
-**Example:**
-
-- <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=y&by_company=y>
-
-##### `by_country`
-
-Optional parameter which if non-empty switches on sub-aggregation of the returned results by country. It'll work only if `aggregate` parameter is also specified.
-
-**Example:**
-
-- <http://dcp_server:port/v2/rest/search/contributor_profiles?aggregate=y&by_country=y>
-
 ##### `interval`
 
 Optional parameter which can be used together with `aggregate` parameter in order to change time interval in which the results are aggreagated into buckets. The possible values are:
@@ -213,70 +197,18 @@ Unescaped mustache template:
           "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
         },
         "aggs" : {
-          "by_kpi" : { 
-            "filters" : {
-              "filters" : {
-                "website" : { 
-                    "and": [ 
-                        { "term" : { "regInfo.kpi" : "website"   } }, 
-                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
-                    ]
-                },
-                "website_from_rh" : {
-                    "and": [
-                        { "term" : { "regInfo.kpi" : "website_from_rh" } },
-                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
-                    ]
-                },
-                "infoq" :   {
-                    "and": [
-                        { "term" : { "regInfo.kpi" : "infoq"   } },
-                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
-                    ]
-                },
-                "infoq_from_rh" :   {
-                    "and": [
-                        { "term" : { "regInfo.kpi" : "infoq_from_rh"   } },
-                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
-                    ]
-                },
-                "dzone" :   {
-                    "and": [
-                        { "term" : { "regInfo.kpi" : "dzone" } },
-                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
-                    ]
-                },
-                "dzone_from_rh" :   {
-                    "and": [
-                        { "term" : { "regInfo.kpi" : "dzone_from_rh" } },
-                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
-                    ]
-                },
-                "conference" :   {
-                    "and": [
-                        { "term" : { "regInfo.kpi" : "conference"   } },
-                        { "exists" : { "field" : "regInfo.firstAccessTimestamp.rhd" } }
-                    ]
-                }
-              }
-            }
-          }
-          {{#by_country}}
-          ,"by_country" : {
+          "by_country" : {
               "terms" : { 
                 "field" : "country",
                 "size" : "0"
               }
           }
-          {{/by_country}}
-          {{#by_company}}
           ,"by_company" : { 
             "terms" : {
               "field" : "company",
               "size" : "0"
             }
           }
-          {{/by_company}}
         }
       }
     }

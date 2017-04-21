@@ -121,7 +121,7 @@ Unescaped mustache template:
         }
     },
     "aggs": {
-        "first_access_agg_{{website}}{{^website}}rhd{{/website}}": {
+        "first_access_agg": {
             "date_histogram": {
                 "field": "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessTimestamp",
                 "order": { "_key": "asc" },

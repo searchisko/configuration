@@ -10,7 +10,8 @@ Required parameter which defines for which website metrics should be applied
 Possible values:
 
 * rhd (default)
-* openShiftOnline
+* openShiftOnlineFree
+* openShiftOnlinePro
 * openShiftIo
 
 **Example:**
@@ -98,7 +99,7 @@ Unescaped mustache template:
                     {{#date_from}}
                     , {
                         "range": {
-                            "sys_created": {
+                            "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessTimestamp": {
                                 "gte": "{{date_from}}",
                                 "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
                             }
@@ -108,7 +109,7 @@ Unescaped mustache template:
                     {{#date_to}}
                     , {
                         "range": {
-                            "sys_created": {
+                            "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessTimestamp": {
                                 "lt": "{{date_to}}",
                                 "time_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
                             }
@@ -127,6 +128,62 @@ Unescaped mustache template:
                 "interval" : "{{interval}}{{^interval}}month{{/interval}}",
                 "format": "{{bucket_key_format}}{{^bucket_key_format}}yyyy-MM{{/bucket_key_format}}",
                 "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
+            }
+            ,"aggs" : {
+              "by_channel" : { 
+                "filters" : {
+                  "filters" : {
+                    "website" : { 
+                        "and": [ 
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website"   } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
+                        ]
+                    },
+                    "website_from_rh" : {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
+                        ]
+                    },
+                    "infoq" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "infoq"   } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
+                        ]
+                    },
+                    "infoq_from_rh" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "infoq"   } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
+                        ]
+                    },
+                    "dzone" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "dzone" } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
+                        ]
+                    },
+                    "dzone_from_rh" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "dzone" } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
+                        ]
+                    },
+                    "conference" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "conference"   } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
+                        ]
+                    },
+                    "conference_from_rh" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "conference"   } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
+                        ]
+                    }
+                  }
+                }
+              }
             }
         }
     }

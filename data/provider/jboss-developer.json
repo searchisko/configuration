@@ -319,6 +319,10 @@
       "index": {
         "name": "data_jbossdeveloper_vimeo",
         "type": "jbossdeveloper_vimeo"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "jbossdeveloper_vimeo_drupal"
       }
     },
     "jbossdeveloper_youtube": {
@@ -370,6 +374,10 @@
       "index": {
         "name": "data_jbossdeveloper_youtube",
         "type": "jbossdeveloper_youtube"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "jbossdeveloper_youtube_drupal"
       }
     },
     "jbossdeveloper_book": {

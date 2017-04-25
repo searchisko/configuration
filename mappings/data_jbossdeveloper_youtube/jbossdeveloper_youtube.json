@@ -22,6 +22,16 @@
         "index": "not_analyzed",
         "store" : "no"
       },
+      "like_count": {
+        "type": "integer",
+        "index": "not_analyzed",
+        "store" : "no"
+      },
+      "view_count": {
+        "type": "integer",
+        "index": "not_analyzed",
+        "store" : "no"
+      },
       "thumbnail": {
         "type": "string",
         "index" : "no"

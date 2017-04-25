@@ -1,0 +1,87 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "http://{apiKey}",
+    "listDocumentsMode"             : "simple",
+    "spacesIndexed"                 : "MAIN",
+    "timeout"                       : "60s",
+    "indexUpdatePeriod"             : "10m",
+    "maxIndexingThreads"            : 1,
+    "embedUrlApiKeyUsername"        : "drupal_url"
+
+  },
+  "index" : {
+    "index"                         : "data_jbossdeveloper_cheatsheet",
+    "type"                          : "jbossdeveloper_cheatsheet",
+    "remote_field_document_id"      : "nid",
+    "field_space_key"               : "space_key",
+    "field_document_id"             : "sys_id",
+    "fields" : {
+      "id"                          : { "remote_field" : "nid" },
+      "sys_title"                   : { "remote_field" : "title" },
+      "sys_description"             : { "remote_field" : "prep_sys_description" },
+      "download_url"                : { "remote_field" : "field_cheat_sheet_download_url" },
+      "sys_content"                 : { "remote_field" : "prep_sys_content" },
+      "sys_url_view"                : { "remote_field" : "prep_sys_url_view" },
+      "sys_content_provider"        : { "remote_field" : "prep_sys_content_provider" },
+      "sys_content_type"            : { "remote_field" : "prep_sys_content_type" },
+      "sys_created"                 : { "remote_field" : "created" },
+      "sys_id"                      : { "remote_field" : "prep_id" },
+      "sys_type"                    : { "remote_field" : "prep_sys_type" },
+      "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
+      "sys_tags"                    : { "remote_field" : "prep_sys_tags" }
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id"                   : "jbossdeveloper_cheatsheet-{nid}",
+          "prep_sys_url_view"         : "https://developers.redhat.com{path}",
+          "prep_sys_type"             : "cheatsheet",
+          "prep_sys_content_type"     : "jbossdeveloper_cheatsheet",
+          "prep_sys_content_provider" : "jboss-developer"
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "body",
+          "target_field" : "prep_sys_description"
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "field_cheat_sheet_excerpt",
+          "target_field" : "prep_sys_content"
+        }
+      },
+      {
+        "name"     : "Format author array from string to array",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+
+          var sys_tag = data.get('field_cheat_sheet_tags').toString().split(', ');
+
+          data.put('prep_sys_tags', java.util.Arrays.asList(Java.to(sys_tag, Java.type('java.lang.String[]')) ));
+
+          "
+        }
+      },
+      {
+        "name"     : "Updated filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+        "settings" : { "field" : "prep_sys_updated" }
+      }
+
+    ]
+  },
+  "activity_log" : {
+    "index":"stats_jbossdeveloper_cheatsheet_river"
+  }
+}

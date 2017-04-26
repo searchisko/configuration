@@ -493,6 +493,21 @@ The following is the query with all the optional filters applied:
                 },
                 "script" : "query_param.toLowerCase()==expected_phrase ? 2.5 : 1;"
               }
+            },
+            {
+              "filter" : {
+                "term" : { 
+                  "sys_id" : "rht_website-https_developers_redhat_com_articles_renew-your-red-hat-developer-program-subscription"
+                }
+              },
+              "script_score" : {
+                "params" : {
+                  "query_param" : "{{query}}",
+                  "term_1" : "renew",
+                  "term_2" : "subscription"
+                },
+                "script" : "query_param.toLowerCase().indexOf(term_1)!=-1 || query_param.toLowerCase().indexOf(term_2)!=-1 ? 100 : 1;"
+              }
             }
           ]
         }

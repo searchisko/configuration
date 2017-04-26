@@ -208,6 +208,12 @@ Optional flag to order resulting documents by `sys_created` date (ascending).
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?query=java&oldFirst=true>
 
+##### `exclude_sys_type`
+
+Optional filter to exclude results that contain the specified sys_type.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?exclude_sys_type=stackoverflow_thread>
+
 ##### `blogbyurl`
 
 Optional filter to return only blogposts that contain the parameters text.
@@ -330,6 +336,13 @@ The following is the query with all the optional filters applied:
                       ]
                     },
                     {{/blogbyurl}}
+                    {{#exclude_sys_type}}
+                    {
+                      "not": {
+                        "term": { "sys_type" : "{{exclude_sys_type}}" }
+                      }
+                    },
+                    {{/exclude_sys_type}}
                     {{#level}}
                     {
                       "term": {
@@ -545,6 +558,13 @@ The following is the query with all the optional filters applied:
                       ]
                     },
                     {{/blogbyurl}}
+                    {{#exclude_sys_type}}
+                    {
+                      "not": {
+                        "term": { "sys_type" : "{{exclude_sys_type}}" }
+                      }
+                    },
+                    {{/exclude_sys_type}}
                     {{#level}}
                     {
                       "term": { "level": "{{level}}" }

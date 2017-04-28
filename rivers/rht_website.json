@@ -13,7 +13,8 @@
       "title"       : {"cssSelector" : "head title", "stripHtml" : true},
       "description" : {"cssSelector" : "head meta[name=description]", "valueAttribute" : "content"},
       "content"     : {"cssSelector" : "body .content-wrapper", "stripHtml" : true},
-      "page_type"        : {"cssSelector" : "head meta[property=og:type]", "valueAttribute" : "content"}
+      "page_type"        : {"cssSelector" : "head meta[property=og:type]", "valueAttribute" : "content"},
+      "exclude_from_search" : {"cssSelector" : "meta[name=DCP:WebpageSearchExclude]", "valueAttribute" : "content"}
     }
   },
   "index" : {
@@ -35,14 +36,16 @@
       "sys_description"       : {"remote_field" : "detail.description"},
       "sys_content_plaintext" : {"remote_field" : "detail.content"},
       "website_project_code"  : {"remote_field" : "website_project_code"},
-      "page_type"             : {"remote_field" : "detail.page_type"}
+      "page_type"             : {"remote_field" : "detail.page_type"},
+      "exclude_from_search"   : {"remote_field" : "prep_exclude_from_search"}
     },
     "preprocessors" : [
       {
         "name"     : "Remote id copy",
         "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
         "settings" : {
-          "prep_id_remote" : "{id}"
+          "prep_id_remote" : "{id}",
+          "prep_exclude_from_search" : "{detail.exclude_from_search}"
         }
       },{
         "name"     : "Searchisko sys_ values filler",
@@ -62,7 +65,7 @@
         "class"    : "org.jboss.elasticsearch.tools.content.RegExpCapturingGroupPreprocessor",
         "settings" : {
           "source_field"  : "url",
-          "pattern"       : "http://developers(?:-stg)?\\.redhat\\.com/(?:products|quickstarts|boms|archetypes)/([^/]*)/.*",
+          "pattern"       : "http://developers(?:-stage)?\\.redhat\\.com/(?:products|quickstarts|boms|archetypes)/([^/]*)/.*",
           "result_mapping" : {
             "1" : "website_project_code"
           }
@@ -84,7 +87,19 @@
           }
           ]
         }
-      }
+      },{ 
+        "name"     : "This code fills missing exclude_from_search values with the default false.",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+            "script_engine_name"  : "JavaScript",
+            "script"  : "
+                var exclude = data.get('prep_exclude_from_search');
+                if( exclude==null || exclude.toString().length()==0 ) {
+                  data.put('prep_exclude_from_search','false');
+                }
+            "
+        } 
+    }
     ]
   },
   "activity_log" : {

@@ -17,7 +17,6 @@
     "field_space_key"               : "space_key",
     "field_document_id"             : "sys_id",
     "fields" : {
-      "id"                          : { "remote_field" : "nid" },
       "sys_title"                   : { "remote_field" : "title" },
       "sys_description"             : { "remote_field" : "prep_sys_description" },
       "download_url"                : { "remote_field" : "field_cheat_sheet_download_url" },
@@ -27,6 +26,7 @@
       "sys_content_type"            : { "remote_field" : "prep_sys_content_type" },
       "sys_created"                 : { "remote_field" : "created" },
       "sys_id"                      : { "remote_field" : "prep_id" },
+      "sys_content_id"              : { "remote_field" : "nid" },
       "sys_type"                    : { "remote_field" : "prep_sys_type" },
       "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
       "sys_tags"                    : { "remote_field" : "prep_sys_tags" }

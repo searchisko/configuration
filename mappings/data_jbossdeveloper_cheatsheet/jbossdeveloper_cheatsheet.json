@@ -7,6 +7,11 @@
         "include_in_all": true,
         "_boost": 1.5
       },
+      "download_url": {
+        "type": "string",
+        "include_in_all": true,
+        "_boost": 1.5
+      },
       "priority": {
         "type": "integer",
         "_boost": 1.5

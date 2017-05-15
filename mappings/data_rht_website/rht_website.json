@@ -4,7 +4,8 @@
     "properties" : {
       "space_key" : {"type" : "string", "analyzer" : "keyword"},
       "source"    : {"type" : "string", "analyzer" : "keyword"},
-      "website_project_code" : {"type" : "string", "analyzer" : "keyword"}
+      "website_project_code" : {"type" : "string", "analyzer" : "keyword"},
+      "exclude_from_search" : { "type" : "boolean" }
     }
   }
 }

@@ -99,6 +99,11 @@ Optional parameter that switches from the default AND operator between `tag`s pa
 
 - <http://dcp_server:port/v2/rest/search/developer_materials?tag=jboss&tag=hibernate&tags_or_logic=e>
 
+##### `filter_out_excluded`
+Optional parameter that excludes marked documents from search. It removes documents with `exclude_from_search` value equal to `true`. In case this value is missing `false` is assumed and the document will still appear in the results.
+
+- <http://dcp_server:port/v2/rest/search/developer_materials?filter_out_excluded=t>
+
 ##### `publish_date_from`
 Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
 If present then only documents having `sys_created >= publish_date_from` are included.
@@ -431,6 +436,18 @@ The following is the query with all the optional filters applied:
                         {}
                       ]
                     },
+                    {{#filter_out_excluded}}
+                    {
+                      "or": [
+                        {
+                          "term": { "exclude_from_search": "false" }
+                        },
+                        {
+                          "missing" : { "field" : "exclude_from_search" }
+                        }
+                      ]
+                    },
+                    {{/filter_out_excluded}}
                     {
                       "terms": {
                         "sys_content_provider": [
@@ -655,6 +672,18 @@ The following is the query with all the optional filters applied:
                         {}
                       ]
                     },
+                    {{#filter_out_excluded}}
+                    {
+                      "or": [
+                        {
+                          "term": { "exclude_from_search": "false" }
+                        },
+                        {
+                          "missing" : { "field" : "exclude_from_search" }
+                        }
+                      ]
+                    },
+                    {{/filter_out_excluded}}
                     {
                       "terms": {
                         "sys_content_provider": [

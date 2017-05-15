@@ -476,6 +476,22 @@
         "name" : "jbossdeveloper_connectors_drupal"
       }
     },
+    "jbossdeveloper_cheatsheet": {
+      "description":"Cheatsheets",
+      "sys_type":"cheatsheet",
+      "sys_content_content-type" : "text/plain",
+      "persist" : true,
+      "input_preprocessors": [
+      ],
+      "index": {
+        "name":"data_jbossdeveloper_cheatsheet",
+        "type":"jbossdeveloper_cheatsheet"
+      },
+      "indexer" : {
+        "type" : "elasticsearch-river-remote",
+        "name" : "jbossdeveloper_cheatsheets_drupal"
+      }
+    },
       "jbossdeveloper_event": {
       "description":"Events",
       "sys_type":"event",

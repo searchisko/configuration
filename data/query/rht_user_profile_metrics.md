@@ -145,6 +145,13 @@ Unescaped mustache template:
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
                     },
+                    "website_from_rhd" : {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } },
+                            { "script" : { "script" : "(_source.regInfo.rhd != null && !_source.regInfo.rhd.firstAccessTimestamp.empty) ? _source.regInfo.rhd.firstAccessTimestamp < _source.regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessTimestamp : 1<0" } }
+                        ]
+                    },
                     "infoq" :   {
                         "and": [
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "infoq"   } },

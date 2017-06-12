@@ -27,6 +27,10 @@
         "index": "not_analyzed",
         "store" : "no"
       },
+      "target_product": {
+        "type": "string",
+        "index" : "no"
+      },
       "view_count": {
         "type": "integer",
         "index": "not_analyzed",

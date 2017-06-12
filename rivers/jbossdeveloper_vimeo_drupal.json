@@ -19,16 +19,14 @@
     "field_document_id"             : "sys_id",
     "fields" : {
       "duration"                 : { "remote_field" : "prep_duration" },
-      "like_count"               : { "remote_field" : "prep_like_count"},
+      "like_count"               : { "remote_field" : "field_likes"},
       "sys_activity_dates"       : { "remote_field" : "prep_activity_date" },
-      "sys_content_id"           : { "remote_field" : "prep_id" },
+      "sys_content_id"           : { "remote_field" : "nid" },
       "sys_content_provider"     : { "remote_field" : "prep_sys_content_provider" },
       "sys_content_type"         : { "remote_field" : "prep_sys_content_type" },
       "sys_created"              : { "remote_field" : "field_video_publish_date" },
       "sys_description"          : { "remote_field" : "prep_sys_description" },
-      "full_description"         : { "remote_field" : "prep_sys_description" },
       "sys_id"                   : { "remote_field" : "prep_id" },
-      "sys_project"              : { "remote_field" : "prep_target_product" },
       "sys_tags"                 : { "remote_field" : "prep_resource_tags" },
       "sys_title"                : { "remote_field" : "title" },
       "sys_type"                 : { "remote_field" : "prep_sys_type" },
@@ -36,7 +34,7 @@
       "sys_url_view"             : { "remote_field" : "prep_sys_url_view" },
       "tags"                     : { "remote_field" : "prep_resource_tags" },
       "target_product"           : { "remote_field" : "prep_target_product" },
-      "view_count"               : { "remote_field" : "prep_field_view" },
+      "view_count"               : { "remote_field" : "field_views" },
       "thumbnail"                : { "remote_field" : "field_video_thumbnail_url" }
     },
     "preprocessors" : [
@@ -44,7 +42,7 @@
         "name"     : "Remote id copy",
         "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
         "settings" : {
-          "prep_id"                   : "{nid}",
+          "prep_id"                   : "jbossdeveloper_vimeo-{nid}",
           "prep_sys_url_view"         : "https://developers.redhat.com{path}",
           "prep_sys_type"             : "video",
           "prep_sys_content_type"     : "jbossdeveloper_vimeo",
@@ -105,17 +103,7 @@
 
       "
       }
-    },{
-        "name"     : "String to Time Converter",
-        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
-        "settings" : {
-          "script_engine_name"  : "JavaScript",
-          "script"              : "
-          data.put('prep_field_view',parseInt(data.get('field_views')));
-          data.put('prep_like_count',parseInt(data.get('field_likes')));
-          "
-        }
-      },
+    },
       {
         "name"     : "Updated filler",
         "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",

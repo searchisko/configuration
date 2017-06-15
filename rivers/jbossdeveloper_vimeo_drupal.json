@@ -1,0 +1,118 @@
+{
+  "type" : "remote",
+  "remote" : {
+    "urlGetDocuments"               : "http://{apiKey}",
+    "listDocumentsMode"             : "simple",
+    "spacesIndexed"                 : "MAIN",
+    "timeout"                       : "60s",
+    "indexUpdatePeriod"             : "10m",
+    "maxIndexingThreads"            : 1,
+    "indexFullUpdatePeriod"         : "1h",
+    "embedUrlApiKeyUsername"        : "drupal_url"
+
+  },
+  "index" : {
+    "index"                         : "data_jbossdeveloper_vimeo",
+    "type"                          : "jbossdeveloper_vimeo",
+    "remote_field_document_id"      : "nid",
+    "field_space_key"               : "space_key",
+    "field_document_id"             : "sys_id",
+    "fields" : {
+      "duration"                 : { "remote_field" : "prep_duration" },
+      "like_count"               : { "remote_field" : "field_likes"},
+      "sys_activity_dates"       : { "remote_field" : "prep_activity_date" },
+      "sys_content_id"           : { "remote_field" : "nid" },
+      "sys_content_provider"     : { "remote_field" : "prep_sys_content_provider" },
+      "sys_content_type"         : { "remote_field" : "prep_sys_content_type" },
+      "sys_created"              : { "remote_field" : "field_video_publish_date" },
+      "sys_description"          : { "remote_field" : "prep_sys_description" },
+      "sys_id"                   : { "remote_field" : "prep_id" },
+      "sys_tags"                 : { "remote_field" : "prep_resource_tags" },
+      "sys_title"                : { "remote_field" : "title" },
+      "sys_type"                 : { "remote_field" : "prep_sys_type" },
+      "sys_updated"              : { "remote_field" : "prep_sys_updated" },
+      "sys_url_view"             : { "remote_field" : "prep_sys_url_view" },
+      "tags"                     : { "remote_field" : "prep_resource_tags" },
+      "target_product"           : { "remote_field" : "prep_target_product" },
+      "view_count"               : { "remote_field" : "field_views" },
+      "thumbnail"                : { "remote_field" : "field_video_thumbnail_url" }
+    },
+    "preprocessors" : [
+      {
+        "name"     : "Remote id copy",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+        "settings" : {
+          "prep_id"                   : "jbossdeveloper_vimeo-{nid}",
+          "prep_sys_url_view"         : "https://developers.redhat.com{path}",
+          "prep_sys_type"             : "video",
+          "prep_sys_content_type"     : "jbossdeveloper_vimeo",
+          "prep_sys_content_provider" : "jboss-developer"
+        }
+      },{
+        "name"     : "Format strings to arrays",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+
+          var tags = data.get('field_video_resource_tags').toString().split(', ');
+          var product = data.get('field_video_target_product').toString().split(', ');
+
+          data.put('prep_resource_tags', java.util.Arrays.asList(Java.to(tags, Java.type('java.lang.String[]')) ));
+          data.put('prep_target_product', java.util.Arrays.asList(Java.to(product, Java.type('java.lang.String[]')) ));
+
+          "
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "body",
+          "target_field" : "prep_sys_description"
+        }
+      },
+      {
+        "name"     : "Body HTML stripper",
+        "class"    : "org.jboss.elasticsearch.tools.content.StripHtmlPreprocessor",
+        "settings" : {
+          "source_field" : "field_connector_long_description",
+          "target_field" : "prep_sys_content"
+        }
+      },{
+        "name"     : "String to Time Converter",
+        "class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
+        "settings" : {
+          "script_engine_name"  : "JavaScript",
+          "script"              : "
+          var time = data.get('field_duration').split(':');
+          switch (time.length) {
+        case 0:
+        data.put('prep_duration', 0);
+        break;
+        case 1:
+        data.put('prep_duration', parseInt(time[0]));
+      break;
+      case 2:
+      data.put('prep_duration', parseInt(time[1], 10) + (parseInt(time[0], 10) * 60));
+      break;
+      case 3:
+      data.put('prep_duration', parseInt(time[2], 10) + (parseInt(time[1], 10) * 60) + (parseInt(time[0], 10) * 60 * 60));
+      break;
+    }
+
+      "
+      }
+    },
+      {
+        "name"     : "Updated filler",
+        "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
+        "settings" : { "field" : "prep_sys_updated" }
+      }
+
+    ]
+  },
+  "activity_log" : {
+    "index":"stats_jbossdeveloper_vimeo_river"
+  }
+}

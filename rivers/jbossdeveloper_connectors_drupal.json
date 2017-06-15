@@ -6,6 +6,7 @@
     "spacesIndexed"                 : "MAIN",
     "timeout"                       : "60s",
     "indexUpdatePeriod"             : "10m",
+    "indexFullUpdatePeriod"         : "1h",
     "maxIndexingThreads"            : 1,
     "embedUrlApiKeyUsername"        : "drupal_url"
 

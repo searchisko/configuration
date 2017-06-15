@@ -9,15 +9,21 @@
         "type": "string", 
         "index" : "no" 
       },
-      "sys_description": {
-        "type": "string",
-        "_boost": 1.7
-      },
-      "sys_title": {
-        "type": "string",
-        "_boost": 1.5
-      },
       "duration": {
+        "type": "integer",
+        "index": "not_analyzed",
+        "store" : "no"
+      },
+      "like_count": {
+        "type": "integer",
+        "index": "not_analyzed",
+        "store" : "no"
+      },
+      "target_product": {
+        "type": "string",
+        "index" : "no"
+      },
+      "view_count": {
         "type": "integer",
         "index": "not_analyzed",
         "store" : "no"

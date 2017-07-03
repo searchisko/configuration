@@ -14,6 +14,8 @@ By default it searches through the following `sys_content_type`s:
  - jbossdeveloper_youtube
  - jbossdeveloper_book
  - jbossdeveloper_event
+ - jbossdeveloper_cheatsheet
+ - rht_website
  - rht_knowledgebase_article
  - rht_knowledgebase_solution
  - stackoverflow_question
@@ -295,7 +297,7 @@ The following is the query with all the optional filters applied:
         }
       },
       "indices_boost": { 
-        "data_rht_website": 3
+        "data_rht_website": 3, "data_jbossorg_sbs_forum" : 0.5
       },
       {{/query_highlight}}
       "query": {

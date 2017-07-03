@@ -16,6 +16,7 @@ By default it searches through the following `sys_content_type`s:
  - jbossdeveloper_event
  - jbossdeveloper_cheatsheet
  - rht_website
+ - rht_apidocs
  - rht_knowledgebase_article
  - rht_knowledgebase_solution
  - stackoverflow_question

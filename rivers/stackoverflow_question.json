@@ -5,7 +5,7 @@
     "updatedAfterFormat"            : "{unixEpoch}",
     "listDocumentsMode"             : "updateTimestamp",
     "minGetDocumentsDelay"          : 1000,
-    "spacesIndexed"                 : "amq,jbossamq,jboss-developer-studio,jboss-eap-6,jboss-eap-7,jbossfuse,jboss-web,openshift,openshift-client-tools,openshift-cartridge,openshift-enterprise,openshift-env-variablesopenshift-gears,openshift-php-cartridges,openshift-web-console,redhat,redhat-bpm,redhat-brms,redhat-containers,redhat-datavirt,redhat-datagrid,redhat-dts,redhat-mobile,redhat-openjdk,redhat-openshiftio,redhat-rhamt,rhel,rhel5,rhel6,rhel7,rhel.net,3scale",
+    "spacesIndexed"                 : "amq,jbossamq,jboss-developer-studio,jboss-eap-6,jboss-eap-7,jbossfuse,jboss-web,openshift,openshift-client-tools,openshift-cartridge,openshift-enterprise,openshift-env-variablesopenshift-gears,openshift-php-cartridges,openshift-web-console,redhat,redhat-bpm,redhat-brms,redhat-containers,redhat-datavirt,redhat-datagrid,redhat-dts,redhat-mobile,redhat-openjdk,redhat-openshiftio,redhat-rhamt,rhel,rhel5,rhel6,rhel7,rhel.net,3scale,rhamt",
     "timeout"                       : "20s",
     "forcedIndexingPauseFieldTimeUnit"  : "SECONDS",
     "forcedIndexingPauseField"      : "backoff",

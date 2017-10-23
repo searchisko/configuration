@@ -36,6 +36,7 @@
       "sys_created"              : {"remote_field":"prep_sys_created"},
       "sys_description"          : {"remote_field":"field_book_description"},
       "sys_id"                   : {"remote_field":"prep_id"},
+      "sys_project"              : { "remote_field" : "prep_project" },
       "sys_tags"                 : {"remote_field":"prep_sys_tags"},
       "sys_title"                : {"remote_field":"title"},
       "sys_type"                 : {"remote_field":"prep_sys_type"},
@@ -59,6 +60,23 @@
           "prep_sys_tags"                  :[],
           "prep_sys_type"                  :"book"
 
+        }
+      },{
+        "name"     : "Projects mapper",
+        "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+        "settings" : {
+          "index_name"       : "sys_projects",
+          "index_type"       : "project",
+          "source_field"     : "field_related_product",
+          "idx_search_field" : "jbossdeveloper_website_code",
+          "result_mapping"   : [{
+            "idx_result_field" : "code",
+            "target_field"     : "prep_project"
+          },{
+            "idx_result_field" : "name",
+            "target_field"     : "prep_project_name"
+          }
+          ]
         }
       },
       {

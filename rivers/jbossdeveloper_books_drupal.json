@@ -37,6 +37,7 @@
       "sys_description"          : {"remote_field":"field_book_description"},
       "sys_id"                   : {"remote_field":"prep_id"},
       "sys_project"              : { "remote_field" : "prep_project" },
+      "sys_project_name"         : { "remote_field" : "prep_project_name" },
       "sys_tags"                 : {"remote_field":"prep_sys_tags"},
       "sys_title"                : {"remote_field":"title"},
       "sys_type"                 : {"remote_field":"prep_sys_type"},

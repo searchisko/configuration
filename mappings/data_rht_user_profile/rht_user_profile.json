@@ -26,16 +26,19 @@
 					"username"   : { "type": "string", "store" : "no", "index" : "not_analyzed" }
 				}
 			},
+			"numOfSocialLinks" : { "type": "long" },
 			"subscription" : {
 			    "type" : "object",
 			    "properties" : {
 				    "valid"      : { "type": "boolean" },
-				    "signDate"   : { "type": "long" }
+				    "signDate"   : { "type": "long" },
+				    "expirationDate" : { "type": "long" }
 			    }
 			},
 		  	"company"	     : { "type": "string", "index" : "not_analyzed" },
 			"country"	     : { "type": "string", "index" : "not_analyzed" },
 			"username"	     : { "type": "string", "index" : "not_analyzed" },
+			"userAccountType": { "type": "string", "index" : "not_analyzed" },
 			"newsletter"	 : { "type": "string" },
 			"regInfo" : {
 				"type" : "object",

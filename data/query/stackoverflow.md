@@ -51,6 +51,16 @@ If provided then the query is restricted to documents having field `sys_tags` eq
 
 - <http://dcp_server:port/v2/rest/search/stackoverflow?tag=docker>
 
+##### `tags_and_logic`
+
+Optional parameter. Can be used multiple times.
+If provided then the query is restricted to documents having field `sys_tags` equal to one of provided values. This can be used in conjunction with tags to return
+tag pairs
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/stackoverflow?tags_and_logic=docker&tag=rhel>
+
 ##### `questionid`
 
 Optional parameter. Can be used multiple times.
@@ -107,7 +117,7 @@ This chapter discusses implementation details of Elasticsearch query. It should 
 Unescaped mustache template:
 
 ````
-    {
+{
         "fields": [
           "_source"
         ],
@@ -132,6 +142,15 @@ Unescaped mustache template:
             "filter": {
               "and": [
                 {
+                "or" : [{
+                  {{#tags_and_logic}}
+                  "term": { "sys_tags": ["{{.}}"] }
+                  {{/tags_and_logic}}
+                  },
+                  {}
+                  ]},
+                {
+
                   "or": [
                     {{#content}}
                     { "term": { "sys_content_type": "{{.}}" }},

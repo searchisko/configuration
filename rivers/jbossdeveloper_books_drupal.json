@@ -19,6 +19,7 @@
     "fields": {
       "authors"                  : {"remote_field":"prep_authors"},
       "average_rating"           : {"remote_field":"field_average_rating"},
+      "book_url"                 : {"remote_field":"field_book_url"},
       "categories"               : {"remote_field":"field_categories"},
       "info_link"                : {"remote_field":"field_preview_url"},
       "isbn"                     : {"remote_field":"field_isbn"},
@@ -42,7 +43,7 @@
       "sys_title"                : {"remote_field":"title"},
       "sys_type"                 : {"remote_field":"prep_sys_type"},
       "sys_updated"              : {"remote_field":"prep_sys_updated"},
-      "sys_url_view"             : {"remote_field":"field_book_url"},
+      "sys_url_view"             : {"remote_field":"prep_sys_url_view"},
       "tags"                     : {"remote_field":"prep_sys_tags"},
       "thumbnail"                : {"remote_field":"field_thumbnail_url"},
       "web_reader_link"          : {"remote_field":"field_web_reader_url"}
@@ -59,6 +60,7 @@
           "prep_sys_content_provider"      :"jboss-developer",
           "prep_sys_content_type"          :"jbossdeveloper_book",
           "prep_sys_tags"                  :[],
+          "prep_sys_url_view"              : "https://developers.redhat.com{path}",
           "prep_sys_type"                  :"book"
 
         }

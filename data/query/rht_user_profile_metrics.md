@@ -121,6 +121,15 @@ Unescaped mustache template:
         }
     },
     "aggs": {
+        "user_account_type_agg" : {
+            "terms" : { "field" : "userAccountType" }
+        },
+        "social_links_count_agg" : {
+            "terms" : { "field" : "numOfSocialLinks" }
+        },
+        "social_links_types_agg" : {
+            "terms" : { "field" : "accounts.domain" }
+        },
         "first_access_agg": {
             "date_histogram": {
                 "field": "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessTimestamp",

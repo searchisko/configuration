@@ -128,7 +128,10 @@ Unescaped mustache template:
             "terms" : { "field" : "numOfSocialLinks" }
         },
         "social_links_types_agg" : {
-            "terms" : { "field" : "accounts.domain" }
+            "terms" : { 
+                "field" : "accounts.domain",
+                "exclude" : "redhat.com"
+            }
         },
         "first_access_agg": {
             "date_histogram": {

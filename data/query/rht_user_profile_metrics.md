@@ -6,7 +6,7 @@
 
 ##### `website`
 
-Required parameter which defines for which website metrics should be applied
+Required parameter which defines for which website metric `first_access_agg` should be applied
 Possible values:
 
 * rhd (default)
@@ -131,6 +131,22 @@ Unescaped mustache template:
             "terms" : { 
                 "field" : "accounts.domain",
                 "exclude" : "redhat.com"
+            }
+        },
+        "rhd_members" : {
+            "filter" : { "exists" : { "field" : "regInfo.rhd" } }
+            ,"aggs" : {
+                "rhdmin": {
+                    "filter" : {
+                        "and": [ 
+                            { "term" : { "ppLevels.rhdmin" : true } },
+                            { "missing" : { "field" : "ppLevels.rhfull" } }
+                        ]
+                    }
+                },
+                "rhdfull": {
+                    "filter" : { "term" : { "ppLevels.rhdfull" : true } }
+                }
             }
         },
         "first_access_agg": {

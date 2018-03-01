@@ -133,6 +133,29 @@ Unescaped mustache template:
                 "exclude" : "redhat.com"
             }
         },
+        "subscription_agg" : {
+            "filters" : {
+              "filters" : {
+                "no_subscription" : {
+                  "term" : { "subscription.valid" : false   }
+                },
+                "subscription_valid" : {
+                    "and": [
+                        { "term" : { "subscription.valid" : true   } },
+                        { "range" : { "subscription.signDate" : { "lt": "now" } } },
+                        { "range" : { "subscription.expirationDate" : { "gt": "now" } } }
+                    ]
+                },
+                "subscription_expired" : {
+                    "and": [
+                        { "term" : { "subscription.valid" : true   } },
+                        { "range" : { "subscription.signDate" : { "lt": "now" } } },
+                        { "range" : { "subscription.expirationDate" : { "lt": "now" } } }
+                    ]
+                }
+              }
+            }
+        },
         "rhd_members" : {
             "filter" : { "exists" : { "field" : "regInfo.rhd" } }
             ,"aggs" : {

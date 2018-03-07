@@ -25,17 +25,6 @@ By default it searches through the following `sys_content_type`s:
 
 However, the sys_content_type can be overriden by `type` parameter, documented below.
 
-In addition to matching documents it also provides two aggregations around "format" which is basically
-[terms aggregation] of `sys_type` field. The tricky part is that one specific `sys_type` category
-is split into two _arbitrary_ categories depending on `experimental` field value.
-
-[terms aggregation]: http://www.elasticsearch.org/guide/en/elasticsearch/reference/1.4/search-aggregations-bucket-terms-aggregation.html
-
-More specifically documents having `sys_type: quickstart` belong to
-either `quickstart` or `quickstart_early_access` category.
-If the document has `experimental: true` then it belongs to the `quickstart_early_access`
-otherwise it belongs to `quickstart`.
-
 The following text consists of three parts:
 
 - description of URL parameters accepted by this registered query
@@ -155,28 +144,9 @@ Optional filter accepting a number value. URL parameter value MUST be a number.
 
 ##### `sys_type`
 Optional filter used for `sys_type` value (called "format" on the UI page).
-In order to distinguish between **quickstarts** and **early access** materials new _virtual_ `sys_type` value
-called `quickstart_early_access` has been modelled.
 
-- <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=quickstart_early_access>
 - <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=quickstart>
 - <http://dcp_server:port/v2/rest/search/developer_materials?sys_type=video&sys_type=book>
-
-Technically speaking, the `sys_type` value in returned documents is `quickstart` all the time.
-The new (virtual) category appears **only** in aggregations output and can be used as `sys_type` filter input.
-All needed conversions are handled inside the query at execution time.
-
-Pseudo-code of `sys_type` processing is as follows:
-
-    if (sys_type == 'quickstart' && experimental != undefined && experimental != null && experimental === true) {
-      'quickstart_early_access'
-    } else
-    if (sys_type == 'quickstart') {
-      'quickstart'
-    }
-    else { sys_type is used }
-
-_See "Query implementation details" for further details._
 
 ##### `type`
 
@@ -248,20 +218,10 @@ The query has hardcoded list of fields that are returned:
     ]
 
 Additionally returned data contains slice of **matching documents**, **total number** of matching documents
-and **two aggregation sections**.
 
 1. `hits.hits[]` contains up to 9 documents (you can paginate through them using `from` URL parameter)
 
 2. `hits.total` contains total number of matching documents
-
-3. `aggregations.format.count_without_filters.format_counts.buckets[]` contains total counts for all **AVAILABLE**
-"formats" (note we have separation between `quickstart` and `quickstart_early_access` formats).
-Counts do not reflect any selected filters, it is always total count of documents in this category. Technically speaking,
-this aggregation can be used to get a list of all available formats in the data.
-
-4. `aggregations.format.count_with_filters.format_counts.buckets[]` contains counts for all **RELEVANT** "formats"
-(relevant to query and filters). If there are no matching documents for format then such format is missing here
-(so you can use list from above aggregation to produce complete list of formats assigning missing formats a zero count).
 
 ## Query implementation details
 
@@ -417,13 +377,7 @@ The following is the query with all the optional filters applied:
                       "or": [
                         {{#sys_type}}
                         {
-                          "script": {
-                            "script": "(format_selection == 'quickstart_early_access' && _source.sys_type == 'quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'quickstart' && format_selection != 'quickstart_early_access' && _source.sys_type == format_selection)",
-                            "params": {
-                              "format_selection": "{{.}}",
-                              "lang": "js"
-                            }
-                          }
+                            "term": { "sys_type": "{{.}}" }
                         },
                         {{/sys_type}}
                         {}
@@ -538,204 +492,4 @@ The following is the query with all the optional filters applied:
         {{^newFirst}}{{^oldFirst}} "_score" {{/oldFirst}}{{/newFirst}}
       ]
       {{/randomized}}
-      ,
-      "aggregations": {
-        "format": {
-          "global": {},
-          "aggregations": {
-            {{count_with_filters}}
-            "count_with_filters": {
-              "filter": {
-                "and": {
-                  "filters": [
-                    {{#query}}
-                    {
-                      "query": {
-                        "simple_query_string": {
-                          "query": "{{query}}",
-                          "fields": [
-                            "sys_description", "sys_tags", "sys_contributors.fulltext", "sys_project_name", "sys_title","sys_content_plaintext","answers.body"
-                          ]
-                        }
-                      }
-                    },
-                    {{/query}}
-                    {{#blogbyurl}}
-                    {
-                      "or": [
-                    {
-                      "not": {
-                        "term": { "sys_type" : "blogpost" }
-                      }
-                    },
-                    {
-                      "and": [
-                          {"term":{"sys_url_view":"{{blogbyurl}}"}},
-                          {"term":{"sys_type":"blogpost"}},
-
-                          {}
-                        ]
-                      },
-                        {}
-                      ]
-                    },
-                    {{/blogbyurl}}
-                    {{#level}}
-                    {
-                      "term": { "level": "{{level}}" }
-                    },
-                    {{/level}}
-                    {{#tags_or_logic}}
-                    {
-                      "or": [
-                    {{/tags_or_logic}}
-                      {{#tag}}
-                      {
-                        "term": { "sys_tags": ["{{.}}"] }
-                      },
-                      {{/tag}}
-                    {{#tags_or_logic}}
-                      {}
-                      ]
-                    },
-                    {{/tags_or_logic}}
-                    {{#publish_date_from}}
-                    {
-                      "range": {
-                        "sys_created": { "gte": "{{publish_date_from}}" }
-                      }
-                    },
-                    {{/publish_date_from}}
-                    {{#publish_date_to}}
-                    {
-                      "range": {
-                        "sys_created": {
-                          "lte": "{{publish_date_to}}"
-                        }
-                      }
-                    },
-                    {{/publish_date_to}}
-                    {{#activity_interval}}
-                    {
-                      "range": {
-                        "sys_activity_dates": {
-                          "gte": "{{activity_interval}}"
-                        }
-                      }
-                    },
-                    {{/activity_interval}}
-                    {{#activity_date_from}}
-                    {
-                      "range": {
-                        "sys_activity_dates": {
-                          "gte": "{{activity_date_from}}"
-                        }
-                      }
-                    },
-                    {{/activity_date_from}}
-                    {{#activity_date_to}}
-                    {
-                      "range": {
-                        "sys_activity_dates": {
-                          "lte": "{{activity_date_to}}"
-                        }
-                      }
-                    },
-                    {{/activity_date_to}}
-                    {{#rating}}
-                    {
-                      "range": {
-                        "sys_rating_avg": { "gte": "{{rating}}"}
-                      }
-                    },
-                    {{/rating}}
-                    {
-                      "or": [
-                        {{#sys_type}}
-                        {
-                          "script": {
-                            "script": "(format_selection == 'quickstart_early_access' && _source.sys_type == 'quickstart' && _source.experimental != undefined && _source.experimental != null && _source.experimental === true) || (format_selection == 'quickstart' && _source.sys_type == format_selection && _source.experimental !== true) || (format_selection != 'quickstart' && format_selection != 'quickstart_early_access' && _source.sys_type == format_selection)",
-                            "params": {
-                              "format_selection": "{{.}}",
-                              "lang": "js"
-                            }
-                          }
-                        },
-                        {{/sys_type}}
-                        {}
-                      ]
-                    },
-                    {
-                      "or": [
-                        {{#project}}
-                        {
-                          "term": { "sys_project": "{{.}}" }
-                        },
-                        {{/project}}
-                        {}
-                      ]
-                    },
-                    {{#filter_out_excluded}}
-                    {
-                      "or": [
-                        {
-                          "term": { "exclude_from_search": "false" }
-                        },
-                        {
-                          "missing" : { "field" : "exclude_from_search" }
-                        }
-                      ]
-                    },
-                    {{/filter_out_excluded}}
-                    {
-                      "terms": {
-                        "sys_content_provider": [
-                          "jboss-developer", "stackoverflow", "jbossorg", "rht"
-                        ]
-                      }
-                    }
-                  ]
-                }
-              },
-              "aggregations": {
-                "format_counts": {
-                  "terms": {
-                    "script": "_source.sys_type == 'quickstart' ? ( _source.experimental != undefined && _source.experimental != null && _source.experimental === true ? _source.sys_type + '_early_access' : _source.sys_type ) : _source.sys_type",
-                    "lang": "js",
-                    "size": 100
-                  }
-                }
-              }
-            }
-            {{/count_with_filters}}
-            {{#count_with_filters}}{{#count_without_filters}},{{/count_without_filters}}{{/count_with_filters}}
-            {{#count_without_filters}}
-            "count_without_filters": {
-              "filter": {
-                "and": {
-                  "filters": [
-                    {
-                      "terms": {
-                        "sys_content_provider": [
-                          "jboss-developer", "stackoverflow", "jbossorg", "rht"
-                        ]
-                      }
-                    }
-                  ]
-                }
-              },
-              "aggregations": {
-                "format_counts": {
-                  "terms": {
-                    "script": "_source.sys_type == 'quickstart' ? ( _source.experimental != undefined && _source.experimental != null && _source.experimental === true ? _source.sys_type + '_early_access' : _source.sys_type ) : _source.sys_type",
-                    "lang": "js",
-                    "size": 100
-                  }
-                }
-              }
-            }
-            {{/count_without_filters}}
-          }
-        }
-      }
     }

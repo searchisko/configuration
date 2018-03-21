@@ -163,12 +163,19 @@ Unescaped mustache template:
                     "filter" : {
                         "and": [ 
                             { "term" : { "ppLevels.rhdmin" : true } },
-                            { "missing" : { "field" : "ppLevels.rhfull" } }
+                            { "missing" : { "field" : "ppLevels.rhdfull" } }
                         ]
                     }
                 },
                 "rhdfull": {
                     "filter" : { "term" : { "ppLevels.rhdfull" : true } }
+                },
+                "no_valid_level": {
+                    "filter" : {
+                        "and": [ 
+                            { "missing" : { "field" : "ppLevels.rhdmin" } }
+                        ]
+                    }
                 }
             }
         },

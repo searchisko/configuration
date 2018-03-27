@@ -483,6 +483,27 @@ The following is the query with all the optional filters applied:
                 "script" : "query_param.toLowerCase().indexOf(term_1)!=-1 || query_param.toLowerCase().indexOf(term_2)!=-1 ? 100 : 1;"
               }
             }
+            {{^newFirst}}{{^oldFirst}}
+            ,{
+               "filter": {
+                 "term": { "sys_type" : "blogpost" }
+               },
+                "gauss": {
+                  "sys_created": {
+                      "scale":  "52w"
+                  }
+                }
+            }
+            {{/oldFirst}}{{/newFirst}}
+            ,{
+               "filter": {
+                "and" : [
+                    {"term": { "sys_type" : "blogpost" }},
+                    {"term": { "feed" : "redhat_developer_blog" }}
+                ]
+               },
+               "weight":1.1
+            }
           ]
         }
       }

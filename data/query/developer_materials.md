@@ -499,10 +499,10 @@ The following is the query with all the optional filters applied:
                "filter": {
                 "and" : [
                     {"term": { "sys_type" : "blogpost" }},
-                    {"term": { "feed" : "redhat_developer_blog" }}
+                    {"term": { "sys_url_view" : "developers.redhat.com" }}
                 ]
                },
-               "weight":1.1
+               "weight":2
             }
           ]
         }

@@ -405,25 +405,39 @@
             ]
           }
         },{
-        "name"     : "Contributors mapper",
-        "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
-        "settings" : {
-          "index_name"       : "sys_contributors",
-          "index_type"       : "contributor",
-          "source_field"     : "authors",
-          "idx_search_field" : ["jbossdeveloper_quickstart_author","name"],
-          "result_mapping"   : [{
-            "idx_result_field" : "code",
-            "target_field"     : "sys_contributor"
-          }]
-        }
+          "name"     : "Contributors mapper",
+          "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
+          "settings" : {
+            "index_name"       : "sys_contributors",
+            "index_type"       : "contributor",
+            "source_field"     : "authors",
+            "idx_search_field" : ["jbossdeveloper_quickstart_author","name"],
+            "result_mapping"   : [{
+              "idx_result_field" : "code",
+              "target_field"     : "sys_contributor"
+            }]
+          }
         },{
-        "name": "sys_activity_dates collector",
-        "class": "org.jboss.elasticsearch.tools.content.ValuesCollectingPreprocessor",
-        "settings": {
-          "target_field": "sys_activity_dates",
-          "source_fields": ["sys_created"]
-        }
+          "name": "sys_activity_dates collector",
+          "class": "org.jboss.elasticsearch.tools.content.ValuesCollectingPreprocessor",
+          "settings": {
+            "target_field": "sys_activity_dates",
+            "source_fields": ["sys_created"]
+          }
+        },{
+          "name" : "sys_project_inferred classifier for jbossdeveloper_book",
+          "class" : "org.jboss.elasticsearch.tools.content.RESTCallPreprocessor",
+          "settings" : {
+              "request_method" : "POST",
+              "request_url"  : "http://poc-content-classifier.int.open.paas.redhat.com/score",
+              "request_content" : "{ \"sys_meta\": false, \"doc\" : {\"id\" : \"$sys_id$\", \"title\" : \"$sys_title$\", \"content\" : \"$sys_content$\" }}",
+              "request_timeout" : 5000,
+              "retry_max_num_of_attempts" : 10,
+              "retry_delay" : 5000,
+              "response_mapping" : [ 
+                  {"rest_response_field":"scoring", "target_field":"sys_project_inferred"} 
+              ]
+          } 
         }
       ],
       "index": {

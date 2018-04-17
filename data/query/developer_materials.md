@@ -389,6 +389,13 @@ The following is the query with all the optional filters applied:
                         {
                             "term": { "sys_project": "{{.}}" }
                         },
+                        {
+                          "range": {
+                            "sys_project_inferred.{{project}}": {
+                              "gte": 0.5
+                            }
+                          }
+                        },
                         {{/project}}
                         {}
                       ]

@@ -3,27 +3,13 @@
         "_all" : { "enabled" : false },
         "properties" : {
 			"id"	         : { "type": "string", "store" : "no", "index" : "not_analyzed" },
-			"name" : {
-				"type" : "object",
-				"properties" : {
-					"givenName"  : { "type": "string" },
-					"familyName" : { "type": "string" },
-					"formatted"  : { "type": "string" }
-				}
-			},
-			"displayName"	 : { "type": "string", "store" : "no", "index" : "not_analyzed" },
 			"tags"	         : { "type": "string", "store" : "no", "index" : "not_analyzed" },
 			"published"	     : { "type": "date",   "store" : "no", "index" : "not_analyzed" },
 			"updated"	     : { "type": "date",   "store" : "no", "index" : "not_analyzed" },
-			"profileUrl"	 : { "type": "string", "store" : "no", "index" : "not_analyzed" },
-			"timeZone"       : { "type": "string", "store" : "no", "index" : "not_analyzed" },
-			"thumbnailUrl"	 : { "type": "string", "store" : "no", "index" : "not_analyzed" },
-			"aboutMe"	     : { "type": "string", "store" : "no", "index" : "not_analyzed" },
 			"accounts" : {
 				"type" : "object",
 				"properties" : {
-					"domain"     : { "type": "string", "store" : "no", "index" : "not_analyzed" },
-					"username"   : { "type": "string", "store" : "no", "index" : "not_analyzed" }
+					"domain"     : { "type": "string", "store" : "no", "index" : "not_analyzed" }
 				}
 			},
 			"numOfSocialLinks" : { "type": "long" },
@@ -35,11 +21,8 @@
 				    "expirationDate" : { "type": "date" }
 			    }
 			},
-		  	"company"	     : { "type": "string", "index" : "not_analyzed" },
 			"country"	     : { "type": "string", "index" : "not_analyzed" },
-			"username"	     : { "type": "string", "index" : "not_analyzed" },
 			"userAccountType": { "type": "string", "index" : "not_analyzed" },
-			"newsletter"	 : { "type": "string" },
 			"regInfo" : {
 				"type" : "object",
 				"properties" : {

@@ -73,7 +73,7 @@ See spec for more info. [ElasticSearch reference docs](https://www.elastic.co/gu
 ##### `date_field`
 Optional parameter defining what field to use when filtering on dates e.g. `date_from` resp. `date_to` or doing histogram (buckets). By default it's `sys_created`.
 
-- <http://dcp_server:port/v2/rest/search/contributor_profiles?total=t&aggregate=t&source=rht_user_profile&date_field=regInfo.firstAccessTimestamp.rhd>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?total=t&aggregate=t&source=jbossorg_contributor_profile&date_field=regInfo.firstAccessTimestamp.rhd>
 
 ##### `date_from`
 Optional filter accepting date in a string format. It's also possible to use date intervals with this parameter e.g. 'now-1y' or 'now-7d'.
@@ -109,7 +109,7 @@ Optional parameter which can be used to limit the results to a particular conten
 
 **Example:**
 
-- <http://dcp_server:port/v2/rest/search/contributor_profiles?source=rht_user_profile>
+- <http://dcp_server:port/v2/rest/search/contributor_profiles?source=jbossorg_contributor_profile>
 
 ## Query output format
 

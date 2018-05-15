@@ -112,24 +112,6 @@
                     "source_bases" : ["prep_sys_authors"]
                 } 
             },{ 
-                "name"     : "Getting company/country from data_rht_user_profile based on rh_username.",
-                "class"    : "org.jboss.elasticsearch.tools.content.ESLookupValuePreprocessor",
-                "settings" : {
-                    "index_name"       : "data_rht_user_profile",
-                    "index_type"       : "rht_user_profile",
-                    "source_field"     : "rh_username",
-                    "idx_search_field" : "username",
-                    "result_mapping"   : [
-                        {
-                            "idx_result_field" : "company",
-                            "target_field"     : "prep_sys_authors.company"
-                        },{
-                            "idx_result_field" : "country",
-                            "target_field"     : "prep_sys_authors.country"
-                        }
-                    ]
-                } 
-            },{ 
                 "name"     : "Updated filler",
                 "class"    : "org.jboss.elasticsearch.tools.content.AddCurrentTimestampPreprocessor",
                 "settings" : { "field" : "prep_updated" }

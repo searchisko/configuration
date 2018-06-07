@@ -66,11 +66,11 @@
               }]
           }
 		  },{
-          	"name"     : "Clean sys_contributors from empty string",
+          	"name"     : "Put author into sys_contributors if empty string",
      		"class"    : "org.jboss.elasticsearch.tools.content.ScriptingPreprocessor",
      		"settings" : {
          		"script_engine_name"  : "JavaScript",
-         		"script"  : "if (data.get('sys_contributors')=='') { data.put('sys_contributors', null); }"
+         		"script"  : "if (data.get('sys_contributors')=='') { data.put('sys_contributors', data.get('author')); }"
      		}
  		  },{ 
           "name"     : "Copy sys_contributor into sys_authors.",

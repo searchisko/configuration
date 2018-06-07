@@ -738,6 +738,7 @@
       "description": "Contributor profile - additional information to contributor system profiles",
       "sys_type": "contributor_profile",
       "sys_content_content-type" : "text/plain",
+      "sys_visible_for_roles" : ["trusted","provider"],
       "persist" : true,
       "input_preprocessors": [
         {

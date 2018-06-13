@@ -74,7 +74,13 @@ Optional parameter which can be used in order to change timezone used when aggre
 
 - <http://dcp_server:port/v2/rest/search/rht_user_profile_metrics?website=rhd&timezone_offset=America/New_York>
 
+##### `country_agg`
 
+Optional parameter. If present with any value then aggregations "by country" are added into output of the query (they slow down the query a bit).
+
+**Example:**
+
+- <http://dcp_server:port/v2/rest/search/rht_user_profile_metrics?website=rhd&date_to=2018&country_agg=true>
 
 ## Query output format
 
@@ -127,9 +133,11 @@ Unescaped mustache template:
         "social_links_count_agg" : {
             "terms" : { "field" : "numOfSocialLinks" }
         },
+      {{#country_agg}}  
         "country_agg" : {
             "terms" : { "field" : "country", "size": 0 }
         },
+      {{/country_agg}}  
         "social_links_types_agg" : {
             "terms" : { 
                 "field" : "accounts.domain",
@@ -191,9 +199,11 @@ Unescaped mustache template:
                 "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
             }
             ,"aggs" : {
+            {{#country_agg}}
               "by_country" : {
                     "terms" : { "field" : "country", "size": 0 }
               },
+            {{/country_agg}}  
               "by_channel" : { 
                 "filters" : {
                   "filters" : {

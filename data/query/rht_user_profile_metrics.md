@@ -127,6 +127,9 @@ Unescaped mustache template:
         "social_links_count_agg" : {
             "terms" : { "field" : "numOfSocialLinks" }
         },
+        "country_agg" : {
+            "terms" : { "field" : "country", "size": 0 }
+        },
         "social_links_types_agg" : {
             "terms" : { 
                 "field" : "accounts.domain",
@@ -188,6 +191,9 @@ Unescaped mustache template:
                 "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
             }
             ,"aggs" : {
+              "by_country" : {
+                    "terms" : { "field" : "country", "size": 0 }
+              },
               "by_channel" : { 
                 "filters" : {
                   "filters" : {

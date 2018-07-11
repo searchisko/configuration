@@ -35,7 +35,7 @@
       "sys_type"                    : { "remote_field" : "prep_sys_type"},
       "sys_id"                      : { "remote_field" : "prep_id"},
       "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
-      "sys_url_view"                : { "remote_field" : "prep_sys_url_view" },
+      "sys_url_view"                : { "remote_field" : "field_more_details" },
       "sys_tags"                    : { "remote_field" : "prep_data_tags"}
 
     },
@@ -49,8 +49,7 @@
           "prep_sys_content_provider": "jboss-developer",
           "prep_sys_content_type"    : "jbossdeveloper_event",
           "prep_sys_created"         : "{created}",
-          "prep_sys_type"            : "event",
-          "prep_sys_url_view"        : "https://developers.redhat.com/events/event#!id={nid}"
+          "prep_sys_type"            : "event"
 
         }
       },

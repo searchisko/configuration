@@ -58,7 +58,15 @@
 							"fromExistingRhtAccount" : { "type": "boolean" },
 							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
 						}
-					}
+					},
+                    "jbossorg" : {
+                        "type" : "object",
+                        "properties" : {
+                            "channel"                : { "type": "string", "index" : "not_analyzed" },
+                            "fromExistingRhtAccount" : { "type": "boolean" },
+                            "firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
+                        }
+                    }
 				}
 			}
         }

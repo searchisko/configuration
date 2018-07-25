@@ -133,11 +133,11 @@ Unescaped mustache template:
         "social_links_count_agg" : {
             "terms" : { "field" : "numOfSocialLinks" }
         },
-      {{#country_agg}}  
+        {{#country_agg}}  
         "country_agg" : {
             "terms" : { "field" : "country", "size": 0 }
         },
-      {{/country_agg}}  
+        {{/country_agg}}  
         "social_links_types_agg" : {
             "terms" : { 
                 "field" : "accounts.domain",
@@ -197,13 +197,28 @@ Unescaped mustache template:
                 "interval" : "{{interval}}{{^interval}}month{{/interval}}",
                 "format": "{{bucket_key_format}}{{^bucket_key_format}}yyyy-MM{{/bucket_key_format}}",
                 "pre_zone" : "{{timezone_offset}}{{^timezone_offset}}America/New_York{{/timezone_offset}}"
-            }
-            ,"aggs" : {
-            {{#country_agg}}
+            },
+            "aggs" : {
+              {{#country_agg}}
               "by_country" : {
                     "terms" : { "field" : "country", "size": 0 }
               },
-            {{/country_agg}}  
+              {{/country_agg}}
+              "by_email_verified" : {
+                "filters" : {
+                  "filters" : {
+                    "verified" : {
+                      "term" : { "emailVerified" : true }
+                    },
+                    "not_verified" : {
+                      "or": [
+                        { "term" : { "emailVerified" : false }},
+                        { "missing" : { "field" : "emailVerified" }}
+                      ]
+                    }
+                  }
+                }
+              },
               "by_channel" : { 
                 "filters" : {
                   "filters" : {

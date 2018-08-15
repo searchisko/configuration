@@ -276,6 +276,18 @@ Unescaped mustache template:
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "conference"   } },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
+                    },
+                    "bulkinvite" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "bulkinvite"   } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
+                        ]
+                    },
+                    "bulkinvite_from_rh" :   {
+                        "and": [
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "bulkinvite"   } },
+                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
+                        ]
                     }
                   }
                 }

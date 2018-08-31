@@ -1,0 +1,12 @@
+{
+  "code": "wildfly-camel",
+  "name": "Wildfly Camel",
+  "type_specific_code" : {
+    "jbossorg_blog": [""],
+    "jbossorg_jira": [""],
+    "jbossorg_sbs" : [""],
+    "jbossorg_mailing_list": [""],
+    "jbossorg_project_info": "wildfly-camel",
+    "product" : false
+  }
+}

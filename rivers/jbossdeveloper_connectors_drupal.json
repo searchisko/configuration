@@ -38,7 +38,8 @@
       "sys_id"                      : { "remote_field" : "prep_id" },
       "sys_type"                    : { "remote_field" : "prep_sys_type" },
       "sys_updated"                 : { "remote_field" : "prep_sys_updated" },
-      "sys_tags"                    : { "remote_field" : "prep_sys_tags" }
+      "sys_tags"                    : { "remote_field" : "prep_sys_tags" },
+      "thumbnail__target_id"        : { "remote_field" : "thumbnail__target_id" }
     },
     "preprocessors" : [
       {

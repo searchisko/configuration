@@ -9,8 +9,19 @@
       },
       "priority": {
         "type": "integer",
-        "_boost": 1.5
-      }
+        "_boost": 1.5,
+        "index": "no"
+      },
+      "id" : {"type" : "string", "index" : "no"},
+      "more_details_url" : { "type" : "string", "index" : "no" },
+      "target_product_1" : { "type": "string", "analyzer": "keyword", "store": "no" },
+      "target_product_2" : { "type": "string", "analyzer": "keyword", "store": "no" },
+      "target_product_3" : { "type": "string", "analyzer": "keyword", "store": "no" },
+      "link_1_text" : { "type" : "string", "index" : "no" },
+      "link_1_url" : { "type" : "string", "index" : "no" },
+      "link_2_text" : { "type" : "string", "index" : "no" },
+      "link_2_url" : { "type" : "string", "index" : "no" },
+      "thumbnail__target_id" : { "type" : "string", "index" : "no" }
     }
   }
 }

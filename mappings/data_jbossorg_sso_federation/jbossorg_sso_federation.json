@@ -1,0 +1,19 @@
+{
+  "jbossorg_sso_federation": {
+    "properties": {
+      "active": {
+        "type": "boolean"
+      },
+      "with_new_account": {
+        "type": "boolean"
+      },
+      "provider": {
+        "type": "string"
+      },
+      "deactivation_date": {
+        "type": "date",
+        "index": "no"
+      }
+    }
+  }
+}

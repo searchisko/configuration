@@ -1,0 +1,48 @@
+{
+    "type" : "remote",
+    "remote" : {
+        "urlGetDocuments"       : "https://sso.jboss.org/rest/federationdata?updatedAfter={updatedAfter}&size=1000",
+        "username" 				: "DCP2",
+        "spacesIndexed"         : "MAIN",
+        "timeout"               : "20s",
+        "indexUpdatePeriod"     : "10m",
+        "indexFullUpdatePeriod" : "10d",
+        "maxIndexingThreads"    : 1
+    },
+    "index" : {
+        "index"             : "data_jbossorg_sso_federation",
+        "type"              : "jbossorg_sso_federation",
+        "remote_field_document_id" : "uid",
+        "remote_field_updated"     : "updatedDate",
+        "field_space_key"   : "space_key",
+        "field_document_id" : "sys_id",
+        "fields" : {
+            "sys_content_id"        : {"remote_field" : "uid"},
+            "sys_id"                : {"remote_field" : "prep_id_remote"},
+            "sys_type"              : {"remote_field" : "prep_type"},
+            "sys_updated"           : {"remote_field" : "updatedDate"},
+            "sys_content_provider"  : {"remote_field" : "prep_content_provider"},
+            "sys_content_type"      : {"remote_field" : "prep_content_type"},
+            "sys_created"           : {"remote_field" : "linkedDate"},
+            "active"                : {"remote_field" : "active"},
+            "with_new_account"      : {"remote_field" : "withNewAccount"},
+            "deactivated_date"      : {"remote_field" : "deactivatedDate"},
+            "provider"              : {"remote_field" : "provider"}
+            
+        },
+        "preprocessors" : [{
+                "name"     : "Values filler",
+                "class"    : "org.jboss.elasticsearch.tools.content.AddMultipleValuesPreprocessor",
+                "settings" : {
+                    "prep_id_remote"         : "jbossorg_sso_federation-{uid}",
+                    "prep_type"              : "sso_federation",
+                    "prep_content_provider"  : "jbossorg",
+                    "prep_content_type"      : "jbossorg_sso_federation"
+                 } 
+            }
+        ]
+    },
+    "activity_log" : {
+        "index":"stats_jbossorg_sso_federation_river"
+    }
+}

@@ -512,6 +512,21 @@
         "name" : "jbossorg_sbs_article"
       }
     },
+    "jbossorg_sso_federation": {
+        "description": "Information about federation links created in SSO.",
+        "sys_type": "sso_federation",
+        "persist" : true,
+        "sys_visible_for_roles" : ["trusted","provider"],
+        "input_preprocessors": [],
+        "index": {
+          "name": "data_jbossorg_sso_federation",
+          "type": "jbossorg_sso_federation"
+        },
+        "indexer" : {
+          "type" : "elasticsearch-river-remote",
+          "name" : "jbossorg_sso_federation"
+        }
+    },
     "jbossorg_download_logs": {
       "description": "Parsed apache access logs from downloads.jboss.org.",
       "sys_type": "download",

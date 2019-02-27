@@ -1,7 +1,7 @@
 {
   "type" : "remote",
   "remote" : {
-    "urlGetDocuments"               : "http://{apiKey}",
+    "urlGetDocuments"               : "https://{apiKey}",
     "listDocumentsMode"             : "simple",
     "spacesIndexed"                 : "MAIN",
     "timeout"                       : "60s",

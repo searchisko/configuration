@@ -30,6 +30,7 @@
 					"rhd" : {
 						"type" : "object",
 						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
 							"channel"                : { "type": "string", "index" : "not_analyzed" },
 							"fromExistingRhtAccount" : { "type": "boolean" },
 							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
@@ -38,6 +39,7 @@
 					"openShiftOnlineFree" : {
 						"type" : "object",
 						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
 							"channel"                : { "type": "string", "index" : "not_analyzed" },
 							"fromExistingRhtAccount" : { "type": "boolean" },
 							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
@@ -46,6 +48,7 @@
 					"openShiftOnlinePro" : {
 						"type" : "object",
 						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
 							"channel"                : { "type": "string", "index" : "not_analyzed" },
 							"fromExistingRhtAccount" : { "type": "boolean" },
 							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
@@ -54,6 +57,43 @@
 					"openShiftIo" : {
 						"type" : "object",
 						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
+							"channel"                : { "type": "string", "index" : "not_analyzed" },
+							"fromExistingRhtAccount" : { "type": "boolean" },
+							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
+						}
+					},
+					"fuseignite" : {
+						"type" : "object",
+						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
+							"channel"                : { "type": "string", "index" : "not_analyzed" },
+							"fromExistingRhtAccount" : { "type": "boolean" },
+							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
+						}
+					},
+					"fuseignitePro" : {
+						"type" : "object",
+						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
+							"channel"                : { "type": "string", "index" : "not_analyzed" },
+							"fromExistingRhtAccount" : { "type": "boolean" },
+							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
+						}
+					},
+					"amqonline" : {
+						"type" : "object",
+						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
+							"channel"                : { "type": "string", "index" : "not_analyzed" },
+							"fromExistingRhtAccount" : { "type": "boolean" },
+							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
+						}
+					},
+					"unifiedHybridCloud" : {
+						"type" : "object",
+						"properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
 							"channel"                : { "type": "string", "index" : "not_analyzed" },
 							"fromExistingRhtAccount" : { "type": "boolean" },
 							"firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }
@@ -62,6 +102,7 @@
                     "jbossorg" : {
                         "type" : "object",
                         "properties" : {
+							"aTacticIDExternal"      : { "type": "string", "index" : "not_analyzed" },
                             "channel"                : { "type": "string", "index" : "not_analyzed" },
                             "fromExistingRhtAccount" : { "type": "boolean" },
                             "firstAccessTimestamp"   : { "type": "date", "index" : "not_analyzed" }

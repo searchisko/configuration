@@ -8,6 +8,7 @@
     "simpleGetDocuments"    : true,
     "indexUpdatePeriod"     : "1d",
     "indexFullUpdatePeriod" : "1d",
+    "indexFullUpdateCronExpression" : "0 0 8 ? * * *",
     "maxIndexingThreads"    : 1,
     "htmlMapping"           : {
       "title"       : {"cssSelector" : "head title", "stripHtml" : true},

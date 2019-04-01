@@ -13,6 +13,7 @@ Possible values:
 * openShiftOnlineFree
 * openShiftOnlinePro
 * openShiftIo
+* jbossorg
 
 **Example:**
 

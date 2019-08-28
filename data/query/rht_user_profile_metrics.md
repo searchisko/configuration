@@ -224,69 +224,106 @@ Unescaped mustache template:
                 "filters" : {
                   "filters" : {
                     "website" : { 
-                        "and": [ 
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website"   } },
+                        "and": [
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website"   } },
+                                { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" } },
+                                { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
                         ]
                     },
                     "website_from_rh" : {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
+                                { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" } },
+                                { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
                     },
                     "website_from_rhd" : {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
+                                { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" } },
+                                { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } },
                             { "script" : { "script" : "(_source.regInfo.rhd != null && !_source.regInfo.rhd.firstAccessTimestamp.empty) ? _source.regInfo.rhd.firstAccessTimestamp < _source.regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessTimestamp : 1<0" } }
                         ]
                     },
                     "infoq" :   {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "infoq"   } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "infoq"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "7016000000122iAAAQ"   } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
                         ]
                     },
                     "infoq_from_rh" :   {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "infoq"   } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "infoq"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "7016000000122iAAAQ" } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
                     },
                     "dzone" :   {
                         "and": [
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "dzone"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "7016000000122iKAAQ" } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "dzone" } },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
                         ]
                     },
                     "dzone_from_rh" :   {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "dzone" } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "dzone"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "7016000000122iKAAQ" } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
                     },
                     "conference" :   {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "conference"   } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "conference"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "701f2000000tjnwAAA" } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
                         ]
                     },
                     "conference_from_rh" :   {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "conference"   } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "conference"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "701f2000000tjnwAAA" } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
                     },
                     "bulkinvite" :   {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "bulkinvite"   } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "bulkinvite"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "701f2000000RieJAAS" } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
                         ]
                     },
                     "bulkinvite_from_rh" :   {
                         "and": [
-                            { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "bulkinvite"   } },
+                            { "or": [
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "bulkinvite"   } },
+                                { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" : "701f2000000RieJAAS" } }
+                            ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
                     }

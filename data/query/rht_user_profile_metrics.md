@@ -227,8 +227,10 @@ Unescaped mustache template:
                         "and": [
                             { "or": [
                                 { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website"   } },
-                                { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" } },
-                                { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                                { "and": [
+                                    { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" } },
+                                    { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                                ] }
                             ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : false } }
                         ]
@@ -237,8 +239,10 @@ Unescaped mustache template:
                         "and": [
                             { "or": [
                                 { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
-                                { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" } },
-                                { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                                { "and": [
+                                    { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" } },
+                                    { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                                ] }
                             ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } }
                         ]
@@ -247,8 +251,10 @@ Unescaped mustache template:
                         "and": [
                             { "or": [
                                 { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" : "website" } },
-                                { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal" } },
-                                { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                                { "and": [
+                                    { "missing" : { "field" : "regInfo.{{website}}{{^website}}rhd{{/website}}.channel" } },
+                                    { "not": { "terms": { "regInfo.{{website}}{{^website}}rhd{{/website}}.aTacticIDExternal": ["7016000000122iAAAQ", "7016000000122iKAAQ", "701f2000000tjnwAAA", "701f2000000RieJAAS"] }}}
+                                ] }
                             ] },
                             { "term" : { "regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessByExistingAccount" : true } },
                             { "script" : { "script" : "(_source.regInfo.rhd != null && !_source.regInfo.rhd.firstAccessTimestamp.empty) ? _source.regInfo.rhd.firstAccessTimestamp < _source.regInfo.{{website}}{{^website}}rhd{{/website}}.firstAccessTimestamp : 1<0" } }
